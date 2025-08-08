@@ -1,12 +1,37 @@
 const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASS,
+// Email configuration - supports both Gmail and other providers
+const createTransporter = () => {
+    const email = process.env.EMAIL;
+    const pass = process.env.PASS;
+    
+    // Check if it's a Gmail account
+    if (email && email.endsWith('@gmail.com')) {
+        return nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+                user: email,
+                pass: pass,
+            }
+        });
+    } else {
+        // For company domains or other email providers
+        return nodemailer.createTransport({
+            host: process.env.SMTP_HOST || "smtp.gmail.com",
+            port: process.env.SMTP_PORT || 587,
+            secure: process.env.SMTP_SECURE === 'true' || false, // true for 465, false for other ports
+            auth: {
+                user: email,
+                pass: pass,
+            },
+            tls: {
+                rejectUnauthorized: false
+            }
+        });
     }
-});
+};
+
+const transporter = createTransporter();
 
 const mailOptions = async (to, subject, status = 0, message = 0, link) => {
     const htmlContent = `
@@ -36,7 +61,7 @@ const mailOptions = async (to, subject, status = 0, message = 0, link) => {
     try {
         if ((status, message)) {
             await transporter.sendMail({
-                from: '"Employee Tracking System" <nameste380@gmail.com>',
+                from: `"Employee Tracking System" <${process.env.EMAIL}>`,
                 to: to,
                 subject: subject,
                 html: htmlContent
@@ -44,7 +69,7 @@ const mailOptions = async (to, subject, status = 0, message = 0, link) => {
         }
         else {
             await transporter.sendMail({
-                from: 'nameste380@gmail.com',
+                from: process.env.EMAIL,
                 to: to,
                 subject: subject,
                 html: `<a href="${link}">Link for reset Password</a>`

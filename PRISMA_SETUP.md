@@ -20,6 +20,8 @@ npm install
 
 Create a `.env` file in the root directory with the following variables:
 
+#### **Option A: Gmail Configuration (Recommended for Development)**
+
 ```env
 # Database Configuration
 DATABASE_URL="postgresql://username:password@localhost:5432/employee_tracking_db?schema=public"
@@ -27,9 +29,9 @@ DATABASE_URL="postgresql://username:password@localhost:5432/employee_tracking_db
 # JWT Configuration
 SECRET_KEY="your-secret-key-here"
 
-# Email Configuration
-EMAIL="your-email@gmail.com"
-PASS="your-app-password"
+# Email Configuration (Gmail)
+EMAIL="your-gmail@gmail.com"
+PASS="your-16-character-app-password"
 
 # Server Configuration
 PORT=8000
@@ -38,7 +40,43 @@ PORT=8000
 LOG_LEVEL="info"
 ```
 
-### 3. Database Setup
+#### **Option B: Company Email Domain Configuration**
+
+```env
+# Database Configuration
+DATABASE_URL="postgresql://username:password@localhost:5432/employee_tracking_db?schema=public"
+
+# JWT Configuration
+SECRET_KEY="your-secret-key-here"
+
+# Email Configuration (Company Domain)
+EMAIL="rupsa@tellistechnologies.com"
+PASS="your-email-password"
+SMTP_HOST="smtp.tellistechnologies.com"  # Your company SMTP server
+SMTP_PORT=587                            # SMTP port (usually 587 or 465)
+SMTP_SECURE=false                        # true for 465, false for other ports
+
+# Server Configuration
+PORT=8000
+
+# Logging Configuration
+LOG_LEVEL="info"
+```
+
+### 3. Email Setup Instructions
+
+#### **For Gmail:**
+1. Create a Gmail account for your application
+2. Enable 2-Factor Authentication
+3. Generate App Password (Security → App passwords)
+4. Use the 16-character app password (not your regular password)
+
+#### **For Company Email Domain:**
+1. Get SMTP server details from your IT department
+2. Use your company email credentials
+3. Configure SMTP settings according to your email provider
+
+### 4. Database Setup
 
 1. **Create PostgreSQL Database**:
    ```sql
@@ -60,7 +98,7 @@ LOG_LEVEL="info"
    npm run db:push
    ```
 
-### 4. Start the Application
+### 5. Start the Application
 
 ```bash
 npm start
@@ -98,6 +136,12 @@ npm start
    - Break session tracking
    - Historical data management
 
+6. **Task**: Task management system
+   - Task assignment and tracking
+   - Many-to-many employee relationships
+   - Status workflow (PENDING → IN_PROGRESS → COMPLETED)
+   - Due date management
+
 ### Enums
 
 - **EmpGender**: MALE, FEMALE, OTHER
@@ -105,6 +149,7 @@ npm start
 - **LeaveType**: CASUAL, SICK, OTHER
 - **LeaveStatus**: PENDING, APPROVE, REJECT
 - **WorkingLocation**: OFFICE, REMOTE, HYBRID
+- **TaskStatus**: PENDING, IN_PROGRESS, COMPLETED
 
 ## Key Changes from MongoDB
 
@@ -113,6 +158,7 @@ npm start
 3. **Data Types**: PostgreSQL-specific data types (Int, String, Boolean, DateTime)
 4. **Enums**: Native PostgreSQL enums for better data integrity
 5. **Indexes**: Automatic indexing on foreign keys and unique constraints
+6. **Email Service**: Support for both Gmail and company email domains
 
 ## Migration Commands
 
@@ -141,6 +187,7 @@ All existing API endpoints remain the same, but now use Prisma client instead of
 - **Admin Timesheet**: `/admin-timesheet/*`
 - **Bench Management**: `/bench/*`
 - **Notifications**: `/notification/*`
+- **Task Management**: `/tasks/*` (Admin) and `/emp-tasks/*` (Employee)
 
 ## Troubleshooting
 
@@ -157,6 +204,11 @@ All existing API endpoints remain the same, but now use Prisma client instead of
    - Clear generated files: `rm -rf node_modules/.prisma`
    - Regenerate: `npm run prisma:generate`
 
+4. **Email Issues**:
+   - For Gmail: Check app password and 2FA settings
+   - For company domain: Verify SMTP settings with IT department
+   - Test email configuration: Check logs for SMTP errors
+
 ## Next Steps
 
 After successful migration:
@@ -166,3 +218,4 @@ After successful migration:
 3. Migrate existing data if needed
 4. Update validation schemas if required
 5. Update logging configuration for PostgreSQL
+6. Test email functionality with your chosen provider
