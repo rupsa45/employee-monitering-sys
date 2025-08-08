@@ -1,5 +1,5 @@
 const { prisma } = require('../../config/prismaConfig');
-const empLogger = require('../../utils/empLogger/empLogger');
+const employeeLogger = require('../../utils/empLogger/employeeLogger');
 
 module.exports = {
     // Get tasks assigned to the logged-in employee (EMPLOYEE ACCESS)
@@ -56,7 +56,7 @@ module.exports = {
                 }
             });
 
-            empLogger.log('info', `Tasks for employee "${employee.empName}" retrieved successfully`);
+            employeeLogger.log('info', `Tasks for employee "${employee.empName}" retrieved successfully`);
             res.status(200).json({
                 success: true,
                 message: "Your assigned tasks retrieved successfully",
@@ -70,7 +70,7 @@ module.exports = {
                 total: tasks.length
             });
         } catch (error) {
-            empLogger.log('error', `Error retrieving employee tasks: ${error.message}`);
+            employeeLogger.log('error', `Error retrieving employee tasks: ${error.message}`);
             res.status(500).json({
                 success: false,
                 message: "Error retrieving your tasks",
@@ -116,14 +116,14 @@ module.exports = {
                 });
             }
 
-            empLogger.log('info', `Task "${task.title}" details retrieved by employee ${empId}`);
+            employeeLogger.log('info', `Task "${task.title}" details retrieved by employee ${empId}`);
             res.status(200).json({
                 success: true,
                 message: "Task details retrieved successfully",
                 task
             });
         } catch (error) {
-            empLogger.log('error', `Error retrieving task details: ${error.message}`);
+            employeeLogger.log('error', `Error retrieving task details: ${error.message}`);
             res.status(500).json({
                 success: false,
                 message: "Error retrieving task details",
@@ -190,14 +190,14 @@ module.exports = {
                 }
             });
 
-            empLogger.log('info', `Task "${task.title}" status updated to ${status} by employee ${empId}`);
+            employeeLogger.log('info', `Task "${task.title}" status updated to ${status} by employee ${empId}`);
             res.status(200).json({
                 success: true,
                 message: "Task status updated successfully",
                 task: updatedTask
             });
         } catch (error) {
-            empLogger.log('error', `Error updating task status: ${error.message}`);
+            employeeLogger.log('error', `Error updating task status: ${error.message}`);
             res.status(500).json({
                 success: false,
                 message: "Error updating task status",
@@ -262,7 +262,7 @@ module.exports = {
                 }).length
             };
 
-            empLogger.log('info', `Task statistics retrieved for employee "${employee.empName}"`);
+            employeeLogger.log('info', `Task statistics retrieved for employee "${employee.empName}"`);
             res.status(200).json({
                 success: true,
                 message: "Task statistics retrieved successfully",
@@ -274,7 +274,7 @@ module.exports = {
                 statistics: stats
             });
         } catch (error) {
-            empLogger.log('error', `Error retrieving task statistics: ${error.message}`);
+            employeeLogger.log('error', `Error retrieving task statistics: ${error.message}`);
             res.status(500).json({
                 success: false,
                 message: "Error retrieving task statistics",

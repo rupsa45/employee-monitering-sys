@@ -11,7 +11,7 @@ const authentication = async (req, res, next) => {
                     message: "Authentication Error!"
                 });
             } else {
-                req.user = decoded.userData;
+                req.user = decoded; // Set the entire decoded object
                 next();
             }
         })
@@ -22,7 +22,6 @@ const authentication = async (req, res, next) => {
         })
     }
 }
-
 
 module.exports = {
     authentication
