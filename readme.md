@@ -1,141 +1,354 @@
-# 🔥 Employee and Admin Panel Documentation
+# 🚀 Employee Tracking System - Application Workflow
 
-Welcome to the Employee Tracking System documentation! 📋 This comprehensive guide is designed to help you navigate through the Employee and Admin panels with ease.
+## 📋 **System Overview**
 
-## 📚 Table of Contents
+The Employee Tracking System is a comprehensive web application built with **Node.js**, **Express.js**, and **PostgreSQL** using **Prisma ORM**. It provides complete employee management, attendance tracking, leave management, and task management with **role-based access control**.
 
-1. [Employee Panel Documentation](#employee-panel-documentation) 👨‍💼
-2. [Admin Panel Documentation](#admin-panel-documentation) 👩‍💼
+## 👥 **User Roles & Access Control**
 
-## 1. Employee Panel Documentation <a name="employee-panel-documentation"></a>
+### **🔐 Admin Users**
+- **Registration**: Public admin registration available
+- **Login**: Admin login with role verification
+- **Permissions**: Full system access and management capabilities
+- **Employee Management**: Create, view, and manage employee accounts
+- **Task Management**: Create, assign, update, and delete tasks
+- **Attendance Monitoring**: View all employee timesheets and activity
+- **Leave Management**: Approve/reject employee leave requests
+- **System Administration**: Complete administrative control
 
-The Employee Tracking System is a Node.js-based application that simplifies employee management through an integrated system. 🤝 This documentation will walk you through its features, components, and usage.
+### **👤 Employee Users**
+- **Registration**: **NOT ALLOWED** - Only admins can create employee accounts
+- **Login**: Employee login with role verification
+- **Permissions**: Limited access to personal data and assigned tasks
+- **Profile Management**: Update personal information and passwords
+- **Attendance**: Clock in/out and manage breaks
+- **Leave Requests**: Apply for and track leave requests
+- **Task Management**: **VIEW ONLY + STATUS UPDATE** - Can only view assigned tasks and update status
 
-### 📖 Table of Contents
+## 🔄 **Core Workflow**
 
-1. [Introduction](#Introduction) 📌
-2. [Features](#Features) ✨
-3. [Components](#Components) 🧩
-4. [Testing](#Testing) 🧪
-5. [Logger](#Logger) 📝
-6. [Validations](#Validations) 🛡️
-7. [Technologies](#Technologies) 💻
-8. [Services](#Services) 📧
-9. [Conclusion](#Conclusion) 🎉
+### **1. System Initialization**
+```
+1. Admin Registration (Public)
+   ├── Anyone can register as admin
+   ├── Email uniqueness validation
+   ├── Password confirmation
+   └── Role automatically set to 'admin'
 
-#### 1. Introduction <a name="Introduction"></a>
-
-Welcome to a better way of managing employees! The Employee Tracking System streamlines employee management, offering features like clock-in/clock-out, leave request management, and notifications. 🌟
-
-#### 2. Features <a name="Features"></a>
-
-🚀 Here are some of the exciting features:
-
-- **Employee Registration**: Employees can easily create accounts.
-- **Login**: Securely access your account using your credentials.
-- **Reset Password**: Forgot your password? No worries, reset it.
-- **Forget Password**: Initiate password reset via your registered email.
-- **Set New Password**: Easily update your password.
-- **Notifications**: Stay informed with important updates.
-- **Clock-In/Clock-Out**: Track your work hours efficiently.
-- **Employee Dashboard**: Get insights into your work history and notifications.
-- **Leave Requests**: Submit leave requests for approval.
-
-#### 3. Components <a name="Components"></a>
-
-The application is made up of the following components:
-
-- **Employee Panel**: Your gateway to the system.
-- **Authentication**: Ensuring secure access.
-- **Notifications**: Keeping you informed.
-- **Leave Management**: Managing your time off.
-
-##### Employee Panel <a name="Employee Panel"></a>
-
-1. Register: Create your account with ease.
-2. Login: Access the system securely.
-3. Reset Password: Easily reset your password.
-4. Clock-In/Clock-Out: Track your work hours.
-5. Request Leave: Submit leave requests.
-6. View Dashboard: Get insights into your work history.
-
-#### 4. Testing <a name="Testing"></a>
-
-We believe in quality! We've covered unit and integration testing using Chai and Mocha. To run tests:
-
-```bash
-npm test
+2. Admin Login
+   ├── JWT token generation
+   ├── Role-based access control
+   └── Admin dashboard access
 ```
 
-#### 5. Logger <a name="Logger"></a>
+### **2. Employee Management Workflow**
+```
+1. Admin Creates Employee Account
+   ├── Admin authentication required
+   ├── Employee details input
+   ├── Password generation
+   ├── Role set to 'employee'
+   └── Account activation
 
-We've got you covered with detailed logs. All activities and errors are tracked and stored for your convenience and debugging.
+2. Employee Login
+   ├── Email/password authentication
+   ├── JWT token with role information
+   ├── Employee dashboard access
+   └── Personal data access
+```
 
-#### 6. Validations <a name="Validations"></a>
+### **3. Attendance Tracking Workflow**
+```
+1. Employee Clock In
+   ├── IP address recording
+   ├── Timestamp logging
+   ├── Status update to 'PRESENT'
+   └── Activity snapshot creation
 
-Safety first! Input validations are in place to ensure data integrity and protect against malicious input.
+2. Break Management
+   ├── Break start recording
+   ├── Break duration tracking
+   ├── Break end recording
+   └── Total break time calculation
 
-#### 7. Technologies <a name="Technologies"></a>
+3. Employee Clock Out
+   ├── Work hours calculation
+   ├── Status finalization
+   ├── Daily summary generation
+   └── Activity snapshot update
 
-We use cutting-edge technologies:
+4. Admin Monitoring
+   ├── Real-time attendance view
+   ├── Break status monitoring
+   ├── Performance metrics
+   └── Activity snapshots
+```
 
-- Node.js: The backbone of our system.
-- Express.js: Powering our web application.
-- Chai & Mocha: For rigorous testing.
-- Logger: winston and winston-mongodb.
-- Validation: Joi Validation.
+### **4. Leave Management Workflow**
+```
+1. Employee Leave Request
+   ├── Leave type selection (Casual/Sick/Other)
+   ├── Date range specification
+   ├── Reason/message input
+   └── Status set to 'PENDING'
 
-#### 8. Services <a name="Services"></a>
+2. Admin Review
+   ├── Leave request notification
+   ├── Request details review
+   ├── Approval/rejection decision
+   └── Status update
 
-We employ an email service to deliver HTML-based email notifications to you. Expect visually appealing and informative messages.
+3. Employee Notification
+   ├── Leave status update
+   ├── Balance adjustment
+   └── Confirmation message
+```
 
-#### 9. Conclusion <a name="Conclusion"></a>
+### **5. Task Management Workflow with Role-Based Access Control**
 
-The Employee Tracking System revolutionizes employee management, providing a user-friendly interface for employees and administrators. With features like clock-in/clock-out, leave request management, and notifications, we're here to enhance your organization's efficiency. 🌐
+#### **🔐 Admin Task Management (FULL ACCESS)**
+```
+1. Task Creation
+   ├── Title and description input
+   ├── Employee assignment (multiple employees possible)
+   ├── Due date setting
+   ├── Status set to 'PENDING'
+   └── Task activation
 
-## 2. Admin Panel Documentation <a name="admin-panel-documentation"></a>
+2. Task Assignment
+   ├── Select employees (only employees, not admins)
+   ├── Many-to-many relationship creation
+   ├── Assignment notification
+   └── Task visibility setup
 
-The Admin Panel of the Employee Tracking System empowers administrators with a comprehensive interface to manage employee information, work status, leave requests, and notifications. 📊 This documentation presents the features and functionalities of the Admin Panel while highlighting the integration of logging and validation mechanisms.
+3. Task Monitoring
+   ├── View all tasks with filtering
+   ├── Track progress across teams
+   ├── Monitor due dates and deadlines
+   └── Performance analytics
 
-### 📖 Table of Contents
+4. Task Management
+   ├── Update task details
+   ├── Modify assignments
+   ├── Change due dates
+   ├── Update task status
+   └── Soft delete tasks
+```
 
-1. [Admin Dashboard](#admin-dashboard) 🖥️
-2. [Manage Employee List](#manage-employee-list) 📋
-3. [Leave Request Management](#leave-request-management) 📅
-4. [Notification Management](#notification-management) 💌
+#### **👤 Employee Task Management (LIMITED ACCESS)**
+```
+1. Task Viewing
+   ├── View only assigned tasks
+   ├── See task details and descriptions
+   ├── View co-workers on same task
+   ├── Check due dates and deadlines
+   └── Access task statistics
 
-#### 1. Admin Dashboard <a name="admin-dashboard"></a>
+2. Status Updates
+   ├── Update task status progression
+   ├── PENDING → IN_PROGRESS → COMPLETED
+   ├── Status change logging
+   └── Progress tracking
 
-The Admin Dashboard is your control center for monitoring and managing employee-related activities. Our integration of logging and validation mechanisms ensures a seamless admin experience.
+3. Task Information
+   ├── Cannot create new tasks
+   ├── Cannot modify task details
+   ├── Cannot change assignments
+   ├── Cannot delete tasks
+   └── View-only access to task management
+```
 
-- **Clock-In Status**: Stay updated on employees currently clocked in.
-- **Leave Requests**: Efficiently process leave requests for a streamlined workflow.
-- **Notifications**: Manage notifications for effective communication.
+### **6. Activity Monitoring Workflow**
+```
+1. Daily Activity Tracking
+   ├── Work hours calculation
+   ├── Break time monitoring
+   ├── Net work hours computation
+   ├── Attendance status tracking
+   └── Activity snapshot creation
 
-#### 2. Manage Employee List <a name="manage-employee-list"></a>
+2. Admin Monitoring
+   ├── Real-time activity view
+   ├── Performance metrics
+   ├── Historical data access
+   ├── Productivity analysis
+   └── Activity reporting
+```
 
-Efficient management of employee information is at your fingertips. Logging and validation guarantee data integrity.
+### **7. Notification System Workflow**
+```
+1. Notification Creation
+   ├── Admin creates notifications
+   ├── Target employee selection
+   ├── Message composition
+   └── Notification delivery
 
-- **Employee List**: Access employee details with ease.
-- **Update Working Status**: Modify employee working statuses seamlessly.
-- **Search Functionality**: Locate specific employees effortlessly.
+2. Employee Notification Access
+   ├── View personal notifications
+   ├── Notification status tracking
+   ├── Message history
+   └── Read/unread status
+```
 
-#### 3. Leave Request Management <a name="leave-request-management"></a>
+## 🔐 **Security & Authentication**
 
-The "Leave Request Management" feature empowers you to oversee and respond to employee leave requests. Logging and validation mechanisms make it a breeze.
+### **JWT Token Structure**
+```javascript
+{
+  "userData": {
+    "empId": "employee_id",
+    "empEmail": "employee@email.com",
+    "empRole": "admin" | "employee"
+  },
+  "iat": "issued_at_timestamp",
+  "exp": "expiration_timestamp"
+}
+```
 
-- **View Leave Requests**: Review pending leave requests with all the necessary details.
-- **Approve/Deny Leave**: Process requests while maintaining a clear record through logging.
-- **Provide Comments**: Optionally, add comments for transparency.
+### **Role-Based Middleware**
+```javascript
+// Admin-only access
+authService.isAdmin(req, res, next)
 
-#### 4. Notification Management <a name="notification-management"></a>
+// Employee-only access
+authService.isEmployee(req, res, next)
 
-Stay in control with "Notification Management." Logging and validation mechanisms keep your notifications in check.
+// Authentication required
+authentication(req, res, next)
+```
 
-- **Create Notifications**: Draft and send timely messages.
-- **Update Notifications**: Keep information up-to-date with ease.
-- **Delete Notifications**: Remove outdated messages while maintaining a log.
+### **Access Control Matrix**
 
-## 🎉 Conclusion
+| **Feature** | **Admin** | **Employee** |
+|-------------|-----------|--------------|
+| **Registration** | ✅ Public | ❌ Not Allowed |
+| **Login** | ✅ | ✅ |
+| **Employee Creation** | ✅ | ❌ |
+| **Profile Management** | ✅ Own | ✅ Own |
+| **Attendance Tracking** | ✅ View All | ✅ Own Only |
+| **Leave Management** | ✅ Approve/Reject | ✅ Apply/View |
+| **Task Creation** | ✅ | ❌ |
+| **Task Assignment** | ✅ | ❌ |
+| **Task Viewing** | ✅ All Tasks | ✅ Assigned Only |
+| **Task Updates** | ✅ Full Access | ✅ Status Only |
+| **Task Deletion** | ✅ | ❌ |
+| **Activity Monitoring** | ✅ All Employees | ❌ |
+| **Notifications** | ✅ Create/Manage | ✅ View Own |
 
-The Admin Panel, enriched with logging and validation mechanisms, elevates the capabilities of the Employee Tracking System. By promoting data accuracy, accountability, and a streamlined workflow, the Admin Panel becomes an indispensable tool for administrators. 🚀
+## 📊 **Data Flow**
+
+### **Task Management Data Flow**
+```
+1. Admin Task Creation
+   Admin → Task Controller → Prisma → PostgreSQL
+   ├── Validate input data
+   ├── Check employee existence
+   ├── Create task record
+   ├── Establish many-to-many relationships
+   └── Return success response
+
+2. Employee Task Access
+   Employee → Employee Task Controller → Prisma → PostgreSQL
+   ├── Verify employee authentication
+   ├── Filter tasks by assignment
+   ├── Return only assigned tasks
+   └── Include co-worker information
+
+3. Task Status Updates
+   Employee → Employee Task Controller → Prisma → PostgreSQL
+   ├── Verify task assignment
+   ├── Validate status progression
+   ├── Update task status
+   └── Log status change
+```
+
+### **Authentication Data Flow**
+```
+1. Login Process
+   User → Auth Controller → Prisma → PostgreSQL
+   ├── Validate credentials
+   ├── Generate JWT token
+   ├── Include role information
+   └── Return authenticated response
+
+2. Route Protection
+   Request → Auth Middleware → Role Check → Controller
+   ├── Verify JWT token
+   ├── Extract user role
+   ├── Check route permissions
+   └── Allow/deny access
+```
+
+## 🎯 **Key Features**
+
+### **✅ Admin Features**
+- **Public Registration**: Anyone can register as admin
+- **Employee Management**: Create and manage employee accounts
+- **Task Management**: Full CRUD operations on tasks
+- **Attendance Monitoring**: View all employee timesheets
+- **Leave Management**: Approve/reject leave requests
+- **Activity Tracking**: Monitor employee performance
+- **System Administration**: Complete system control
+
+### **✅ Employee Features**
+- **Login Only**: No self-registration
+- **Profile Management**: Update personal information
+- **Attendance Tracking**: Clock in/out and break management
+- **Leave Requests**: Apply for and track leaves
+- **Task Viewing**: See assigned tasks and co-workers
+- **Status Updates**: Update task progress
+- **Notifications**: View personal notifications
+
+### **✅ System Features**
+- **Role-Based Security**: Proper access control
+- **JWT Authentication**: Secure token-based auth
+- **Data Validation**: Comprehensive input validation
+- **Error Handling**: Robust error management
+- **Logging**: Detailed activity logging
+- **Performance**: Optimized database queries
+- **Scalability**: PostgreSQL with Prisma ORM
+
+## 🚀 **Deployment Workflow**
+
+### **1. Environment Setup**
+```bash
+# Database setup
+npm run prisma:generate
+npm run prisma:migrate
+
+# Environment variables
+DATABASE_URL="postgresql://..."
+SECRET_KEY="your-secret-key"
+EMAIL="your-email@gmail.com"
+PASS="your-app-password"
+PORT=8000
+```
+
+### **2. Application Startup**
+```bash
+# Start application
+npm start
+
+# Verify endpoints
+- Admin registration: POST /admin/adminRegister
+- Admin login: POST /admin/adminLogin
+- Employee creation: POST /admin/createEmployee
+- Employee login: POST /employee/login
+- Task management: Various /tasks/* endpoints
+- Employee tasks: Various /emp-tasks/* endpoints
+```
+
+## 🎉 **Workflow Summary**
+
+This workflow provides a complete solution for employee management, from admin registration to comprehensive employee oversight and task management, all built on a robust PostgreSQL database with Prisma ORM and **proper role-based access control**! 🚀
+
+### **Key Workflow Highlights:**
+- ✅ **Admin Registration**: Public admin registration functionality
+- ✅ **Employee Creation**: Admin-only employee account creation
+- ✅ **Role-Based Access**: Proper permissions for different user types
+- ✅ **Task Management**: Complete task system with role-based access control
+- ✅ **Attendance Tracking**: Comprehensive clock in/out and break management
+- ✅ **Leave Management**: Complete leave application and approval workflow
+- ✅ **Activity Monitoring**: Real-time employee performance tracking
+- ✅ **Security**: JWT-based authentication with role verification
+- ✅ **Scalability**: PostgreSQL with Prisma for optimal performance
