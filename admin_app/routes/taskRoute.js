@@ -1,6 +1,6 @@
 const express = require('express');
 const taskController = require('../controller/taskController');
-const authentication = require('../../middleware/authToken');
+const { authentication } = require('../../middleware/authToken');
 const authService = require('../../middleware/authService');
 const { taskCreationSchema, taskUpdateSchema, taskStatusUpdateSchema } = require('../../authValidations/employee/empValidator');
 

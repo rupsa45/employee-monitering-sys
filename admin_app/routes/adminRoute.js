@@ -1,6 +1,6 @@
 const express = require('express');
 const adminController = require('../controller/adminController');
-const authentication = require('../../middleware/authToken');
+const { authentication } = require('../../middleware/authToken');
 const authService = require('../../middleware/authService');
 const { adminRegistrationSchema, adminLoginSchema, employeeRegistrationSchema } = require('../../authValidations/employee/empValidator');
 
