@@ -8,7 +8,7 @@ const { authentication } = require('../../middleware/authToken')
 
 const router = express.Router()
 
-router.post('/create', authValidation.registerEmployee, employee.signupEmployee)
+
 router.post('/empLogin', authService.isEmployee, authValidation.loginEmpValidation, employee.logIn)
 router.post('/emailForReset', employee.emailForgetPassword)
 router.patch('/empResetPassword/:id/:token', authValidation.resetPasswordValidation, employee.resetPassword)

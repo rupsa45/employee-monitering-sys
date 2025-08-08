@@ -1,72 +1,73 @@
-const employeeSchema = require('../../model/empSchema')
-const benchLogger = require('../../utils/benchLogger/benchLogger')
+const { prisma } = require('../../config/prismaConfig');
+const benchLogger = require('../../utils/benchLogger/benchLogger');
 
 module.exports = {
+    // Get employee working list
     empWorkingList: async (req, res) => {
         try {
-            const empData = await employeeSchema.find()
-                .select('empName empEmail workingStatus updatedAt');
-            benchLogger.log('info', "Current employee")
-            res.status(200).send({
+            const empData = await prisma.employee.findMany({
+                where: {
+                    empRole: 'employee',
+                    isActive: true
+                },
+                select: {
+                    id: true,
+                    empName: true,
+                    empEmail: true,
+                    empRole: true,
+                    updatedAt: true
+                }
+            });
+
+            benchLogger.log('info', "Current employee list retrieved");
+            res.status(200).json({
                 success: true,
-                message: "Current employee",
+                message: "Current employee list retrieved",
                 empData: empData
             });
         } catch (error) {
-            benchLogger.log('error', `Error: ${error.message}`)
-            return res.status(500).json({
+            benchLogger.log('error', `Error: ${error.message}`);
+            res.status(500).json({
                 success: false,
-                message: error.message
+                message: `Error: ${error.message}`
             });
         }
     },
 
-    updateStatus: async (req, res) => {
-        let { empEmail, workingStatus } = req.body;
-        try {
-            const empUpdate = await employeeSchema.findOneAndUpdate(
-                { empEmail: empEmail },
-                { workingStatus: workingStatus },
-                { new: true }
-            )
-            benchLogger.log('info', "Status updated successfully")
-            res.status(200).json({
-                success: true,
-                message: "Status updated successfully",
-                empData: empUpdate
-            })
-        } catch (error) {
-            benchLogger.log('error', `Error: ${error.message}`)
-            res.status(500).json({
-                success: false,
-                message: `Error : ${error.message}`
-            })
-        }
-    },
-
+    // Search employee
     searchEmployee: async (req, res) => {
         try {
             const { letter } = req.params;
-            const empData = await employeeSchema.find({
-                empRole: "employee",
-                $or: [
-                    { empName: { $regex: `${letter}`, $options: "i" } }, // ! Case-insensitive search
-                    { empEmail: { $regex: `${letter}`, $options: "i" } },
-                ],
-            }).select("empName empEmail workingStatus");
-            benchLogger.log('info', "Searched employees")
+
+            const empData = await prisma.employee.findMany({
+                where: {
+                    OR: [
+                        { empName: { contains: letter, mode: 'insensitive' } },
+                        { empEmail: { contains: letter, mode: 'insensitive' } }
+                    ],
+                    empRole: 'employee',
+                    isActive: true
+                },
+                select: {
+                    id: true,
+                    empName: true,
+                    empEmail: true,
+                    empRole: true
+                }
+            });
+
+            benchLogger.log('info', "Searched employees");
             res.status(200).json({
                 success: true,
                 message: "Searched employees",
-                empData: empData,
+                empData: empData
             });
         } catch (error) {
-            benchLogger.log('error', `Error: ${error.message}`)
+            benchLogger.log('error', `Error: ${error.message}`);
             res.status(500).json({
                 success: false,
-                message: "Error!!",
-                error: error
+                message: `Error: ${error.message}`
             });
         }
     }
-}
+};

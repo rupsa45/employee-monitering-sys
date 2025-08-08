@@ -39,6 +39,23 @@ const empSchema = {
                 'password.onlyLatinCharacters': '{#label} should contain only Latin characters',
             })
             .required(),
+        confirmPassword: joiPassword
+            .string()
+            .minOfSpecialCharacters(1)
+            .minOfLowercase(3)
+            .minOfUppercase(1)
+            .minOfNumeric(1)
+            .noWhiteSpaces()
+            .onlyLatinCharacters()
+            .messages({
+                'password.minOfUppercase': '{#label} should contain at least {#min} uppercase character',
+                'password.minOfSpecialCharacters': '{#label} should contain at least {#min} special character',
+                'password.minOfLowercase': '{#label} should contain at least {#min} lowercase character',
+                'password.minOfNumeric': '{#label} should contain at least {#min} numeric character',
+                'password.noWhiteSpaces': '{#label} should not contain white spaces',
+                'password.onlyLatinCharacters': '{#label} should contain only Latin characters',
+            })
+            .required(),
         empPhone: joi
             .number()
             .integer()
@@ -49,17 +66,12 @@ const empSchema = {
                 "number.max": "{#label} should be at most {#limit}",
             })
             .required(),
-        empCity: joi
-            .string()
-            .required(),
-        empState: joi
-            .string()
-            .required(),
-        empRole: joi
-            .string()
-            .required(),
         empTechnology: joi
             .string()
+            .required(),
+        empGender: joi
+            .string()
+            .valid('male', 'female', 'other')
             .required(),
     }).unknown(true),
 

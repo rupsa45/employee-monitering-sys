@@ -1,32 +1,60 @@
 const moment = require('moment');
-
-const timeSheetSchema = require('../../model/empTimeSheetSchema');
-const timeSheetLogger = require('../../utils/timeSheetLogger/timeSheetLogger')
-const ipService = require('../services/ipService')
+const { prisma } = require('../../config/prismaConfig');
+const timeSheetLogger = require('../../utils/timeSheetLogger/timeSheetLogger');
 
 module.exports = {
+    // Clock in functionality
     clockIn: async (req, res) => {
         try {
             const empId = req.params.id;
-            const empData = new timeSheetSchema();
             const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
-            const empIp = await ipService.ipAddress();
-            const attendanceTime = moment('10:15:00', 'HH:mm:ss');
-            // ! Change Data .
-            empData.empId = empId;
-            empData.clockIn = currentTime;
-            empData.clockinIP = empIp;
-            empData.workingFrom = req.body.workingFrom;
-            // ! Compare clockIn time with attendanceTime to determine if it's late .
-            const empClockIn = moment(empData.clockIn, 'YYYY-MM-DD HH:mm:ss');
-            if (empClockIn.isAfter(attendanceTime)) {
-                empData.dayLate = "Late";
+            const today = moment().startOf('day');
+
+            // Check if already clocked in today
+            const existingTimeSheet = await prisma.timeSheet.findFirst({
+                where: {
+                    empId: empId,
+                    createdAt: {
+                        gte: today.toDate(),
+                        lt: moment(today).endOf('day').toDate()
+                    },
+                    isActive: true
+                }
+            });
+
+            if (existingTimeSheet && existingTimeSheet.clockIn) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Already clocked in today"
+                });
             }
-            await empData.save();
-            timeSheetLogger.log('info', "ClockIn successfully!");
-            res.status(201).json({
+
+            // Create new timesheet or update existing one
+            let timeSheet;
+            if (existingTimeSheet) {
+                timeSheet = await prisma.timeSheet.update({
+                    where: { id: existingTimeSheet.id },
+                    data: {
+                        clockIn: currentTime,
+                        status: 'PRESENT'
+                    }
+                });
+            } else {
+                timeSheet = await prisma.timeSheet.create({
+                    data: {
+                        empId: empId,
+                        clockIn: currentTime,
+                        status: 'PRESENT',
+                        isActive: true
+                    }
+                });
+            }
+
+            timeSheetLogger.log('info', "Clock in successful!");
+            res.status(200).json({
                 success: true,
-                message: "ClockIn successfully!"
+                message: "Clock in successful!",
+                clockInTime: currentTime
             });
         } catch (error) {
             timeSheetLogger.log('error', `Error: ${error.message}`);
@@ -38,40 +66,227 @@ module.exports = {
         }
     },
 
+    // Clock out functionality
     employeeAttendance: async (req, res) => {
         try {
-            const timeSheetId = req.params.id;
-            const clockOutTime = await timeSheetSchema.findByIdAndUpdate(
-                timeSheetId,
-                { clockOut: moment().format('YYYY-MM-DD HH:mm:ss') },
-                { new: true }
-            );
-            const clockIn = moment(clockOutTime.clockIn, 'YYYY-MM-DD HH:mm:ss');
-            const clockOut = moment(clockOutTime.clockOut, 'YYYY-MM-DD HH:mm:ss');
-            const hoursWorked = clockOut.diff(clockIn, 'hours');
-            if (hoursWorked >= 8) {
-                clockOutTime.status = "present";
+            const empId = req.params.id;
+            const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+            const today = moment().startOf('day');
+
+            // Find today's timesheet
+            const timeSheet = await prisma.timeSheet.findFirst({
+                where: {
+                    empId: empId,
+                    createdAt: {
+                        gte: today.toDate(),
+                        lt: moment(today).endOf('day').toDate()
+                    },
+                    isActive: true
+                }
+            });
+
+            if (!timeSheet || !timeSheet.clockIn) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Please clock in first"
+                });
             }
-            else if (hoursWorked >= 5 && hoursWorked <= 8) {
-                clockOutTime.status = "halfDay"
+
+            if (timeSheet.clockOut) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Already clocked out today"
+                });
             }
-            else {
-                clockOutTime.status = "absent";
-            }
-            clockOutTime.hoursLoggedIn = hoursWorked
-            timeSheetLogger.log('info', "Clock out successful")
+
+            // Calculate work hours
+            const clockInTime = moment(timeSheet.clockIn, 'YYYY-MM-DD HH:mm:ss');
+            const clockOutTime = moment(currentTime, 'YYYY-MM-DD HH:mm:ss');
+            const workHours = clockOutTime.diff(clockInTime, 'hours', true);
+
+            // Update timesheet
+            const updatedTimeSheet = await prisma.timeSheet.update({
+                where: { id: timeSheet.id },
+                data: {
+                    clockOut: currentTime,
+                    hoursLoggedIn: Math.round(workHours * 100) / 100,
+                    totalWorkingDays: 1
+                }
+            });
+
+            timeSheetLogger.log('info', "Clock out successful!");
             res.status(200).json({
                 success: true,
-                message: "Clock out successful",
-                info: clockOutTime
+                message: "Clock out successful!",
+                clockOutTime: currentTime,
+                workHours: Math.round(workHours * 100) / 100
             });
         } catch (error) {
             timeSheetLogger.log('error', `Error: ${error.message}`);
-            res.status(500).send({
+            res.status(500).json({
                 success: false,
                 message: "Error!",
                 error: error.message
             });
         }
     },
-}
+
+    // Break functionality
+    breakStart: async (req, res) => {
+        try {
+            const timeSheetId = req.params.id;
+            const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+            const timeSheet = await prisma.timeSheet.findUnique({
+                where: { id: timeSheetId }
+            });
+
+            if (!timeSheet) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Timesheet not found"
+                });
+            }
+
+            if (timeSheet.breakStart && !timeSheet.breakEnd) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Break already started. Please end current break first."
+                });
+            }
+
+            await prisma.timeSheet.update({
+                where: { id: timeSheetId },
+                data: { breakStart: currentTime }
+            });
+
+            timeSheetLogger.log('info', "Break started successfully!");
+            res.status(200).json({
+                success: true,
+                message: "Break started successfully!",
+                breakStartTime: currentTime
+            });
+        } catch (error) {
+            timeSheetLogger.log('error', `Error: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: "Error!",
+                error: error.message
+            });
+        }
+    },
+
+    breakEnd: async (req, res) => {
+        try {
+            const timeSheetId = req.params.id;
+            const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+
+            const timeSheet = await prisma.timeSheet.findUnique({
+                where: { id: timeSheetId }
+            });
+
+            if (!timeSheet) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Timesheet not found"
+                });
+            }
+
+            if (!timeSheet.breakStart) {
+                return res.status(400).json({
+                    success: false,
+                    message: "No break started. Please start a break first."
+                });
+            }
+
+            if (timeSheet.breakEnd) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Break already ended."
+                });
+            }
+
+            // Calculate break duration
+            const breakStart = moment(timeSheet.breakStart, 'YYYY-MM-DD HH:mm:ss');
+            const breakEnd = moment(currentTime, 'YYYY-MM-DD HH:mm:ss');
+            const breakDuration = breakEnd.diff(breakStart, 'minutes');
+
+            await prisma.timeSheet.update({
+                where: { id: timeSheetId },
+                data: {
+                    breakEnd: currentTime,
+                    totalBreakTime: breakDuration
+                }
+            });
+
+            timeSheetLogger.log('info', "Break ended successfully!");
+            res.status(200).json({
+                success: true,
+                message: "Break ended successfully!",
+                breakEndTime: currentTime,
+                breakDuration: breakDuration
+            });
+        } catch (error) {
+            timeSheetLogger.log('error', `Error: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: "Error!",
+                error: error.message
+            });
+        }
+    },
+
+    // Get current timesheet status
+    getCurrentStatus: async (req, res) => {
+        try {
+            const empId = req.params.id;
+            const today = moment().startOf('day');
+
+            const timeSheet = await prisma.timeSheet.findFirst({
+                where: {
+                    empId: empId,
+                    createdAt: {
+                        gte: today.toDate(),
+                        lt: moment(today).endOf('day').toDate()
+                    },
+                    isActive: true
+                }
+            });
+
+            if (!timeSheet) {
+                return res.status(200).json({
+                    success: true,
+                    message: "No timesheet found for today",
+                    data: {
+                        isClockedIn: false,
+                        isOnBreak: false,
+                        clockInTime: null,
+                        breakStartTime: null,
+                        totalBreakTime: 0
+                    }
+                });
+            }
+
+            const isOnBreak = timeSheet.breakStart && !timeSheet.breakEnd;
+
+            res.status(200).json({
+                success: true,
+                message: "Current status retrieved successfully",
+                data: {
+                    isClockedIn: !!timeSheet.clockIn,
+                    isOnBreak: isOnBreak,
+                    clockInTime: timeSheet.clockIn,
+                    breakStartTime: timeSheet.breakStart,
+                    totalBreakTime: timeSheet.totalBreakTime || 0
+                }
+            });
+        } catch (error) {
+            timeSheetLogger.log('error', `Error: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: "Error!",
+                error: error.message
+            });
+        }
+    }
+};

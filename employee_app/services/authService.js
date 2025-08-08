@@ -1,37 +1,106 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { prisma } = require('../../config/prismaConfig');
 
-const empSchema = require('../../model/empSchema')
+// Check if employee exists by email
+const isEmployeeExist = async (empEmail) => {
+    try {
+        const employee = await prisma.employee.findUnique({
+            where: { empEmail }
+        });
+        return !!employee;
+    } catch (error) {
+        console.error('Error checking employee existence:', error);
+        return false;
+    }
+};
+
+// Validate employee credentials and generate token
+const validateEmployee = async (empEmail, empPassword) => {
+    try {
+        const employee = await prisma.employee.findUnique({
+            where: { empEmail }
+        });
+
+        if (!employee) {
+            return { value: false, generatedToken: null };
+        }
+
+        const isValidPassword = await bcrypt.compare(empPassword, employee.empPassword);
+        if (!isValidPassword) {
+            return { value: false, generatedToken: null };
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { 
+                userData: {
+                    empId: employee.id,
+                    empEmail: employee.empEmail,
+                    empRole: employee.empRole
+                }
+            },
+            process.env.SECRET_KEY,
+            { expiresIn: "1h" }
+        );
+
+        return { 
+            value: true, 
+            generatedToken: token,
+            empData: employee
+        };
+    } catch (error) {
+        console.error('Error validating employee:', error);
+        return { value: false, generatedToken: null };
+    }
+};
+
+// Get employee by email
+const getEmployeeByEmail = async (empEmail) => {
+    try {
+        const employee = await prisma.employee.findUnique({
+            where: { empEmail },
+            select: {
+                id: true,
+                empName: true,
+                empEmail: true,
+                empRole: true,
+                isActive: true
+            }
+        });
+        return employee;
+    } catch (error) {
+        console.error('Error getting employee by email:', error);
+        return null;
+    }
+};
+
+// Get employee by ID
+const getEmployeeById = async (empId) => {
+    try {
+        const employee = await prisma.employee.findUnique({
+            where: { id: empId },
+            select: {
+                id: true,
+                empName: true,
+                empEmail: true,
+                empRole: true,
+                empTechnology: true,
+                empGender: true,
+                empProfile: true,
+                isActive: true
+            }
+        });
+        return employee;
+    } catch (error) {
+        console.error('Error getting employee by ID:', error);
+        return null;
+    }
+};
 
 module.exports = {
-    isEmployeeExist: async (email) => {
-        let value = false
-        const isEmpExits = await empSchema.findOne({
-            empEmail: email,
-        });
-        if (isEmpExits) {
-            value = true;
-        }
-        return value
-    },
-    validateEmployee: async (empEmail, hashType = 0) => {
-        let value = false;
-        const empData = await empSchema.findOne({ empEmail: empEmail });
-        let generatedToken = await jwt.sign({ empId: empData._id }, process.env.SECRET_KEY, { expiresIn: "1h" });
-        if (hashType === 0) {
-            if (empData) {
-                value = true;
-            }
-        } else {
-            if (empData) {
-                const hashPassword = await bcrypt.compare(hashType, empData.empPassword);
-                if (hashPassword) {
-                    value = true;
-                }
-            }
-        }
-
-        return { value, generatedToken, empData };
-    }
-
-}
+    isEmployeeExist,
+    validateEmployee,
+    getEmployeeByEmail,
+    getEmployeeById
+};
