@@ -46,3 +46,12 @@ D:\clone-code\api\admin_app\controller\adminController.js:188:46
 Argument `empPhone`: Invalid value provided. Expected String, provided Int.
 level error: Aug-09-2025 13:29:07 	Admin Already Exists With This Email
 level error: Aug-09-2025 13:29:39 	Employee Already Exists With This Email
+level error: Aug-09-2025 14:05:40 	Error: 
+Invalid `prisma.employee.findUnique()` invocation in
+D:\clone-code\api\admin_app\controller\adminController.js:22:51
+
+  19 } = req.body;
+  20 
+  21 // Check if admin already exists
+→ 22 const existingAdmin = await prisma.employee.findUnique(
+The table `public.employees` does not exist in the current database.

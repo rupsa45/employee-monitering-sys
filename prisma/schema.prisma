@@ -12,78 +12,78 @@ datasource db {
 
 // Employee model
 model Employee {
-  id              String   @id @default(cuid())
+  id              String    @id @default(cuid())
   empName         String
-  empEmail        String   @unique
+  empEmail        String    @unique
   empPhone        String
   empPassword     String
   confirmPassword String
-  empRole         String   @default("employee")
+  empRole         String    @default("employee")
   empTechnology   String
-  empProfile      String   @default("")
+  empProfile      String    @default("")
   empGender       EmpGender
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   // Relations
-  timeSheets      TimeSheet[]
-  leaves          EmpLeave[]
-  notifications   Notification[]
+  timeSheets        TimeSheet[]
+  leaves            EmpLeave[]
+  notifications     Notification[]
   activitySnapshots ActivitySnapshot[]
-  assignedTasks   Task[] @relation("TaskAssignments")
+  assignedTasks     Task[]             @relation("TaskAssignments")
 
   @@map("employees")
 }
 
 // TimeSheet model
 model TimeSheet {
-  id              String   @id @default(cuid())
-  clockIn         String   @default("")
-  clockOut        String   @default("")
-  clockinIP       String   @default("")
-  hoursLoggedIn   Int      @default(0)
-  workingFrom     String   @default("office")
-  breakStart      String   @default("")
-  breakEnd        String   @default("")
-  totalBreakTime  Int      @default(0)
-  totalWorkingDays Int     @default(0)
-  dayPresent      String   @default("0")
-  halfDay         Int      @default(0)
-  dayAbsent       String   @default("0")
-  holidays        String   @default("0")
-  dayLate         String   @default("")
-  status          AttendanceStatus @default(ABSENT)
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id               String           @id @default(cuid())
+  clockIn          String           @default("")
+  clockOut         String           @default("")
+  clockinIP        String           @default("")
+  hoursLoggedIn    Int              @default(0)
+  workingFrom      String           @default("office")
+  breakStart       String           @default("")
+  breakEnd         String           @default("")
+  totalBreakTime   Int              @default(0)
+  totalWorkingDays Int              @default(0)
+  dayPresent       String           @default("0")
+  halfDay          Int              @default(0)
+  dayAbsent        String           @default("0")
+  holidays         String           @default("0")
+  dayLate          String           @default("")
+  status           AttendanceStatus @default(ABSENT)
+  isActive         Boolean          @default(true)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   // Relations
-  empId           String
-  employee        Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId    String
+  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@map("timesheets")
 }
 
 // EmpLeave model
 model EmpLeave {
-  id            String   @id @default(cuid())
-  casualLeaves  Int      @default(10)
-  sickLeave     Int      @default(10)
-  otherLeaves   Int      @default(10)
-  totalLeave    Int      @default(0)
-  leaveType     LeaveType @default(CASUAL)
-  status        LeaveStatus @default(PENDING)
-  message       String   @default("")
-  startDate     DateTime
-  endDate       DateTime
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String      @id @default(cuid())
+  casualLeaves Int         @default(10)
+  sickLeave    Int         @default(10)
+  otherLeaves  Int         @default(10)
+  totalLeave   Int         @default(0)
+  leaveType    LeaveType   @default(CASUAL)
+  status       LeaveStatus @default(PENDING)
+  message      String      @default("")
+  startDate    DateTime
+  endDate      DateTime
+  isActive     Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   // Relations
-  empId         String
-  employee      Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId    String
+  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@map("emp_leaves")
 }
@@ -98,34 +98,34 @@ model Notification {
   updatedAt DateTime @updatedAt
 
   // Relations
-  empId     String
-  employee  Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId    String
+  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
 }
 
 // ActivitySnapshot model for admin monitoring
 model ActivitySnapshot {
-  id              String   @id @default(cuid())
-  date            DateTime
-  totalWorkHours  Int      @default(0)
-  totalBreakTime  Int      @default(0)
-  netWorkHours    Int      @default(0)
-  clockInTime     String   @default("")
-  clockOutTime    String   @default("")
-  isCurrentlyWorking Boolean @default(false)
-  isOnBreak       Boolean  @default(false)
-  breakSessions   Json[]   // Array of break session objects
-  attendanceStatus AttendanceStatus @default(ABSENT)
-  workingFrom     WorkingLocation @default(OFFICE)
-  lastActivity    String   @default("")
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                 String           @id @default(cuid())
+  date               DateTime
+  totalWorkHours     Int              @default(0)
+  totalBreakTime     Int              @default(0)
+  netWorkHours       Int              @default(0)
+  clockInTime        String           @default("")
+  clockOutTime       String           @default("")
+  isCurrentlyWorking Boolean          @default(false)
+  isOnBreak          Boolean          @default(false)
+  breakSessions      Json[] // Array of break session objects
+  attendanceStatus   AttendanceStatus @default(ABSENT)
+  workingFrom        WorkingLocation  @default(OFFICE)
+  lastActivity       String           @default("")
+  isActive           Boolean          @default(true)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
 
   // Relations
-  empId           String
-  employee        Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId    String
+  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@unique([empId, date])
   @@map("activity_snapshots")
@@ -133,14 +133,14 @@ model ActivitySnapshot {
 
 // Task model for admin task assignment
 model Task {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String
   description String
   status      TaskStatus @default(PENDING)
   dueDate     DateTime
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 
   // Relations - Many-to-Many with Employee
   assignedEmployees Employee[] @relation("TaskAssignments")
