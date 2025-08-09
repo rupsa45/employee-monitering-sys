@@ -15,7 +15,7 @@ model Employee {
   id              String   @id @default(cuid())
   empName         String
   empEmail        String   @unique
-  empPhone        Int
+  empPhone        String
   empPassword     String
   confirmPassword String
   empRole         String   @default("employee")
