@@ -8,6 +8,9 @@ const notificationRoute = require('./admin_app/routes/notificationRoute');
 const adminTimeSheetRoute = require('./admin_app/routes/adminTimeSheetRoute');
 const taskRoute = require('./admin_app/routes/taskRoute');
 const empTaskRoute = require('./employee_app/routes/empTaskRoute');
+const screenshotRoute = require('./admin_app/routes/screenshotRoute');
+const agentWorkingAppsRoute = require('./admin_app/routes/agentWorkingAppsRoute');
+const agentIdleTimeRoute = require('./admin_app/routes/agentIdleTimeRoute');
 
 const router = express.Router();
 
@@ -37,5 +40,14 @@ router.use('/tasks', taskRoute);
 
 // Employee task routes
 router.use('/emp-tasks', empTaskRoute);
+
+// Screenshot routes (Electron app integration)
+router.use('/screenshots', screenshotRoute);
+
+// Agent working apps routes (Electron app integration)
+router.use('/agent-working-apps', agentWorkingAppsRoute);
+
+// Agent idle time routes (Electron app integration)
+router.use('/agent-idle-time', agentIdleTimeRoute);
 
 module.exports = router;

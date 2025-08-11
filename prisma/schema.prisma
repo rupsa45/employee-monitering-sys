@@ -32,6 +32,9 @@ model Employee {
   notifications     Notification[]
   activitySnapshots ActivitySnapshot[]
   assignedTasks     Task[]             @relation("TaskAssignments")
+  screenshots       Screenshot[]
+  workingApps       AgentWorkingApp[]
+  idleTimes         AgentIdleTime[]
 
   @@map("employees")
 }
@@ -184,4 +187,57 @@ enum TaskStatus {
   PENDING
   IN_PROGRESS
   COMPLETED
+}
+
+// Screenshot model for Electron app screenshots
+model Screenshot {
+  id        String   @id @default(cuid())
+  imageUrl  String   // Cloudinary URL
+  publicId  String   // Cloudinary public ID for deletion
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  empId    String
+  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+
+  @@map("screenshots")
+}
+
+// AgentWorkingApp model for Electron app usage tracking
+model AgentWorkingApp {
+  id          String   @id @default(cuid())
+  appName     String
+  appPath     String?
+  appOpenAt   DateTime
+  appCloseAt  DateTime
+  keysPressed Int      @default(0)
+  mouseClicks Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  empId    String
+  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+
+  @@map("agent_working_apps")
+}
+
+// AgentIdleTime model for Electron idle time tracking
+model AgentIdleTime {
+  id        String   @id @default(cuid())
+  from      DateTime
+  to        DateTime
+  duration  Int      // Duration in milliseconds
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  empId    String
+  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+
+  @@map("agent_idle_times")
 }
