@@ -86,3 +86,18 @@ level info: Aug-11-2025 13:20:27 	PostgreSQL Database connected successfully
 level info: Aug-11-2025 13:20:27 	Server Started on http://localhost:9000
 level info: Aug-11-2025 15:58:38 	PostgreSQL Database connected successfully
 level info: Aug-11-2025 15:58:38 	Server Started on http://localhost:9000
+level info: Aug-11-2025 16:20:31 	PostgreSQL Database connected successfully
+level info: Aug-11-2025 16:20:31 	Server Started on http://localhost:9000
+level info: Aug-11-2025 16:48:09 	PostgreSQL Database connected successfully
+level info: Aug-11-2025 16:48:09 	Server Started on http://localhost:9000
+level error: Aug-11-2025 17:04:59 	Database connection failed: Can't reach database server at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`
+
+Please make sure your database server is running at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`.
+level error: Aug-11-2025 17:07:40 	Database connection failed: Can't reach database server at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`
+
+Please make sure your database server is running at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`.
+level error: Aug-11-2025 17:09:58 	Database connection failed: Can't reach database server at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`
+
+Please make sure your database server is running at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`.
+level info: Aug-11-2025 17:25:18 	PostgreSQL Database connected successfully
+level info: Aug-11-2025 17:25:19 	Server Started on http://localhost:9000
