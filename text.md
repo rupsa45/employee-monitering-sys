@@ -33,7 +33,7 @@ npx prisma generate
 npx prisma migrate dev --name add-user-status
 
 
- ## Sample Request Body (JSON) after creating new user by admin
+ ## Sample Request Body (JSON) after creating new user by admin.
 
 {
   "name": "Riya Sharma",
