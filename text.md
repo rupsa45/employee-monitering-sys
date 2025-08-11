@@ -8,11 +8,12 @@ This creates a prisma/schema.prisma file and .env file.
 
 
 🔄 Step 2: Migrate the Database
-
+   npm run prisma:generate
 npx prisma migrate dev --name init
 This will:
 Create the database tables
 Generate the Prisma Client for querying
+npm run prisma:migrate
 
 ## You can also preview data with this command:
 
