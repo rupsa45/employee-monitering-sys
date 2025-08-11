@@ -1,0 +1,29 @@
+level error: Aug-09-2025 15:11:42 	Error: 
+Invalid `prisma.employee.update()` invocation in
+D:\clone-code\api\employee_app\controller\empController.js:70:59
+
+  67 const { id } = req.params;
+  68 const { empTechnology, empPhone } = req.body;
+  69 
+→ 70 const updatedEmployee = await prisma.employee.update({
+       where: {
+         id: "cme40qj3n0001s23am09n42x3"
+       },
+       data: {
+         empTechnology: "Python",
+         empPhone: 9111223344
+                   ~~~~~~~~~~
+       },
+       select: {
+         id: true,
+         empName: true,
+         empEmail: true,
+         empPhone: true,
+         empTechnology: true,
+         empGender: true,
+         empProfile: true,
+         empRole: true
+       }
+     })
+
+Argument `empPhone`: Invalid value provided. Expected String or StringFieldUpdateOperationsInput, provided Int.

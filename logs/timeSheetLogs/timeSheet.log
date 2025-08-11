@@ -1,0 +1,64 @@
+level error: Aug-09-2025 15:52:14 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-09-2025 15:53:10 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-09-2025 15:58:50 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-09-2025 16:05:18 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-09-2025 16:05:31 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-09-2025 16:06:02 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-09-2025 16:29:19 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level info: Aug-09-2025 16:29:42 	Clock in successful!

@@ -62,3 +62,33 @@ D:\clone-code\api\admin_app\controller\adminController.js:22:51
   21 // Check if admin already exists
 → 22 const existingAdmin = await prisma.employee.findUnique(
 The table `public.employees` does not exist in the current database.
+level error: Aug-09-2025 14:20:04 	Admin not found
+level info: Aug-09-2025 14:20:11 	Admin Registered Successfully
+level error: Aug-09-2025 14:20:46 	Admin not found
+level info: Aug-09-2025 14:21:20 	Admin logged in successfully
+level info: Aug-09-2025 14:24:25 	Employee Created Successfully
+level info: Aug-09-2025 14:26:07 	Employee dashboard data retrieved successfully
+level info: Aug-09-2025 14:44:06 	Employee Created Successfully
+level info: Aug-09-2025 14:44:46 	Employee Created Successfully
+level info: Aug-09-2025 14:44:53 	Employee Created Successfully
+level info: Aug-09-2025 14:45:08 	Employee dashboard data retrieved successfully
+level info: Aug-09-2025 15:11:14 	Admin logged in successfully
+level info: Aug-09-2025 15:24:51 	Admin logged in successfully
+level error: Aug-09-2025 15:25:10 	Employee Already Exists With This Email
+level info: Aug-09-2025 15:27:41 	Task "Prepare Q4 Roadmap" created successfully by admin
+level info: Aug-09-2025 15:32:12 	Task "Prepare Q4 Roadmap" retrieved successfully by admin
+level info: Aug-09-2025 15:36:15 	Task "Prepare Q4 Roadmap" created successfully by admin
+level info: Aug-09-2025 15:37:40 	Task "Finalize Marketing Strategy" created successfully by admin
+level info: Aug-09-2025 15:39:26 	Task "Launch Beta Testing" created successfully by admin
+level info: Aug-09-2025 15:39:52 	Task "Finalize Marketing Strategy" retrieved successfully by admin
+level info: Aug-09-2025 15:41:31 	All tasks retrieved successfully by admin
+level info: Aug-09-2025 15:47:01 	Task "Prepare Q4 Roadmap v2" updated successfully by admin
+level info: Aug-09-2025 15:48:09 	Task "Launch Beta Testing" deleted successfully by admin
+level info: Aug-09-2025 15:49:36 	Task "Launch Beta Testing" deleted successfully by admin
+level info: Aug-09-2025 15:49:50 	Task "Launch Beta Testing" deleted successfully by admin
+level info: Aug-09-2025 15:50:51 	Admin logged in successfully
+level info: Aug-09-2025 16:06:17 	Task "Launch Beta Testing" deleted successfully by admin
+level info: Aug-09-2025 16:15:41 	Task "Launch Beta Testing" deleted successfully by admin
+level info: Aug-09-2025 16:17:18 	Task "Prepare Q4 Roadmap v2" deleted successfully by admin
+level info: Aug-09-2025 16:17:38 	Task "Prepare Q4 Roadmap v2" deleted successfully by admin
+level info: Aug-09-2025 16:21:39 	Task "Prepare Q4 Roadmap v2" deleted successfully by admin

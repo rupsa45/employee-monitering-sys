@@ -2,16 +2,13 @@
 
 ```json
 {
-    "success": true,
-    "message": "Admin Registered Successfully",
-    "admin": {
-        "id": "cme3wmqto0000es5ta3ib6e69",
-        "empName": "Alice Admin",
-        "empEmail": "alice.admin@example.com",
-        "empTechnology": "Management",
-        "empGender": "FEMALE",
-        "empRole": "admin"
-    }
+  "empName": "John Leader",
+  "empEmail": "john.leader@example.com",
+  "empPhone": "9123456789",
+  "empPassword": "Leader@2025",
+  "confirmPassword": "Leader@2025",
+  "empTechnology": "Project Management",
+  "empGender": "MALE"
 }
 ```
 
@@ -19,22 +16,60 @@
 
 ```json
 {
-    "empEmail": "alice.admin@example.com",
-    "empPassword": "Admin@123"
-} 
+  "empEmail": "john.leader@example.com",
+  "empPassword": "Leader@2025"
+}
 ```
-##  Admin: protected (Admin role) create employee
 
-```json 
+## Admin: protected (Admin role) create employee
+
+```json
 {
-    "empName": "Bob Employee",
-    "empEmail": "bob.emp@example.com",
-    "empPhone": "9123456789", 
-    "empPassword": "Emp@12345",
-    "confirmPassword": "Emp@12345",
-    "empTechnology": "Node.js",
-    "empGender": "MALE"
+  "empName": "Bob Employee",
+  "empEmail": "bob.emp@example.com",
+  "empPhone": "9123456789",
+  "empPassword": "Emp@12345",
+  "confirmPassword": "Emp@12345",
+  "empTechnology": "Node.js",
+  "empGender": "MALE"
+}
+
+{
+  "empName": "Alice Developer",
+  "empEmail": "alice.dev@example.com",
+  "empPhone": "9876543210",
+  "empPassword": "Dev@2024",
+  "confirmPassword": "Dev@2024",
+  "empTechnology": "React.js",
+  "empGender": "FEMALE"
+}
+
+{
+  "empName": "Dana Analyst",
+  "empEmail": "dana.ana@example.com",
+  "empPhone": "9111223344",
+  "empPassword": "Ana@4567",
+  "confirmPassword": "Ana@4567",
+  "empTechnology": "Python",
+  "empGender": "FEMALE"
 }
 
 ```
+## /employee/login
 
+```json
+{
+  "empEmail": "alice.dev@example.com",
+  "empPassword": "Dev@2024"
+}
+```
+## task
+
+```json
+{
+  "title": "Prepare Q4 Roadmap",
+  "description": "Draft the Q4 product roadmap and share for review.",
+  "assignedTo": ["cme41guqw0004s23agwqgetnw", "cme41fu5j0002s23awepd95qy"],
+  "dueDate": "2025-09-15T17:00:00.000Z"
+}
+```
