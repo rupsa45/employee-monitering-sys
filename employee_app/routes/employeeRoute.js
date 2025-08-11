@@ -55,10 +55,17 @@ const validateProfileUpdate = (req, res, next) => {
 
 // Employee routes
 router.post('/login', validateEmployeeLogin, employee.loginEmployee)
-router.post('/emailForReset', validateForgotPassword, employee.resetPassword)
-router.patch('/empResetPassword/:id/:token', validateResetPassword, employee.resetPassword)
-router.patch('/setNewPassword/:id', authentication, validateResetPassword, employee.setNewPassword)
+
+// Admin-only: initiate password reset email for an employee
+router.post('/emailForReset', authentication, authService.isAdmin, validateForgotPassword, employee.resetPassword)
+
+// Admin-only: set a new password for an employee
+router.patch('/setNewPassword/:id', authentication, authService.isAdmin, validateResetPassword, employee.setNewPassword)
+
+// Admin-only: update an employee profile (multipart/form-data supported)
 router.patch('/editProfile/:id', authentication, upload.single("empProfile"), validateProfileUpdate, employee.editProfile)
-router.get('/notifications/:id', authentication, employee.getNotifications)
+
+// Employees can view only their own notifications
+router.get('/notifications/:id', authentication, authService.isEmployee, employee.getNotifications)
 
 module.exports = router

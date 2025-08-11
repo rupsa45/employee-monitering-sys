@@ -71,7 +71,7 @@ module.exports = {
                 where: { id },
                 data: {
                     empTechnology,
-                    empPhone: empPhone ? parseInt(empPhone) : undefined
+                    empPhone: empPhone ? String(empPhone) : undefined
                 },
                 select: {
                     id: true,

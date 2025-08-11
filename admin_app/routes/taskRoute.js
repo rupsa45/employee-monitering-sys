@@ -50,6 +50,7 @@ router.get('/all', taskController.getAllTasks);
 router.get('/:taskId', taskController.getTaskById);
 router.put('/:taskId', validateTaskUpdate, taskController.updateTask);
 router.delete('/:taskId', taskController.deleteTask);
+router.delete('/:taskId', taskController.inactiveTask);
 
 // Admin can also update task status
 router.patch('/:taskId/status', validateTaskStatusUpdate, taskController.updateTaskStatus);
