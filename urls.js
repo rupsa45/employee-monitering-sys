@@ -11,6 +11,7 @@ const empTaskRoute = require('./employee_app/routes/empTaskRoute');
 const screenshotRoute = require('./admin_app/routes/screenshotRoute');
 const agentWorkingAppsRoute = require('./admin_app/routes/agentWorkingAppsRoute');
 const agentIdleTimeRoute = require('./admin_app/routes/agentIdleTimeRoute');
+const notificationTestRoute = require('./admin_app/routes/notificationTestRoute');
 
 const router = express.Router();
 
@@ -49,5 +50,8 @@ router.use('/agent-working-apps', agentWorkingAppsRoute);
 
 // Agent idle time routes (Electron app integration)
 router.use('/agent-idle-time', agentIdleTimeRoute);
+
+// Notification test routes (for development/testing)
+router.use('/notification-test', notificationTestRoute);
 
 module.exports = router;

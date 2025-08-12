@@ -5,6 +5,7 @@ const cors = require('cors');
 const { connectDatabase } = require('./config/prismaConfig')
 let commonRouter = require('./urls')
 let logger = require('./utils/logger')
+const { initializeCronJobs } = require('./scheduler/cronJobs')
 
 let app = express();
 
@@ -28,6 +29,9 @@ const serverLink = `Server Started on http://${HOST}:${PORT}`
 async function startServer() {
   try {
     await connectDatabase();
+    
+    // Initialize cron jobs for scheduled notifications
+    initializeCronJobs();
     
     const server = app.listen(PORT, () => {
       console.log("Express server listening on Port: ", PORT)

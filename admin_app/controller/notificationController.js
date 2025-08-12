@@ -90,41 +90,41 @@ module.exports = {
     },
 
     // Get all active employees for notification selection
-    getActiveEmployees: async (req, res) => {
-        try {
-            const employees = await prisma.employee.findMany({
-                where: {
-                    isActive: true,
-                    empRole: 'employee'
-                },
-                select: {
-                    id: true,
-                    empName: true,
-                    empEmail: true,
-                    empTechnology: true,
-                    empPhone: true
-                },
-                orderBy: {
-                    empName: 'asc'
-                }
-            });
+    // getActiveEmployees: async (req, res) => {
+    //     try {
+    //         const employees = await prisma.employee.findMany({
+    //             where: {
+    //                 isActive: true,
+    //                 empRole: 'employee'
+    //             },
+    //             select: {
+    //                 id: true,
+    //                 empName: true,
+    //                 empEmail: true,
+    //                 empTechnology: true,
+    //                 empPhone: true
+    //             },
+    //             orderBy: {
+    //                 empName: 'asc'
+    //             }
+    //         });
 
-            notificationLogger.log('info', "Active employees retrieved successfully");
-            res.status(200).json({
-                success: true,
-                message: "Active employees retrieved successfully",
-                data: employees,
-                total: employees.length
-            });
-        } catch (error) {
-            notificationLogger.log('error', `Error: ${error.message}`);
-            res.status(500).json({
-                success: false,
-                message: "Error retrieving active employees",
-                error: error.message
-            });
-        }
-    },
+    //         notificationLogger.log('info', "Active employees retrieved successfully");
+    //         res.status(200).json({
+    //             success: true,
+    //             message: "Active employees retrieved successfully",
+    //             data: employees,
+    //             total: employees.length
+    //         });
+    //     } catch (error) {
+    //         notificationLogger.log('error', `Error: ${error.message}`);
+    //         res.status(500).json({
+    //             success: false,
+    //             message: "Error retrieving active employees",
+    //             error: error.message
+    //         });
+    //     }
+    // },
 
     // Get all notifications
     getAllNotifications: async (req, res) => {
