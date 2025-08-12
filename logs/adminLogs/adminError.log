@@ -58,3 +58,4 @@ The table `public.employees` does not exist in the current database.
 level error: Aug-09-2025 14:20:04 	Admin not found
 level error: Aug-09-2025 14:20:46 	Admin not found
 level error: Aug-09-2025 15:25:10 	Employee Already Exists With This Email
+level error: Aug-12-2025 12:40:35 	Employee Already Exists With This Email

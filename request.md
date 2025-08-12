@@ -54,6 +54,16 @@
   "empGender": "FEMALE"
 }
 
+{
+  "empName": "Ravi DevOps",
+  "empEmail": "ravi.dev@example.com",
+  "empPhone": "9876543210",
+  "empPassword": "Dev@2024",
+  "confirmPassword": "Dev@2024",
+  "empTechnology": "DevOps",
+  "empGender": "MALE"
+}
+
 ```
 ## /employee/login
 
@@ -72,4 +82,31 @@
   "assignedTo": ["cme41guqw0004s23agwqgetnw", "cme41fu5j0002s23awepd95qy"],
   "dueDate": "2025-09-15T17:00:00.000Z"
 }
+```
+
+
+
+
+## /emp-tasks/my-task-stats      NEW: Get task statistics (EMPLOYEE ONLY)
+
+```json
+
+{
+    "success": true,
+    "message": "Task statistics retrieved successfully",
+    "employee": {
+        "id": "cme41fu5j0002s23awepd95qy",
+        "empName": "Alice Developer",
+        "empEmail": "alice.dev@example.com"
+    },
+    "statistics": {
+        "total": 3,
+        "pending": 2,
+        "inProgress": 1,
+        "completed": 0,
+        "overdue": 0,
+        "dueToday": 0
+    }
+}
+
 ```
