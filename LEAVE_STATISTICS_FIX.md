@@ -172,3 +172,4 @@ The statistics should now correctly show:
 - **3 approved days** for the approved leave
 
 No more confusion between requests and days! 🎉
+

@@ -29,3 +29,10 @@
 {"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-13 01:23:04"}
 {"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-13 01:23:09"}
 {"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-13 01:35:04"}
+{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-13 17:01:04"}
+{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-13 17:01:11"}
+{"level":"info","message":"Starting hourly task due date reminder cron job","service":"scheduled-notifications","timestamp":"2025-08-13 18:00:00"}
+{"level":"info","message":"Starting daily task reminder notifications","service":"scheduled-notifications","timestamp":"2025-08-13 18:00:00"}
+{"level":"info","message":"Daily task reminder notifications completed successfully","service":"scheduled-notifications","timestamp":"2025-08-13 18:00:02"}
+{"level":"info","message":"Hourly task due date reminder cron job completed successfully","service":"scheduled-notifications","timestamp":"2025-08-13 18:00:02"}
+{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-13 20:03:13"}

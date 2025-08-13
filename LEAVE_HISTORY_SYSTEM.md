@@ -476,3 +476,4 @@ const LeaveBalance = ({ empId }) => {
 4. **Test Endpoints**: Use the provided examples to test functionality
 
 The Leave History System is now fully integrated and ready to use! 🚀
+
