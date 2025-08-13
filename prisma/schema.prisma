@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,36 +7,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Employee model
 model Employee {
-  id              String    @id @default(cuid())
-  empName         String
-  empEmail        String    @unique
-  empPhone        String
-  empPassword     String
-  confirmPassword String
-  empRole         String    @default("employee")
-  empTechnology   String
-  empProfile      String    @default("")
-  empGender       EmpGender
-  isActive        Boolean   @default(true)
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-
-  // Relations
-  timeSheets        TimeSheet[]
+  id                String             @id @default(cuid())
+  empName           String
+  empEmail          String             @unique
+  empPhone          String
+  empPassword       String
+  confirmPassword   String
+  empRole           String             @default("employee")
+  empTechnology     String
+  empProfile        String             @default("")
+  empGender         EmpGender
+  isActive          Boolean            @default(true)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  activitySnapshots ActivitySnapshot[]
+  idleTimes         AgentIdleTime[]
+  workingApps       AgentWorkingApp[]
   leaves            EmpLeave[]
   notifications     Notification[]
-  activitySnapshots ActivitySnapshot[]
-  assignedTasks     Task[]             @relation("TaskAssignments")
   screenshots       Screenshot[]
-  workingApps       AgentWorkingApp[]
-  idleTimes         AgentIdleTime[]
+  timeSheets        TimeSheet[]
+  assignedTasks     Task[]             @relation("TaskAssignments")
 
   @@map("employees")
 }
 
-// TimeSheet model
 model TimeSheet {
   id               String           @id @default(cuid())
   clockIn          String           @default("")
@@ -60,15 +53,12 @@ model TimeSheet {
   isActive         Boolean          @default(true)
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
-
-  // Relations
-  empId    String
-  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId            String
+  employee         Employee         @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@map("timesheets")
 }
 
-// EmpLeave model
 model EmpLeave {
   id           String      @id @default(cuid())
   casualLeaves Int         @default(10)
@@ -83,15 +73,12 @@ model EmpLeave {
   isActive     Boolean     @default(true)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-
-  // Relations
-  empId    String
-  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId        String
+  employee     Employee    @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@map("emp_leaves")
 }
 
-// Notification model
 model Notification {
   id        String   @id @default(cuid())
   title     String
@@ -99,15 +86,12 @@ model Notification {
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // Relations
-  empId    String
-  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId     String
+  employee  Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@map("notifications")
 }
 
-// ActivitySnapshot model for admin monitoring
 model ActivitySnapshot {
   id                 String           @id @default(cuid())
   date               DateTime
@@ -118,40 +102,78 @@ model ActivitySnapshot {
   clockOutTime       String           @default("")
   isCurrentlyWorking Boolean          @default(false)
   isOnBreak          Boolean          @default(false)
-  breakSessions      Json[] // Array of break session objects
+  breakSessions      Json[]
   attendanceStatus   AttendanceStatus @default(ABSENT)
   workingFrom        WorkingLocation  @default(OFFICE)
   lastActivity       String           @default("")
   isActive           Boolean          @default(true)
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
-
-  // Relations
-  empId    String
-  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+  empId              String
+  employee           Employee         @relation(fields: [empId], references: [id], onDelete: Cascade)
 
   @@unique([empId, date])
   @@map("activity_snapshots")
 }
 
-// Task model for admin task assignment
 model Task {
-  id          String     @id @default(cuid())
-  title       String
-  description String
-  status      TaskStatus @default(PENDING)
-  dueDate     DateTime
-  isActive    Boolean    @default(true)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-
-  // Relations - Many-to-Many with Employee
+  id                String     @id @default(cuid())
+  title             String
+  description       String
+  status            TaskStatus @default(PENDING)
+  dueDate           DateTime
+  isActive          Boolean    @default(true)
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
   assignedEmployees Employee[] @relation("TaskAssignments")
 
   @@map("tasks")
 }
 
-// Enums
+model Screenshot {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  publicId  String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  empId     String
+  employee  Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+
+  @@map("screenshots")
+}
+
+model AgentWorkingApp {
+  id          String   @id @default(cuid())
+  appName     String
+  appPath     String?
+  appOpenAt   DateTime
+  appCloseAt  DateTime
+  keysPressed Int      @default(0)
+  mouseClicks Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  empId       String
+  employee    Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+
+  @@map("agent_working_apps")
+}
+
+model AgentIdleTime {
+  id        String   @id @default(cuid())
+  from      DateTime
+  to        DateTime
+  duration  Int
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  empId     String
+  employee  Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
+
+  @@map("agent_idle_times")
+}
+
 enum EmpGender {
   MALE
   FEMALE
@@ -187,57 +209,4 @@ enum TaskStatus {
   PENDING
   IN_PROGRESS
   COMPLETED
-}
-
-// Screenshot model for Electron app screenshots
-model Screenshot {
-  id        String   @id @default(cuid())
-  imageUrl  String   // Cloudinary URL
-  publicId  String   // Cloudinary public ID for deletion
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  empId    String
-  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
-
-  @@map("screenshots")
-}
-
-// AgentWorkingApp model for Electron app usage tracking
-model AgentWorkingApp {
-  id          String   @id @default(cuid())
-  appName     String
-  appPath     String?
-  appOpenAt   DateTime
-  appCloseAt  DateTime
-  keysPressed Int      @default(0)
-  mouseClicks Int      @default(0)
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  empId    String
-  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
-
-  @@map("agent_working_apps")
-}
-
-// AgentIdleTime model for Electron idle time tracking
-model AgentIdleTime {
-  id        String   @id @default(cuid())
-  from      DateTime
-  to        DateTime
-  duration  Int      // Duration in milliseconds
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  empId    String
-  employee Employee @relation(fields: [empId], references: [id], onDelete: Cascade)
-
-  @@map("agent_idle_times")
 }
