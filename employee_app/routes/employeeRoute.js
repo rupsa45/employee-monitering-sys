@@ -68,4 +68,7 @@ router.patch('/editProfile/:id', authentication, upload.single("empProfile"), va
 // Employees can view only their own notifications
 router.get('/notifications/:id', authentication, authService.isEmployee, employee.getNotifications)
 
+// Get employee profile (authenticated employee can view their own profile)
+router.get('/profile', authentication, authService.isEmployee, employee.getUserProfile)
+
 module.exports = router

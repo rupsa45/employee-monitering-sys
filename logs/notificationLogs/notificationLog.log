@@ -15,3 +15,12 @@ level info: Aug-16-2025 00:32:20 	Task assignment notifications sent successfull
 level info: Aug-16-2025 00:36:57 	Email notification sent to karan.back@example.com for task "Implement Role-Based Access Control"
 level info: Aug-16-2025 00:36:57 	Email notification sent to anita.front@example.com for task "Implement Role-Based Access Control"
 level info: Aug-16-2025 00:36:57 	Task assignment notifications sent successfully for task "Implement Role-Based Access Control" to 2 employees
+level info: Aug-16-2025 16:48:18 	Email notification sent to karan.back@example.com for task "Implement Role-Based Access Control"
+level info: Aug-16-2025 16:48:18 	Email notification sent to anita.front@example.com for task "Implement Role-Based Access Control"
+level info: Aug-16-2025 16:48:18 	Task assignment notifications sent successfully for task "Implement Role-Based Access Control" to 2 employees
+level info: Aug-16-2025 18:28:25 	Email notification sent to karan.back@example.com for task "Implement Role-Based Access Control"
+level info: Aug-16-2025 18:28:25 	Email notification sent to bob.emp@example.com for task "Implement Role-Based Access Control"
+level info: Aug-16-2025 18:28:25 	Task assignment notifications sent successfully for task "Implement Role-Based Access Control" to 2 employees
+level info: Aug-16-2025 19:01:28 	Email notification sent to karan.back@example.com for task "Design RBAC Schema in SQL"
+level info: Aug-16-2025 19:01:28 	Email notification sent to ravi.dev@example.com for task "Design RBAC Schema in SQL"
+level info: Aug-16-2025 19:01:28 	Task assignment notifications sent successfully for task "Design RBAC Schema in SQL" to 2 employees

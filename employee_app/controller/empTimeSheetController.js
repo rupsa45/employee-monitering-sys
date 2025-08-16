@@ -134,17 +134,26 @@ module.exports = {
     // Break functionality
     breakStart: async (req, res) => {
         try {
-            const timeSheetId = req.params.id;
+            const empId = req.params.id;
             const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+            const today = moment().startOf('day');
 
-            const timeSheet = await prisma.timeSheet.findUnique({
-                where: { id: timeSheetId }
+            // Find today's timesheet
+            const timeSheet = await prisma.timeSheet.findFirst({
+                where: {
+                    empId: empId,
+                    createdAt: {
+                        gte: today.toDate(),
+                        lt: moment(today).endOf('day').toDate()
+                    },
+                    isActive: true
+                }
             });
 
             if (!timeSheet) {
                 return res.status(404).json({
                     success: false,
-                    message: "Timesheet not found"
+                    message: "Timesheet not found. Please clock in first."
                 });
             }
 
@@ -156,7 +165,7 @@ module.exports = {
             }
 
             await prisma.timeSheet.update({
-                where: { id: timeSheetId },
+                where: { id: timeSheet.id },
                 data: { breakStart: currentTime }
             });
 
@@ -178,17 +187,26 @@ module.exports = {
 
     breakEnd: async (req, res) => {
         try {
-            const timeSheetId = req.params.id;
+            const empId = req.params.id;
             const currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+            const today = moment().startOf('day');
 
-            const timeSheet = await prisma.timeSheet.findUnique({
-                where: { id: timeSheetId }
+            // Find today's timesheet
+            const timeSheet = await prisma.timeSheet.findFirst({
+                where: {
+                    empId: empId,
+                    createdAt: {
+                        gte: today.toDate(),
+                        lt: moment(today).endOf('day').toDate()
+                    },
+                    isActive: true
+                }
             });
 
             if (!timeSheet) {
                 return res.status(404).json({
                     success: false,
-                    message: "Timesheet not found"
+                    message: "Timesheet not found. Please clock in first."
                 });
             }
 
@@ -212,7 +230,7 @@ module.exports = {
             const breakDuration = breakEnd.diff(breakStart, 'minutes');
 
             await prisma.timeSheet.update({
-                where: { id: timeSheetId },
+                where: { id: timeSheet.id },
                 data: {
                     breakEnd: currentTime,
                     totalBreakTime: breakDuration
@@ -259,10 +277,13 @@ module.exports = {
                     message: "No timesheet found for today",
                     data: {
                         isClockedIn: false,
+                        isClockedOut: false,
                         isOnBreak: false,
                         clockInTime: null,
+                        clockOutTime: null,
                         breakStartTime: null,
-                        totalBreakTime: 0
+                        totalBreakTime: 0,
+                        status: 'ABSENT'
                     }
                 });
             }
@@ -274,10 +295,13 @@ module.exports = {
                 message: "Current status retrieved successfully",
                 data: {
                     isClockedIn: !!timeSheet.clockIn,
+                    isClockedOut: !!timeSheet.clockOut,
                     isOnBreak: isOnBreak,
                     clockInTime: timeSheet.clockIn,
+                    clockOutTime: timeSheet.clockOut,
                     breakStartTime: timeSheet.breakStart,
-                    totalBreakTime: timeSheet.totalBreakTime || 0
+                    totalBreakTime: timeSheet.totalBreakTime || 0,
+                    status: timeSheet.status || 'ABSENT'
                 }
             });
         } catch (error) {

@@ -9,12 +9,12 @@ const { initializeCronJobs } = require('./scheduler/cronJobs')
 
 let app = express();
 
-// CORS configuration for Electron app
+// CORS configuration for development
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "http://localhost:3000", "http://localhost:4173", "http://localhost:9000"],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
 }));
 
 app.use(express.json({ limit: '50mb' }));

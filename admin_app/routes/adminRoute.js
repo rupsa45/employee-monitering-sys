@@ -46,8 +46,12 @@ router.post('/adminLogin', validateAdminLogin, adminController.adminLogin);
 
 // Protected routes (authentication required)
 router.post('/createEmployee', authentication, authService.isAdmin, validateEmployeeCreation, adminController.createEmployee);
+router.get('/employees', authentication, authService.isAdmin, adminController.getAllEmployees);
 
 router.get('/showEmpLeaves', authentication, authService.isAdmin, adminController.showEmpLeaves);
 router.patch('/empLeavePermit/:leaveId', authentication, authService.isAdmin, adminController.empLeavePermit);
+
+// Get admin profile (authenticated admin can view their own profile)
+router.get('/profile', authentication, authService.isAdmin, adminController.getUserProfile);
 
 module.exports = router;

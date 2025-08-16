@@ -7,3 +7,21 @@ D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
   42 } else {
 → 43     timeSheet = await prisma.timeSheet.create(
 Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-16-2025 19:31:34 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`
+level error: Aug-16-2025 19:34:43 	Error: 
+Invalid `prisma.timeSheet.create()` invocation in
+D:\clone-code\api\employee_app\controller\empTimeSheetController.js:43:52
+
+  40         }
+  41     });
+  42 } else {
+→ 43     timeSheet = await prisma.timeSheet.create(
+Foreign key constraint violated: `timesheets_empId_fkey (index)`

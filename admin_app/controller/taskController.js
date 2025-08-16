@@ -100,11 +100,14 @@ module.exports = {
   // Get all tasks (ADMIN ONLY)
   getAllTasks: async (req, res) => {
     try {
-      const { status, assignedTo } = req.query;
+      const { status, assignedTo, includeInactive } = req.query;
 
-      let whereClause = {
-        isActive: true,
-      };
+      let whereClause = {};
+      
+      // Only filter by isActive if includeInactive is not explicitly set to true
+      if (includeInactive !== 'true') {
+        whereClause.isActive = true;
+      }
 
       // Filter by status if provided
       if (status) {

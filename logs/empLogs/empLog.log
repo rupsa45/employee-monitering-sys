@@ -1,3 +1,210 @@
 level info: Aug-16-2025 00:29:24 	Tasks for employee "Alice Developer" retrieved successfully
 level info: Aug-16-2025 00:56:20 	Employee logged in successfully
 level info: Aug-16-2025 11:04:50 	Employee logged in successfully
+level info: Aug-16-2025 11:16:46 	Employee logged in successfully
+level info: Aug-16-2025 15:07:43 	Employee logged in successfully
+level info: Aug-16-2025 15:10:49 	Employee logged in successfully
+level info: Aug-16-2025 15:10:56 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:10:56 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:11:31 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:11:32 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:13:21 	Employee logged in successfully
+level info: Aug-16-2025 15:20:35 	Employee logged in successfully
+level info: Aug-16-2025 15:20:40 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:20:40 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:22:07 	Employee logged in successfully
+level error: Aug-16-2025 15:22:23 	Error: 
+Invalid `prisma.employee.update()` invocation in
+D:\clone-code\api\employee_app\controller\empController.js:154:59
+
+  151 const { id } = req.params;
+  152 const { empTechnology, empPhone } = req.body;
+  153 
+→ 154 const updatedEmployee = await prisma.employee.update(
+An operation failed because it depends on one or more records that were required but not found. Record to update not found.
+level info: Aug-16-2025 15:22:44 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:22:44 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:27:24 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:27:24 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:30:54 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:30:54 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:31:09 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:31:09 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:35:18 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:35:19 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:40:10 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:40:10 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:40:36 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:40:37 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:41:21 	Employee logged in successfully
+level info: Aug-16-2025 15:42:27 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:42:28 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:44:40 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:44:42 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:44:42 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:44:42 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:45:27 	Employee profile retrieved successfully
+level info: Aug-16-2025 15:45:28 	Employee profile retrieved successfully
+level info: Aug-16-2025 16:01:57 	Employee logged in successfully
+level info: Aug-16-2025 16:04:42 	Employee logged in successfully
+level info: Aug-16-2025 16:07:53 	Employee profile retrieved successfully
+level info: Aug-16-2025 16:11:07 	Employee logged in successfully
+level info: Aug-16-2025 16:12:27 	Employee logged in successfully
+level info: Aug-16-2025 16:13:56 	Employee logged in successfully
+level info: Aug-16-2025 16:18:46 	Employee logged in successfully
+level info: Aug-16-2025 16:18:48 	Employee profile retrieved successfully
+level info: Aug-16-2025 16:18:49 	Employee profile retrieved successfully
+level info: Aug-16-2025 16:42:52 	Employee logged in successfully
+level info: Aug-16-2025 16:42:54 	Employee profile retrieved successfully
+level info: Aug-16-2025 16:42:54 	Employee profile retrieved successfully
+level info: Aug-16-2025 16:47:20 	Employee logged in successfully
+level info: Aug-16-2025 17:46:57 	Employee logged in successfully
+level info: Aug-16-2025 18:15:19 	Employee logged in successfully
+level info: Aug-16-2025 18:16:46 	Employee logged in successfully
+level info: Aug-16-2025 18:17:03 	Employee logged in successfully
+level info: Aug-16-2025 18:18:39 	Employee logged in successfully
+level info: Aug-16-2025 19:11:15 	Employee logged in successfully
+level info: Aug-16-2025 19:13:11 	Employee logged in successfully
+level info: Aug-16-2025 19:20:47 	Employee logged in successfully
+level info: Aug-16-2025 19:20:48 	Employee profile retrieved successfully
+level info: Aug-16-2025 19:20:48 	Employee profile retrieved successfully
+level info: Aug-16-2025 20:04:34 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:09:37 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:09:37 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:09:37 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:09:38 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:09:44 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:09:44 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:09:44 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:09:45 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:10:09 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:10:10 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:10:10 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:10:10 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:10:20 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:10:21 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:10:49 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:10:49 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:10:49 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:10:50 	Tasks for employee "Bob Employee" retrieved successfully
+level error: Aug-16-2025 20:10:53 	Error retrieving employee tasks: 
+Invalid `prisma.task.findMany()` invocation in
+D:\clone-code\api\employee_app\controller\empTaskController.js:42:45
+
+  39     whereClause.status = status.toUpperCase();
+  40 }
+  41 
+→ 42 const tasks = await prisma.task.findMany({
+       where: {
+         assignedEmployees: {
+           some: {
+             id: "cmed6topn0004vgzwqnnk0gl2"
+           }
+         },
+         isActive: true,
+         status: "ALL"
+                 ~~~~~
+       },
+       include: {
+         assignedEmployees: {
+           select: {
+             id: true,
+             empName: true,
+             empEmail: true,
+             empTechnology: true
+           }
+         }
+       },
+       orderBy: {
+         dueDate: "asc"
+       }
+     })
+
+Invalid value for argument `status`. Expected TaskStatus.
+level info: Aug-16-2025 20:10:53 	Task statistics retrieved for employee "Bob Employee"
+level error: Aug-16-2025 20:11:04 	Error retrieving employee tasks: 
+Invalid `prisma.task.findMany()` invocation in
+D:\clone-code\api\employee_app\controller\empTaskController.js:42:45
+
+  39     whereClause.status = status.toUpperCase();
+  40 }
+  41 
+→ 42 const tasks = await prisma.task.findMany({
+       where: {
+         assignedEmployees: {
+           some: {
+             id: "cmed6topn0004vgzwqnnk0gl2"
+           }
+         },
+         isActive: true,
+         status: "ALL"
+                 ~~~~~
+       },
+       include: {
+         assignedEmployees: {
+           select: {
+             id: true,
+             empName: true,
+             empEmail: true,
+             empTechnology: true
+           }
+         }
+       },
+       orderBy: {
+         dueDate: "asc"
+       }
+     })
+
+Invalid value for argument `status`. Expected TaskStatus.
+level info: Aug-16-2025 20:11:04 	Task statistics retrieved for employee "Bob Employee"
+level error: Aug-16-2025 20:11:04 	Error retrieving employee tasks: 
+Invalid `prisma.task.findMany()` invocation in
+D:\clone-code\api\employee_app\controller\empTaskController.js:42:45
+
+  39     whereClause.status = status.toUpperCase();
+  40 }
+  41 
+→ 42 const tasks = await prisma.task.findMany({
+       where: {
+         assignedEmployees: {
+           some: {
+             id: "cmed6topn0004vgzwqnnk0gl2"
+           }
+         },
+         isActive: true,
+         status: "ALL"
+                 ~~~~~
+       },
+       include: {
+         assignedEmployees: {
+           select: {
+             id: true,
+             empName: true,
+             empEmail: true,
+             empTechnology: true
+           }
+         }
+       },
+       orderBy: {
+         dueDate: "asc"
+       }
+     })
+
+Invalid value for argument `status`. Expected TaskStatus.
+level info: Aug-16-2025 20:11:04 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:11:32 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:11:32 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:11:32 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:11:33 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:12:03 	Task "Implement Role-Based Access Control" status updated to IN_PROGRESS by employee cmed6topn0004vgzwqnnk0gl2
+level info: Aug-16-2025 20:12:03 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:12:03 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:13:19 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:13:19 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-16-2025 20:13:19 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:13:20 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-16-2025 20:47:30 	Employee logged in successfully
+level info: Aug-16-2025 20:56:04 	Employee logged in successfully
+level info: Aug-16-2025 20:56:05 	Employee profile retrieved successfully
+level info: Aug-16-2025 20:56:06 	Employee profile retrieved successfully
+level info: Aug-16-2025 20:57:28 	Employee logged in successfully
