@@ -6,3 +6,12 @@ level error: Aug-16-2025 00:07:23 	Error sending task assignment notifications: 
 level error: Aug-16-2025 00:07:23 	Error sending task status update notification: Cannot read properties of undefined (reading 'create')
 level error: Aug-16-2025 00:08:43 	Error sending task assignment notifications: Cannot read properties of undefined (reading 'create')
 level error: Aug-16-2025 00:08:43 	Error sending task status update notification: Cannot read properties of undefined (reading 'create')
+level info: Aug-16-2025 00:30:29 	Email notification sent to dana.ana@example.com for task "Build API Integration"
+level info: Aug-16-2025 00:30:29 	Email notification sent to bob.emp@example.com for task "Build API Integration"
+level info: Aug-16-2025 00:30:29 	Task assignment notifications sent successfully for task "Build API Integration" to 2 employees
+level info: Aug-16-2025 00:32:20 	Email notification sent to ravi.dev@example.com for task "Design User Authentication Module"
+level info: Aug-16-2025 00:32:20 	Email notification sent to alice.dev@example.com for task "Design User Authentication Module"
+level info: Aug-16-2025 00:32:20 	Task assignment notifications sent successfully for task "Design User Authentication Module" to 2 employees
+level info: Aug-16-2025 00:36:57 	Email notification sent to karan.back@example.com for task "Implement Role-Based Access Control"
+level info: Aug-16-2025 00:36:57 	Email notification sent to anita.front@example.com for task "Implement Role-Based Access Control"
+level info: Aug-16-2025 00:36:57 	Task assignment notifications sent successfully for task "Implement Role-Based Access Control" to 2 employees

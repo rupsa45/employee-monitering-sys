@@ -64,6 +64,35 @@
   "empGender": "MALE"
 }
 
+{
+  "empName": "Karan Backend",
+  "empEmail": "karan.back@example.com",
+  "empPhone": "9988776655",
+  "empPassword": "Back@2024",
+  "confirmPassword": "Back@2024",
+  "empTechnology": "Backend",
+  "empGender": "MALE"
+}
+{
+  "empName": "Anita Frontend",
+  "empEmail": "anita.front@example.com",
+  "empPhone": "9123456789",
+  "empPassword": "Front@2024",
+  "confirmPassword": "Front@2024",
+  "empTechnology": "Frontend",
+  "empGender": "FEMALE"
+}
+
+{
+  "empName": "Karan Backend",
+  "empEmail": "karan.back@example.com",
+  "empPhone": "9988776655",
+  "empPassword": "Back@2024",
+  "confirmPassword": "Back@2024",
+  "empTechnology": "Backend",
+  "empGender": "MALE"
+}
+
 ```
 ## /employee/login
 
@@ -82,6 +111,21 @@
   "assignedTo": ["cme41guqw0004s23agwqgetnw", "cme41fu5j0002s23awepd95qy"],
   "dueDate": "2025-09-15T17:00:00.000Z"
 }
+
+{
+  "title": "Design User Authentication Module",
+  "description": "Create and validate the login and token-based authentication system using Python and JWT.",
+  "assignedTo": ["cmed6ruc40001vgzwvv481a72", "cmed6syp20002vgzwr7u2r8i5"],
+  "dueDate": "2025-09-25T15:30:00.000Z"
+}
+
+  {
+    "title": "Build API Integration",
+    "description": "Develop and test the employee registration API using Python and Postman.",
+    "assignedTo": ["cmed6topn0004vgzwqnnk0gl2", "cmed6t6cx0003vgzwv0l8jru3"],
+    "dueDate": "2025-09-20T17:00:00.000Z"
+  }
+
 ```
 
 

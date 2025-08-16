@@ -46,7 +46,7 @@ router.post('/adminLogin', validateAdminLogin, adminController.adminLogin);
 
 // Protected routes (authentication required)
 router.post('/createEmployee', authentication, authService.isAdmin, validateEmployeeCreation, adminController.createEmployee);
-router.get('/empDashBoard', authentication, authService.isAdmin, adminController.empDashBoard);
+
 router.get('/showEmpLeaves', authentication, authService.isAdmin, adminController.showEmpLeaves);
 router.patch('/empLeavePermit/:leaveId', authentication, authService.isAdmin, adminController.empLeavePermit);
 

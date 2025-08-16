@@ -1,5 +1,6 @@
 const express = require('express');
 const adminRoute = require('./admin_app/routes/adminRoute');
+const adminDashboardRoute = require('./admin_app/routes/adminDashboardRoute');
 const employeeRoute = require('./employee_app/routes/employeeRoute');
 const timeSheetRoute = require('./employee_app/routes/empTimeSheetRoute');
 const empLeaveRoute = require('./employee_app/routes/empLeaveRoute');
@@ -17,6 +18,9 @@ const router = express.Router();
 
 // Admin routes
 router.use('/admin', adminRoute);
+
+// Admin Dashboard routes
+router.use('/admin/dashboard', adminDashboardRoute);
 
 // Employee routes
 router.use('/employee', employeeRoute);
