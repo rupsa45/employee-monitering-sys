@@ -4,8 +4,9 @@
   "description": "Employee Tracking System with PostgreSQL and Prisma",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "dev": "nodemon index.js",
+    "prod": "NODE_ENV=production node index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
@@ -42,6 +43,7 @@
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.29.4",
     "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.7",
     "prisma": "^5.7.1",
     "rate-limit-redis": "^4.2.0",

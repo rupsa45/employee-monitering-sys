@@ -133,11 +133,22 @@ module.exports = {
         { expiresIn: "1h" }
       );
 
+      // Prepare user data for frontend
+      const userData = {
+        empId: admin.id,
+        empEmail: admin.empEmail,
+        empName: admin.empName,
+        empRole: admin.empRole,
+        empTechnology: admin.empTechnology,
+        empGender: admin.empGender
+      };
+
       adminLogger.log("info", "Admin logged in successfully");
       res.status(200).json({
         success: true,
         message: "Admin logged in successfully",
         accessToken: token,
+        user: userData
       });
     } catch (error) {
       adminLogger.log("error", `Error: ${error.message}`);
@@ -221,88 +232,6 @@ module.exports = {
     }
   },
 
-  // Employee dashboard for admin
-  empDashBoard: async (req, res) => {
-    try {
-      const today = moment().startOf("day");
-
-      // Get all employees with their timesheets for today
-      const employees = await prisma.employee.findMany({
-        where: {
-          empRole: "employee",
-          isActive: true,
-        },
-        include: {
-          timeSheets: {
-            where: {
-              createdAt: {
-                gte: today.toDate(),
-                lt: moment(today).endOf("day").toDate(),
-              },
-              isActive: true,
-            },
-          },
-        },
-      });
-
-      // Process employee data
-      const employeeData = employees.map((emp) => {
-        const todayTimeSheet = emp.timeSheets[0] || null;
-        const isClockedIn =
-          todayTimeSheet && todayTimeSheet.clockIn && !todayTimeSheet.clockOut;
-        const isOnBreak =
-          todayTimeSheet &&
-          todayTimeSheet.breakStart &&
-          !todayTimeSheet.breakEnd;
-        const isCompleted =
-          todayTimeSheet && todayTimeSheet.clockIn && todayTimeSheet.clockOut;
-
-        return {
-          id: emp.id,
-          empName: emp.empName,
-          empEmail: emp.empEmail,
-          empTechnology: emp.empTechnology,
-          empGender: emp.empGender,
-          isClockedIn,
-          isOnBreak,
-          isCompleted,
-          clockInTime: todayTimeSheet?.clockIn || null,
-          clockOutTime: todayTimeSheet?.clockOut || null,
-          breakStartTime: todayTimeSheet?.breakStart || null,
-          totalBreakTime: todayTimeSheet?.totalBreakTime || 0,
-          workHours: todayTimeSheet?.hoursLoggedIn || 0,
-          status: todayTimeSheet?.status || "ABSENT",
-        };
-      });
-
-      // Calculate summary statistics
-      const summary = {
-        totalEmployees: employees.length,
-        clockedInToday: employeeData.filter((emp) => emp.isClockedIn).length,
-        completedToday: employeeData.filter((emp) => emp.isCompleted).length,
-        onBreak: employeeData.filter((emp) => emp.isOnBreak).length,
-        present: employeeData.filter((emp) => emp.status === "PRESENT").length,
-        absent: employeeData.filter((emp) => emp.status === "ABSENT").length,
-        halfDay: employeeData.filter((emp) => emp.status === "HALFDAY").length,
-        late: employeeData.filter((emp) => emp.status === "LATE").length,
-      };
-
-      adminLogger.log("info", "Employee dashboard data retrieved successfully");
-      res.status(200).json({
-        success: true,
-        message: "Employee dashboard data retrieved successfully",
-        summary,
-        employees: employeeData,
-      });
-    } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
-      res.status(500).json({
-        success: false,
-        message: "Error retrieving dashboard data",
-        error: error.message,
-      });
-    }
-  },
 
   // Show employee leaves
   showEmpLeaves: async (req, res) => {
@@ -425,6 +354,155 @@ module.exports = {
         success: false,
         message: "Error processing leave request",
         error: error.message,
+      });
+    }
+  },
+
+  // Get admin profile
+  getUserProfile: async (req, res) => {
+    try {
+      const empId = req.user.userData.empId;
+
+      const admin = await prisma.employee.findUnique({
+        where: { id: empId },
+        select: {
+          id: true,
+          empName: true,
+          empEmail: true,
+          empPhone: true,
+          empTechnology: true,
+          empGender: true,
+          empProfile: true,
+          empRole: true,
+          isActive: true,
+          createdAt: true,
+          updatedAt: true
+        }
+      });
+
+      if (!admin) {
+        adminLogger.log("error", "Admin profile not found");
+        return res.status(404).json({
+          success: false,
+          message: "Admin profile not found"
+        });
+      }
+
+      // Get additional statistics for admin
+      const totalEmployees = await prisma.employee.count({
+        where: { 
+          empRole: 'employee',
+          isActive: true 
+        }
+      });
+
+      const totalActiveEmployees = await prisma.employee.count({
+        where: { 
+          empRole: 'employee',
+          isActive: true 
+        }
+      });
+
+      const pendingLeaves = await prisma.empLeave.count({
+        where: { 
+          status: 'PENDING',
+          isActive: true 
+        }
+      });
+
+      const totalTasks = await prisma.task.count({
+        where: { isActive: true }
+      });
+
+      const completedTasks = await prisma.task.count({
+        where: { 
+          status: 'COMPLETED',
+          isActive: true 
+        }
+      });
+
+      const todayAttendance = await prisma.timeSheet.count({
+        where: {
+          dayPresent: '1',
+          createdAt: {
+            gte: new Date(new Date().setHours(0, 0, 0, 0))
+          }
+        }
+      });
+
+      const profileData = {
+        ...admin,
+        statistics: {
+          totalEmployees,
+          totalActiveEmployees,
+          pendingLeaves,
+          totalTasks,
+          completedTasks,
+          todayAttendance,
+          taskCompletionRate: totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0,
+          attendanceRate: totalEmployees > 0 ? Math.round((todayAttendance / totalEmployees) * 100) : 0
+        }
+      };
+
+      adminLogger.log("info", "Admin profile retrieved successfully");
+      res.status(200).json({
+        success: true,
+        message: "Admin profile retrieved successfully",
+        data: profileData
+      });
+    } catch (error) {
+      adminLogger.log('error', `Error: ${error.message}`);
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    }
+  },
+
+  // Get all employees
+  getAllEmployees: async (req, res) => {
+    try {
+      const employees = await prisma.employee.findMany({
+        where: {
+          empRole: 'employee',
+          isActive: true
+        },
+        select: {
+          id: true,
+          empName: true,
+          empEmail: true,
+          empPhone: true,
+          empTechnology: true,
+          empRole: true,
+          empGender: true,
+          isActive: true,
+          createdAt: true,
+          updatedAt: true
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
+
+      const total = await prisma.employee.count({
+        where: {
+          empRole: 'employee',
+          isActive: true
+        }
+      });
+
+      adminLogger.log("info", "All employees retrieved successfully");
+      res.status(200).json({
+        success: true,
+        message: "All employees retrieved successfully",
+        data: employees,
+        total: total
+      });
+    } catch (error) {
+      adminLogger.log('error', `Error: ${error.message}`);
+      res.status(500).json({
+        success: false,
+        message: error.message
       });
     }
   },

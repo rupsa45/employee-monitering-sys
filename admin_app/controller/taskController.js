@@ -1,5 +1,6 @@
 const { prisma } = require("../../config/prismaConfig");
 const adminLogger = require("../../utils/adminLogger/adminLogger");
+const TaskNotificationService = require("../../service/taskNotificationService");
 
 module.exports = {
   // Create a new task (ADMIN ONLY)
@@ -61,6 +62,17 @@ module.exports = {
         },
       });
 
+      // Send notifications to assigned employees
+      try {
+        await TaskNotificationService.sendTaskAssignmentNotifications(
+          task,
+          task.assignedEmployees,
+          'created'
+        );
+      } catch (notificationError) {
+        adminLogger.log("warn", `Task created but notification failed: ${notificationError.message}`);
+      }
+
       adminLogger.log("info", `Task "${title}" created successfully by admin`);
       res.status(201).json({
         success: true,
@@ -88,11 +100,14 @@ module.exports = {
   // Get all tasks (ADMIN ONLY)
   getAllTasks: async (req, res) => {
     try {
-      const { status, assignedTo } = req.query;
+      const { status, assignedTo, includeInactive } = req.query;
 
-      let whereClause = {
-        isActive: true,
-      };
+      let whereClause = {};
+      
+      // Only filter by isActive if includeInactive is not explicitly set to true
+      if (includeInactive !== 'true') {
+        whereClause.isActive = true;
+      }
 
       // Filter by status if provided
       if (status) {
@@ -273,6 +288,17 @@ module.exports = {
             },
           },
         });
+
+        // Send notifications to newly assigned employees
+        try {
+          await TaskNotificationService.sendTaskAssignmentNotifications(
+            finalTask,
+            finalTask.assignedEmployees,
+            'updated'
+          );
+        } catch (notificationError) {
+          adminLogger.log("warn", `Task updated but notification failed: ${notificationError.message}`);
+        }
 
         adminLogger.log(
           "info",
@@ -523,6 +549,23 @@ module.exports = {
           },
         },
       });
+
+      // Send notification to admin about status update
+      try {
+        const employee = await prisma.employee.findUnique({
+          where: { id: empId },
+          select: { id: true, empName: true, empEmail: true }
+        });
+        
+        await TaskNotificationService.sendTaskStatusUpdateNotification(
+          updatedTask,
+          employee,
+          task.status,
+          status.toUpperCase()
+        );
+      } catch (notificationError) {
+        adminLogger.log("warn", `Task status updated but notification failed: ${notificationError.message}`);
+      }
 
       adminLogger.log(
         "info",

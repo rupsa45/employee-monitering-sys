@@ -5,6 +5,90 @@ const employeeLogger = require('../../utils/empLogger/employeeLogger');
 const emailService = require('../../service/emailService');
 
 module.exports = {
+    // Get employee profile
+    getUserProfile: async (req, res) => {
+        try {
+            const empId = req.user.userData.empId;
+
+            const employee = await prisma.employee.findUnique({
+                where: { id: empId },
+                select: {
+                    id: true,
+                    empName: true,
+                    empEmail: true,
+                    empPhone: true,
+                    empTechnology: true,
+                    empGender: true,
+                    empProfile: true,
+                    empRole: true,
+                    isActive: true,
+                    createdAt: true,
+                    updatedAt: true
+                }
+            });
+
+            if (!employee) {
+                employeeLogger.log("error", "Employee profile not found");
+                return res.status(404).json({
+                    success: false,
+                    message: "Employee profile not found"
+                });
+            }
+
+            // Get additional statistics
+            const totalLeaves = await prisma.empLeave.count({
+                where: { empId, isActive: true }
+            });
+
+            const totalTimeSheets = await prisma.timeSheet.count({
+                where: { empId, isActive: true }
+            });
+
+            const totalTasks = await prisma.task.count({
+                where: {
+                    assignedEmployees: {
+                        some: { id: empId }
+                    },
+                    isActive: true
+                }
+            });
+
+            const completedTasks = await prisma.task.count({
+                where: {
+                    assignedEmployees: {
+                        some: { id: empId }
+                    },
+                    status: 'COMPLETED',
+                    isActive: true
+                }
+            });
+
+            const profileData = {
+                ...employee,
+                statistics: {
+                    totalLeaves,
+                    totalTimeSheets,
+                    totalTasks,
+                    completedTasks,
+                    completionRate: totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
+                }
+            };
+
+            employeeLogger.log("info", "Employee profile retrieved successfully");
+            res.status(200).json({
+                success: true,
+                message: "Employee profile retrieved successfully",
+                data: profileData
+            });
+        } catch (error) {
+            employeeLogger.log('error', `Error: ${error.message}`);
+            res.status(500).json({
+                success: false,
+                message: error.message
+            });
+        }
+    },
+
     // Employee login (only login, no registration)
     loginEmployee: async (req, res) => {
         try {
@@ -46,11 +130,23 @@ module.exports = {
                 { expiresIn: "1h" }
             );
 
+            // Prepare user data for frontend
+            const userData = {
+                empId: employee.id,
+                empEmail: employee.empEmail,
+                empName: employee.empName,
+                empRole: employee.empRole,
+                empPhone: employee.empPhone,
+                empTechnology: employee.empTechnology,
+                empGender: employee.empGender
+            };
+
             employeeLogger.log("info", "Employee logged in successfully");
             res.status(200).json({
                 success: true,
                 message: "Employee logged in successfully",
-                accessToken: token
+                accessToken: token,
+                user: userData
             });
         } catch (error) {
             employeeLogger.log('error', `Error: ${error.message}`);
