@@ -6,8 +6,8 @@ module.exports = {
     // Apply for leave
     empLeave: async (req, res) => {
         try {
+            const empId = req.params.id; // Get empId from URL parameter
             const {
-                empId,
                 leaveType,
                 startDate,
                 endDate,
