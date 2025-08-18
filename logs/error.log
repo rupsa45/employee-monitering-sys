@@ -7,3 +7,122 @@ Please make sure your database server is running at `db.ltkicunvlyohzfrsvogi.sup
 level error: Aug-11-2025 17:09:58 	Database connection failed: Can't reach database server at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`
 
 Please make sure your database server is running at `db.ltkicunvlyohzfrsvogi.supabase.co:5432`.
+level error: Aug-16-2025 08:59:59 	Error creating meeting
+level error: Aug-16-2025 08:59:59 	Error updating meeting
+level error: Aug-16-2025 08:59:59 	Error updating meeting
+level error: Aug-16-2025 08:59:59 	Error starting meeting
+level error: Aug-16-2025 08:59:59 	Error starting meeting
+level error: Aug-16-2025 09:01:24 	Error creating meeting
+level error: Aug-16-2025 09:01:25 	Error updating meeting
+level error: Aug-16-2025 09:01:25 	Error updating meeting
+level error: Aug-16-2025 09:01:25 	Error starting meeting
+level error: Aug-16-2025 09:01:25 	Error starting meeting
+level error: Aug-16-2025 09:05:06 	Error creating meeting
+level error: Aug-16-2025 09:05:06 	Error updating meeting
+level error: Aug-16-2025 09:05:06 	Error updating meeting
+level error: Aug-16-2025 09:05:06 	Error starting meeting
+level error: Aug-16-2025 09:05:07 	Error starting meeting
+level error: Aug-16-2025 09:18:26 	Error in socket connection handler
+level error: Aug-16-2025 09:18:26 	Error in socket connection handler
+level error: Aug-16-2025 09:18:56 	Error in socket connection handler
+level error: Aug-16-2025 09:19:26 	Error in socket connection handler
+level error: Aug-16-2025 09:19:56 	Error in socket connection handler
+level error: Aug-16-2025 09:19:57 	Error in socket connection handler
+level error: Aug-16-2025 09:20:26 	Error in socket connection handler
+level error: Aug-16-2025 09:20:27 	Error in socket connection handler
+level error: Aug-16-2025 09:20:57 	Error in socket connection handler
+level error: Aug-16-2025 09:20:57 	Error in socket connection handler
+level error: Aug-16-2025 09:21:27 	Error in socket connection handler
+level error: Aug-16-2025 09:21:27 	Error in socket connection handler
+level error: Aug-16-2025 09:21:56 	Error in socket connection handler
+level error: Aug-16-2025 09:21:56 	Error in socket connection handler
+level error: Aug-16-2025 09:22:26 	Error in socket connection handler
+level error: Aug-16-2025 09:22:57 	Error in socket connection handler
+level error: Aug-16-2025 09:22:57 	Error in socket connection handler
+level error: Aug-16-2025 09:23:27 	Error in socket connection handler
+level error: Aug-16-2025 09:23:27 	Error in socket connection handler
+level error: Aug-16-2025 09:23:57 	Error in socket connection handler
+level error: Aug-16-2025 09:23:57 	Error in socket connection handler
+level error: Aug-16-2025 09:24:27 	Error in socket connection handler
+level error: Aug-16-2025 09:24:57 	Error in socket connection handler
+level error: Aug-16-2025 09:25:27 	Error in socket connection handler
+level error: Aug-16-2025 09:25:57 	Error in socket connection handler
+level error: Aug-16-2025 09:25:57 	Error in socket connection handler
+level error: Aug-16-2025 09:25:57 	Error in socket connection handler
+level error: Aug-16-2025 09:26:27 	Error in socket connection handler
+level error: Aug-16-2025 09:26:27 	Error in socket connection handler
+level error: Aug-16-2025 09:26:27 	Error in socket connection handler
+level error: Aug-16-2025 09:26:57 	Error in socket connection handler
+level error: Aug-16-2025 09:26:57 	Error in socket connection handler
+level error: Aug-16-2025 09:33:34 	Socket authentication failed
+level error: Aug-16-2025 09:33:34 	Socket authentication failed
+level error: Aug-16-2025 09:35:36 	Error in socket connection handler
+level error: Aug-16-2025 09:38:14 	Socket authentication failed
+level error: Aug-16-2025 09:38:14 	Socket authentication failed
+level error: Aug-16-2025 09:38:15 	Error creating meeting
+level error: Aug-16-2025 09:38:15 	Error updating meeting
+level error: Aug-16-2025 09:38:15 	Error updating meeting
+level error: Aug-16-2025 09:38:15 	Error starting meeting
+level error: Aug-16-2025 09:38:15 	Error starting meeting
+level error: Aug-16-2025 09:40:16 	Error in socket connection handler
+level error: Aug-16-2025 10:00:34 	Error creating meeting
+level error: Aug-16-2025 10:00:34 	Error updating meeting
+level error: Aug-16-2025 10:00:34 	Socket authentication failed
+level error: Aug-16-2025 10:00:34 	Error updating meeting
+level error: Aug-16-2025 10:00:34 	Error starting meeting
+level error: Aug-16-2025 10:00:34 	Error starting meeting
+level error: Aug-16-2025 10:00:34 	Socket authentication failed
+level error: Aug-16-2025 10:02:35 	Error in socket connection handler
+level error: Aug-16-2025 10:18:40 	Error creating meeting
+level error: Aug-16-2025 10:18:40 	Error updating meeting
+level error: Aug-16-2025 10:18:40 	Error updating meeting
+level error: Aug-16-2025 10:18:40 	Error starting meeting
+level error: Aug-16-2025 10:18:40 	Error starting meeting
+level error: Aug-16-2025 10:38:55 	Error getting meeting attendance
+level error: Aug-16-2025 10:38:55 	Error getting meeting attendance
+level error: Aug-16-2025 10:38:55 	Error getting meeting attendance
+level error: Aug-16-2025 10:38:55 	Error getting meeting attendance
+level error: Aug-16-2025 10:38:55 	Error getting meeting attendance
+level error: Aug-16-2025 10:39:59 	Error getting meeting attendance
+level error: Aug-16-2025 10:39:59 	Error getting meeting attendance
+level error: Aug-16-2025 10:39:59 	Error getting meeting attendance
+level error: Aug-16-2025 10:39:59 	Error getting meeting attendance
+level error: Aug-16-2025 10:39:59 	Error getting meeting attendance
+level error: Aug-16-2025 10:40:53 	Error getting meeting attendance
+level error: Aug-16-2025 10:40:53 	Error getting meeting attendance
+level error: Aug-16-2025 10:42:56 	Error getting meeting attendance
+level error: Aug-16-2025 10:42:56 	Error getting meeting attendance
+level error: Aug-16-2025 10:43:31 	Error getting meeting attendance
+level error: Aug-16-2025 10:43:31 	Error getting meeting attendance
+level error: Aug-16-2025 10:43:57 	Error getting meeting attendance
+level error: Aug-16-2025 10:43:57 	Error getting meeting attendance
+level error: Aug-16-2025 10:45:36 	Error getting meeting attendance
+level error: Aug-16-2025 10:45:36 	Error getting meeting attendance
+level error: Aug-16-2025 14:06:32 	Error sending meeting invites
+level error: Aug-16-2025 14:06:32 	Error sending meeting invites
+level error: Aug-16-2025 14:06:32 	Error getting upcoming meetings
+level error: Aug-16-2025 14:07:13 	Error sending meeting invites
+level error: Aug-16-2025 14:07:13 	Error sending meeting invites
+level error: Aug-16-2025 14:07:15 	Error creating meeting
+level error: Aug-16-2025 14:07:15 	Socket authentication failed
+level error: Aug-16-2025 14:07:15 	Socket authentication failed
+level error: Aug-16-2025 14:07:16 	Error updating meeting
+level error: Aug-16-2025 14:07:16 	Error updating meeting
+level error: Aug-16-2025 14:07:16 	Error starting meeting
+level error: Aug-16-2025 14:07:16 	Error starting meeting
+level error: Aug-16-2025 14:07:16 	Error getting meeting attendance
+level error: Aug-16-2025 14:07:16 	Error getting upcoming meetings
+level error: Aug-16-2025 14:07:16 	Error getting meeting attendance
+level error: Aug-16-2025 14:09:19 	Error in socket connection handler
+level error: Aug-16-2025 16:57:33 	Error getting meeting attendance
+level error: Aug-16-2025 16:57:33 	Error getting meeting attendance
+level error: Aug-16-2025 16:57:35 	Socket authentication failed
+level error: Aug-16-2025 16:57:35 	Error creating meeting
+level error: Aug-16-2025 16:57:35 	Socket authentication failed
+level error: Aug-16-2025 16:57:35 	Error updating meeting
+level error: Aug-16-2025 16:57:35 	Error updating meeting
+level error: Aug-16-2025 16:57:35 	Error starting meeting
+level error: Aug-16-2025 16:57:35 	Error starting meeting
+level error: Aug-16-2025 16:57:37 	Error sending meeting invites
+level error: Aug-16-2025 16:57:37 	Error getting upcoming meetings
+level error: Aug-16-2025 16:57:37 	Error sending meeting invites

@@ -8,53 +8,58 @@ datasource db {
 }
 
 model Employee {
-  id                String             @id @default(cuid())
-  empName           String
-  empEmail          String             @unique
-  empPhone          String
-  empPassword       String
-  confirmPassword   String
-  empRole           String             @default("employee")
-  empTechnology     String
-  empProfile        String             @default("")
-  empGender         EmpGender
-  isActive          Boolean            @default(true)
-  createdAt         DateTime           @default(now())
-  updatedAt         DateTime           @updatedAt
-  activitySnapshots ActivitySnapshot[]
-  idleTimes         AgentIdleTime[]
-  workingApps       AgentWorkingApp[]
-  leaves            EmpLeave[]
-  notifications     Notification[]
-  screenshots       Screenshot[]
-  timeSheets        TimeSheet[]
-  assignedTasks     Task[]             @relation("TaskAssignments")
+  id                  String               @id @default(cuid())
+  empName             String
+  empEmail            String               @unique
+  empPhone            String
+  empPassword         String
+  confirmPassword     String
+  empRole             String               @default("employee")
+  empTechnology       String
+  empProfile          String               @default("")
+  empGender           EmpGender
+  isActive            Boolean              @default(true)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  activitySnapshots   ActivitySnapshot[]
+  idleTimes           AgentIdleTime[]
+  workingApps         AgentWorkingApp[]
+  leaves              EmpLeave[]
+  notifications       Notification[]
+  screenshots         Screenshot[]
+  timeSheets          TimeSheet[]
+  assignedTasks       Task[]               @relation("TaskAssignments")
+  hostedMeetings      Meeting[]
+  meetingParticipants MeetingParticipant[]
+  meetingRecordings   MeetingRecording[]
+  meetingEvents       MeetingEvent[]
 
   @@map("employees")
 }
 
 model TimeSheet {
-  id               String           @id @default(cuid())
-  clockIn          String           @default("")
-  clockOut         String           @default("")
-  clockinIP        String           @default("")
-  hoursLoggedIn    Int              @default(0)
-  workingFrom      String           @default("office")
-  breakStart       String           @default("")
-  breakEnd         String           @default("")
-  totalBreakTime   Int              @default(0)
-  totalWorkingDays Int              @default(0)
-  dayPresent       String           @default("0")
-  halfDay          Int              @default(0)
-  dayAbsent        String           @default("0")
-  holidays         String           @default("0")
-  dayLate          String           @default("")
-  status           AttendanceStatus @default(ABSENT)
-  isActive         Boolean          @default(true)
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  empId            String
-  employee         Employee         @relation(fields: [empId], references: [id], onDelete: Cascade)
+  id                  String               @id @default(cuid())
+  clockIn             String               @default("")
+  clockOut            String               @default("")
+  clockinIP           String               @default("")
+  hoursLoggedIn       Int                  @default(0)
+  workingFrom         String               @default("office")
+  breakStart          String               @default("")
+  breakEnd            String               @default("")
+  totalBreakTime      Int                  @default(0)
+  totalWorkingDays    Int                  @default(0)
+  dayPresent          String               @default("0")
+  halfDay             Int                  @default(0)
+  dayAbsent           String               @default("0")
+  holidays            String               @default("0")
+  dayLate             String               @default("")
+  status              AttendanceStatus     @default(ABSENT)
+  isActive            Boolean              @default(true)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  empId               String
+  employee            Employee             @relation(fields: [empId], references: [id], onDelete: Cascade)
+  meetingParticipants MeetingParticipant[]
 
   @@map("timesheets")
 }
@@ -174,6 +179,91 @@ model AgentIdleTime {
   @@map("agent_idle_times")
 }
 
+model Meeting {
+  id             String        @id @default(cuid())
+  title          String
+  description    String?       @db.Text
+  type           MeetingType   @default(BASIC)
+  hostId         String
+  host           Employee      @relation(fields: [hostId], references: [id])
+  roomCode       String        @unique
+  passwordHash   String?
+  status         MeetingStatus @default(SCHEDULED)
+  scheduledStart DateTime?
+  scheduledEnd   DateTime?
+  actualStart    DateTime?
+  actualEnd      DateTime?
+  isPersistent   Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  participants MeetingParticipant[]
+  recordings   MeetingRecording[]
+  events       MeetingEvent[]
+
+  @@index([hostId])
+  @@index([status])
+  @@index([scheduledStart])
+  @@map("meetings")
+}
+
+model MeetingParticipant {
+  id            String      @id @default(cuid())
+  meetingId     String
+  meeting       Meeting     @relation(fields: [meetingId], references: [id])
+  empId         String
+  employee      Employee    @relation(fields: [empId], references: [id])
+  role          MeetingRole @default(PARTICIPANT)
+  joinedAt      DateTime?
+  leftAt        DateTime?
+  attendanceSec Int         @default(0)
+  isBanned      Boolean     @default(false)
+
+  // Optional link to the employee's timesheet for that day
+  timeSheetId String?
+  timeSheet   TimeSheet? @relation(fields: [timeSheetId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([meetingId, empId])
+  @@index([empId, joinedAt])
+  @@map("meeting_participants")
+}
+
+model MeetingRecording {
+  id            String    @id @default(cuid())
+  meetingId     String
+  meeting       Meeting   @relation(fields: [meetingId], references: [id])
+  startedAt     DateTime
+  endedAt       DateTime?
+  cloudinaryUrl String?
+  publicId      String?
+  bytes         Int?
+  format        String?
+  createdById   String?
+  createdBy     Employee? @relation(fields: [createdById], references: [id])
+  createdAt     DateTime  @default(now())
+
+  @@index([meetingId])
+  @@index([createdById])
+  @@map("meeting_recordings")
+}
+
+model MeetingEvent {
+  id        String    @id @default(cuid())
+  meetingId String
+  meeting   Meeting   @relation(fields: [meetingId], references: [id])
+  empId     String?
+  employee  Employee? @relation(fields: [empId], references: [id])
+  type      String
+  at        DateTime  @default(now())
+  data      Json?
+
+  @@index([meetingId, at])
+  @@map("meeting_events")
+}
+
 enum EmpGender {
   MALE
   FEMALE
@@ -209,4 +299,23 @@ enum TaskStatus {
   PENDING
   IN_PROGRESS
   COMPLETED
+}
+
+enum MeetingType {
+  BASIC
+  NORMAL
+  LONG
+}
+
+enum MeetingStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+  CANCELED
+}
+
+enum MeetingRole {
+  HOST
+  COHOST
+  PARTICIPANT
 }
