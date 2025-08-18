@@ -93,3 +93,39 @@ D:\clone-code\api\employee_app\controller\empLeaveController.js:39:56
 Foreign key constraint violated: `emp_leaves_empId_fkey (index)`
 level info: Aug-18-2025 18:06:41 	Leave request submitted successfully
 level info: Aug-18-2025 18:11:33 	Leave history retrieved successfully for employee cmed6topn0004vgzwqnnk0gl2
+level info: Aug-18-2025 22:10:59 	Leave history retrieved successfully for employee cmed6topn0004vgzwqnnk0gl2
+level info: Aug-18-2025 22:10:59 	Leave history retrieved successfully for employee cmed6topn0004vgzwqnnk0gl2
+level error: Aug-18-2025 22:11:21 	Error: 
+Invalid `prisma.empLeave.create()` invocation in
+D:\clone-code\api\employee_app\controller\empLeaveController.js:39:56
+
+  36 const duration = end.diff(start, 'days') + 1;
+  37 
+  38 // Create leave request
+→ 39 const leaveRequest = await prisma.empLeave.create({
+       data: {
+         empId: "cmed6topn0004vgzwqnnk0gl2",
+         leaveType: "ANNUAL",
+                    ~~~~~~~~
+         startDate: new Date("2026-05-21T18:30:00.000Z"),
+         endDate: new Date("2026-06-22T18:30:00.000Z"),
+         message: "h6elllooooo",
+         status: "PENDING",
+         isActive: true
+       },
+       include: {
+         employee: {
+           select: {
+             empName: true,
+             empEmail: true,
+             empTechnology: true
+           }
+         }
+       }
+     })
+
+Invalid value for argument `leaveType`. Expected LeaveType.
+level info: Aug-18-2025 22:12:06 	Leave history retrieved successfully for employee cmed6topn0004vgzwqnnk0gl2
+level info: Aug-18-2025 22:12:06 	Leave history retrieved successfully for employee cmed6topn0004vgzwqnnk0gl2
+level info: Aug-18-2025 22:12:42 	Leave request submitted successfully
+level info: Aug-18-2025 22:12:43 	Leave history retrieved successfully for employee cmed6topn0004vgzwqnnk0gl2
