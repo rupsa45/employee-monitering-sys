@@ -100,3 +100,14 @@ level info: Aug-18-2025 18:13:21 	Leave approve successfully
 level info: Aug-18-2025 18:13:22 	Employee leaves retrieved successfully
 level info: Aug-18-2025 18:14:53 	All employees retrieved successfully
 level info: Aug-18-2025 18:14:53 	All employees retrieved successfully
+level error: Aug-18-2025 20:39:45 	Admin not found
+level error: Aug-18-2025 20:39:48 	Admin not found
+level error: Aug-18-2025 20:40:04 	Admin not found
+level info: Aug-18-2025 20:40:41 	Admin profile retrieved successfully
+level info: Aug-18-2025 20:40:43 	Admin profile retrieved successfully
+level info: Aug-18-2025 20:40:50 	Admin profile retrieved successfully
+level error: Aug-18-2025 20:40:55 	Admin not found
+level error: Aug-18-2025 20:41:27 	Admin not found
+level info: Aug-18-2025 20:41:51 	Admin logged in successfully
+level error: Aug-18-2025 20:43:23 	Admin not found
+level error: Aug-18-2025 20:43:25 	Admin not found
