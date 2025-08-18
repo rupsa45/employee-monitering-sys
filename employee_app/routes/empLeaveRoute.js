@@ -7,7 +7,7 @@ const authService = require('../../middleware/authService')
 const router = express.Router()
 
 // Apply for leave
-router.post('/empLeave/:id', authentication, authService.isEmployee, empLeaveController.empLeave)
+router.post('/:id', authentication, authService.isEmployee, empLeaveController.empLeave)
 
 // Get leave history with comprehensive filtering
 router.get('/getLeaveHistory/:empId', authentication, authService.isEmployee, empLeaveController.getLeaveHistory)
