@@ -5,3 +5,91 @@ level info: Aug-12-2025 23:55:17 	Leave history retrieved successfully for emplo
 level info: Aug-12-2025 23:56:16 	Leave history retrieved successfully for employee cme41fu5j0002s23awepd95qy
 level info: Aug-12-2025 23:58:47 	Leave history retrieved successfully for employee cme41fu5j0002s23awepd95qy
 level info: Aug-13-2025 00:00:24 	Leave history retrieved successfully for employee cme41fu5j0002s23awepd95qy
+level error: Aug-18-2025 17:53:04 	Error: 
+Invalid `prisma.empLeave.create()` invocation in
+D:\clone-code\api\employee_app\controller\empLeaveController.js:39:56
+
+  36 const duration = end.diff(start, 'days') + 1;
+  37 
+  38 // Create leave request
+→ 39 const leaveRequest = await prisma.empLeave.create(
+Foreign key constraint violated: `emp_leaves_empId_fkey (index)`
+level error: Aug-18-2025 17:54:58 	Error: 
+Invalid `prisma.empLeave.create()` invocation in
+D:\clone-code\api\employee_app\controller\empLeaveController.js:39:56
+
+  36 const duration = end.diff(start, 'days') + 1;
+  37 
+  38 // Create leave request
+→ 39 const leaveRequest = await prisma.empLeave.create({
+       data: {
+         empId: undefined,
+         leaveType: "SICK",
+         startDate: new Date("2025-09-21T18:30:00.000Z"),
+         endDate: new Date("2025-09-24T18:30:00.000Z"),
+         message: "Personal work at home",
+         status: "PENDING",
+         isActive: true,
+     +   employee: {
+     +     create: EmployeeCreateWithoutLeavesInput | EmployeeUncheckedCreateWithoutLeavesInput,
+     +     connectOrCreate: EmployeeCreateOrConnectWithoutLeavesInput,
+     +     connect: EmployeeWhereUniqueInput
+     +   }
+       },
+       include: {
+         employee: {
+           select: {
+             empName: true,
+             empEmail: true,
+             empTechnology: true
+           }
+         }
+       }
+     })
+
+Argument `employee` is missing.
+level error: Aug-18-2025 17:55:05 	Error: 
+Invalid `prisma.empLeave.create()` invocation in
+D:\clone-code\api\employee_app\controller\empLeaveController.js:39:56
+
+  36 const duration = end.diff(start, 'days') + 1;
+  37 
+  38 // Create leave request
+→ 39 const leaveRequest = await prisma.empLeave.create({
+       data: {
+         empId: undefined,
+         leaveType: "SICK",
+         startDate: new Date("2025-09-21T18:30:00.000Z"),
+         endDate: new Date("2025-09-24T18:30:00.000Z"),
+         message: "Personal work at home",
+         status: "PENDING",
+         isActive: true,
+     +   employee: {
+     +     create: EmployeeCreateWithoutLeavesInput | EmployeeUncheckedCreateWithoutLeavesInput,
+     +     connectOrCreate: EmployeeCreateOrConnectWithoutLeavesInput,
+     +     connect: EmployeeWhereUniqueInput
+     +   }
+       },
+       include: {
+         employee: {
+           select: {
+             empName: true,
+             empEmail: true,
+             empTechnology: true
+           }
+         }
+       }
+     })
+
+Argument `employee` is missing.
+level error: Aug-18-2025 17:56:57 	Error: 
+Invalid `prisma.empLeave.create()` invocation in
+D:\clone-code\api\employee_app\controller\empLeaveController.js:39:56
+
+  36 const duration = end.diff(start, 'days') + 1;
+  37 
+  38 // Create leave request
+→ 39 const leaveRequest = await prisma.empLeave.create(
+Foreign key constraint violated: `emp_leaves_empId_fkey (index)`
+level info: Aug-18-2025 18:06:41 	Leave request submitted successfully
+level info: Aug-18-2025 18:11:33 	Leave history retrieved successfully for employee cmed6topn0004vgzwqnnk0gl2

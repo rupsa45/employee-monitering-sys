@@ -11,15 +11,15 @@ let app = express();
  
 // Environment-based CORS configuration
 const isDevelopment = process.env.NODE_ENV !== 'production';
+console.log(isDevelopment);
+
  
 const corsOptions = {
-  origin: isDevelopment
-    ? ["http://localhost:5173", "http://localhost:3000", "http://localhost:4173", "http://localhost:9000"]
-    : [
-        "https://monitering-system-client.vercel.app",
-        "https://your-frontend-domain.vercel.app", // Add any additional production domains
-        process.env.FRONTEND_URL // Allow environment variable for frontend URL
-      ].filter(Boolean), // Remove any undefined values
+  origin: [
+    "http://localhost:5173",
+    "https://monitering-system-client.vercel.app",
+    "https://employee-monitering-sys-client.vercel.app"
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
