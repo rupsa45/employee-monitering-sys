@@ -16,6 +16,27 @@ const notificationTestRoute = require('./admin_app/routes/notificationTestRoute'
 
 const router = express.Router();
 
+// Health check endpoint for monitoring
+router.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'OK', 
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    version: process.version
+  });
+});
+
+// API status endpoint
+router.get('/api/status', (req, res) => {
+  res.status(200).json({ 
+    message: 'Employee Monitoring System API is running',
+    environment: process.env.NODE_ENV || 'development',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Admin routes
 router.use('/admin', adminRoute);
 
