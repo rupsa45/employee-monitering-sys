@@ -1,5 +1,5 @@
 const { prisma } = require("../../config/prismaConfig");
-const adminLogger = require("../../utils/adminLogger/adminLogger");
+// Logger removed for cleaner output
 const TaskNotificationService = require("../../service/taskNotificationService");
 
 module.exports = {
@@ -70,10 +70,10 @@ module.exports = {
           'created'
         );
       } catch (notificationError) {
-        adminLogger.log("warn", `Task created but notification failed: ${notificationError.message}`);
+        
       }
 
-      adminLogger.log("info", `Task "${title}" created successfully by admin`);
+      
       res.status(201).json({
         success: true,
         message: "Task created successfully",
@@ -88,7 +88,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error creating task: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error creating task",
@@ -140,7 +140,7 @@ module.exports = {
         },
       });
 
-      adminLogger.log("info", "All tasks retrieved successfully by admin");
+      
       res.status(200).json({
         success: true,
         message: "Tasks retrieved successfully",
@@ -148,7 +148,7 @@ module.exports = {
         total: tasks.length,
       });
     } catch (error) {
-      adminLogger.log("error", `Error retrieving tasks: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving tasks",
@@ -184,17 +184,14 @@ module.exports = {
         });
       }
 
-      adminLogger.log(
-        "info",
-        `Task "${task.title}" retrieved successfully by admin`
-      );
+      
       res.status(200).json({
         success: true,
         message: "Task retrieved successfully",
         task,
       });
     } catch (error) {
-      adminLogger.log("error", `Error retrieving task: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving task",
@@ -297,23 +294,17 @@ module.exports = {
             'updated'
           );
         } catch (notificationError) {
-          adminLogger.log("warn", `Task updated but notification failed: ${notificationError.message}`);
+          
         }
 
-        adminLogger.log(
-          "info",
-          `Task "${finalTask.title}" updated successfully by admin`
-        );
+        
         res.status(200).json({
           success: true,
           message: "Task updated successfully",
           task: finalTask,
         });
       } else {
-        adminLogger.log(
-          "info",
-          `Task "${updatedTask.title}" updated successfully by admin`
-        );
+        
         res.status(200).json({
           success: true,
           message: "Task updated successfully",
@@ -321,7 +312,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      adminLogger.log("error", `Error updating task: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error updating task",
@@ -355,17 +346,14 @@ module.exports = {
         where: { id: taskId },
       });
 
-      adminLogger.log(
-        "info",
-        `Task "${task.title}" deleted successfully by admin`
-      );
+      
       res.status(200).json({
         success: true,
         message: "Task deleted successfully",
         task,
       });
     } catch (error) {
-      adminLogger.log("error", `Error deleting task: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error deleting task",
@@ -396,17 +384,14 @@ module.exports = {
         data: { isActive: false },
       });
 
-      adminLogger.log(
-        "info",
-        `Task "${task.title}" deleted successfully by admin`
-      );
+      
       res.status(200).json({
         success: true,
         message: "Task deleted successfully",
         task,
       });
     } catch (error) {
-      adminLogger.log("error", `Error deleting task: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error deleting task",
@@ -469,10 +454,7 @@ module.exports = {
         },
       });
 
-      adminLogger.log(
-        "info",
-        `Tasks for employee "${employee.empName}" retrieved successfully`
-      );
+      
       res.status(200).json({
         success: true,
         message: "Employee tasks retrieved successfully",
@@ -481,10 +463,7 @@ module.exports = {
         total: tasks.length,
       });
     } catch (error) {
-      adminLogger.log(
-        "error",
-        `Error retrieving employee tasks: ${error.message}`
-      );
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving employee tasks",
@@ -564,20 +543,17 @@ module.exports = {
           status.toUpperCase()
         );
       } catch (notificationError) {
-        adminLogger.log("warn", `Task status updated but notification failed: ${notificationError.message}`);
+        
       }
 
-      adminLogger.log(
-        "info",
-        `Task "${task.title}" status updated to ${status} by employee ${empId}`
-      );
+      
       res.status(200).json({
         success: true,
         message: "Task status updated successfully",
         task: updatedTask,
       });
     } catch (error) {
-      adminLogger.log("error", `Error updating task status: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error updating task status",

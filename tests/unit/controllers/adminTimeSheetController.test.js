@@ -24,7 +24,7 @@ jest.mock('../../../utils/adminLogger/adminLogger');
 // Import the controller
 const adminTimeSheetController = require('../../../admin_app/controller/adminTimeSheetController');
 const { prisma } = require('../../../config/prismaConfig');
-const adminLogger = require('../../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 describe('Admin TimeSheet Controller', () => {
   let mockReq, mockRes;

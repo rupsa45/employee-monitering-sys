@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const moment = require("moment");
 const { prisma } = require("../../config/prismaConfig");
-const adminLogger = require("../../utils/adminLogger/adminLogger");
+// Logger removed for cleaner output
 
 module.exports = {
   // Admin registration (public endpoint)
@@ -24,7 +24,7 @@ module.exports = {
       });
 
       if (existingAdmin) {
-        adminLogger.log("error", "Admin Already Exists With This Email");
+        
         return res.status(409).json({
           success: false,
           message: "Admin Already Exists With This Email",
@@ -67,7 +67,7 @@ module.exports = {
         return res.status(400).json({ message: "Passwords do not match" });
       }
 
-      adminLogger.log("info", "Admin Registered Successfully");
+      
       res.status(201).json({
         success: true,
         message: "Admin Registered Successfully",
@@ -81,7 +81,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: error.message,
@@ -100,7 +100,7 @@ module.exports = {
       });
 
       if (!admin || admin.empRole !== "admin") {
-        adminLogger.log("error", "Admin not found");
+        
         return res.status(404).json({
           success: false,
           message: "Admin not found",
@@ -113,7 +113,7 @@ module.exports = {
         admin.empPassword
       );
       if (!isValidPassword) {
-        adminLogger.log("error", "Invalid password");
+        
         return res.status(401).json({
           success: false,
           message: "Invalid password",
@@ -143,7 +143,7 @@ module.exports = {
         empGender: admin.empGender
       };
 
-      adminLogger.log("info", "Admin logged in successfully");
+      
       res.status(200).json({
         success: true,
         message: "Admin logged in successfully",
@@ -151,7 +151,7 @@ module.exports = {
         user: userData
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: error.message,
@@ -178,7 +178,7 @@ module.exports = {
       });
 
       if (existingEmployee) {
-        adminLogger.log("error", "Employee Already Exists With This Email");
+        
         return res.status(409).json({
           success: false,
           message: "Employee Already Exists With This Email",
@@ -210,7 +210,7 @@ module.exports = {
         },
       });
 
-      adminLogger.log("info", "Employee Created Successfully");
+      
       res.status(201).json({
         success: true,
         message: "Employee Created Successfully",
@@ -224,7 +224,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: error.message,
@@ -283,7 +283,7 @@ module.exports = {
         };
       });
 
-      adminLogger.log("info", "Employee leaves retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Employee leaves retrieved successfully",
@@ -291,7 +291,7 @@ module.exports = {
         total: leavesWithDuration.length,
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving employee leaves",
@@ -349,7 +349,7 @@ module.exports = {
         leaveRequest: updatedLeave,
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error processing leave request",
@@ -381,7 +381,7 @@ module.exports = {
       });
 
       if (!admin) {
-        adminLogger.log("error", "Admin profile not found");
+        
         return res.status(404).json({
           success: false,
           message: "Admin profile not found"
@@ -444,14 +444,14 @@ module.exports = {
         }
       };
 
-      adminLogger.log("info", "Admin profile retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Admin profile retrieved successfully",
         data: profileData
       });
     } catch (error) {
-      adminLogger.log('error', `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: error.message
@@ -491,7 +491,7 @@ module.exports = {
         }
       });
 
-      adminLogger.log("info", "All employees retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "All employees retrieved successfully",
@@ -499,7 +499,7 @@ module.exports = {
         total: total
       });
     } catch (error) {
-      adminLogger.log('error', `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: error.message

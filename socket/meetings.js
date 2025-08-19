@@ -1,5 +1,5 @@
 const signalingService = require('../service/signalingService');
-const logger = require('../utils/logger');
+// Logger removed for cleaner output
 const { socketRateLimiter } = require('../middleware/rateLimiter');
 
 /**

@@ -1,7 +1,7 @@
 const { prisma } = require('../config/prismaConfig');
 const { generateShortcode } = require('../utils/shortcode');
 const { hashMeetingPassword, verifyMeetingPassword } = require('../utils/hash');
-const logger = require('../utils/logger');
+// Logger removed for cleaner output
 
 /**
  * Meeting Service - Business Logic for Meeting Operations

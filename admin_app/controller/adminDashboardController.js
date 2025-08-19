@@ -1,6 +1,6 @@
 const { prisma } = require("../../config/prismaConfig");
 const moment = require("moment");
-const adminLogger = require("../../utils/adminLogger/adminLogger");
+// Logger removed for cleaner output
 
 module.exports = {
   // Main dashboard overview
@@ -81,7 +81,7 @@ module.exports = {
         take: 10,
       });
 
-      adminLogger.log("info", "Dashboard overview retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Dashboard overview retrieved successfully",
@@ -97,7 +97,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving dashboard overview",
@@ -218,7 +218,7 @@ module.exports = {
         };
       });
 
-      adminLogger.log("info", "Employee management data retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Employee management data retrieved successfully",
@@ -234,7 +234,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving employee management data",
@@ -334,7 +334,7 @@ module.exports = {
         employeeAttendance[empId].total++;
       });
 
-      adminLogger.log("info", "Attendance analytics retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Attendance analytics retrieved successfully",
@@ -352,7 +352,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving attendance analytics",
@@ -434,7 +434,7 @@ module.exports = {
         );
       }
 
-      adminLogger.log("info", "Task management data retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Task management data retrieved successfully",
@@ -453,7 +453,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving task management data",
@@ -545,7 +545,7 @@ module.exports = {
         },
       });
 
-      adminLogger.log("info", "Leave management data retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Leave management data retrieved successfully",
@@ -564,7 +564,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving leave management data",
@@ -698,14 +698,14 @@ module.exports = {
         performanceMetrics.employeePerformance = Object.values(employeePerformance);
       }
 
-      adminLogger.log("info", "Performance analytics retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Performance analytics retrieved successfully",
         data: performanceMetrics,
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving performance analytics",
@@ -819,7 +819,7 @@ module.exports = {
         },
       });
 
-      adminLogger.log("info", "Real-time monitoring data retrieved successfully");
+      
       res.status(200).json({
         success: true,
         message: "Real-time monitoring data retrieved successfully",
@@ -859,7 +859,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      adminLogger.log("error", `Error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: "Error retrieving real-time monitoring data",

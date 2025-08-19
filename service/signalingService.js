@@ -1,7 +1,7 @@
 const { prisma } = require('../config/prismaConfig');
 const meetingAuthService = require('./meetingAuthService');
 const meetingService = require('./meetingService');
-const logger = require('../utils/logger');
+// Logger removed for cleaner output
 
 /**
  * Signaling Service

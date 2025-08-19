@@ -1,7 +1,7 @@
 const meetingService = require('../../service/meetingService');
 const meetingSchedulingService = require('../../service/meetingSchedulingService');
 const { prisma } = require('../../config/prismaConfig');
-const logger = require('../../utils/logger');
+// Logger removed for cleaner output
 
 /**
  * Admin Meeting Controller

@@ -1,5 +1,5 @@
 const TaskNotificationService = require('./taskNotificationService');
-const scheduledLogger = require('../utils/scheduledLogger/scheduledLogger');
+// Logger removed for cleaner output
 
 /**
  * Scheduled Notification Service
@@ -13,14 +13,14 @@ class ScheduledNotificationService {
      */
     static async sendDailyTaskReminders() {
         try {
-            scheduledLogger.log('info', 'Starting daily task reminder notifications');
+            
             
             await TaskNotificationService.sendTaskReminderNotifications();
             
-            scheduledLogger.log('info', 'Daily task reminder notifications completed successfully');
+            
             
         } catch (error) {
-            scheduledLogger.log('error', `Error in daily task reminders: ${error.message}`);
+            
             throw error;
         }
     }
@@ -30,7 +30,7 @@ class ScheduledNotificationService {
      */
     static async sendWeeklyTaskSummary() {
         try {
-            scheduledLogger.log('info', 'Starting weekly task summary notifications');
+            
             
             const { prisma } = require('../config/prismaConfig');
             const mailOptions = require('./emailService');
@@ -108,10 +108,10 @@ class ScheduledNotificationService {
                 );
             }
             
-            scheduledLogger.log('info', `Weekly task summary sent to ${admins.length} admins`);
+            
             
         } catch (error) {
-            scheduledLogger.log('error', `Error in weekly task summary: ${error.message}`);
+            
             throw error;
         }
     }
@@ -291,6 +291,7 @@ class ScheduledNotificationService {
 }
 
 module.exports = ScheduledNotificationService;
+
 
 
 

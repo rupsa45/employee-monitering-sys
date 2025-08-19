@@ -13,7 +13,7 @@ jest.mock('../../../utils/benchLogger/benchLogger');
 // Import the controller
 const benchController = require('../../../admin_app/controller/benchController');
 const { prisma } = require('../../../config/prismaConfig');
-const benchLogger = require('../../../utils/benchLogger/benchLogger');
+// Logger removed for cleaner output
 
 describe('Bench Controller', () => {
   let mockReq, mockRes;
