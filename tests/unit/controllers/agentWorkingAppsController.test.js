@@ -20,7 +20,7 @@ jest.mock('../../../utils/adminLogger/adminLogger');
 // Import the controller
 const agentWorkingAppsController = require('../../../admin_app/controller/agentWorkingAppsController');
 const { prisma } = require('../../../config/prismaConfig');
-const adminLogger = require('../../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 describe('Agent Working Apps Controller', () => {
   let mockReq, mockRes;

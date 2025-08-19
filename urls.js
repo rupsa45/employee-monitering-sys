@@ -14,6 +14,11 @@ const agentWorkingAppsRoute = require('./admin_app/routes/agentWorkingAppsRoute'
 const agentIdleTimeRoute = require('./admin_app/routes/agentIdleTimeRoute');
 const notificationTestRoute = require('./admin_app/routes/notificationTestRoute');
 
+// Meeting routes
+const adminMeetingRoute = require('./admin_app/routes/meetingRoute');
+const empMeetingRoute = require('./employee_app/routes/empMeetingRoute');
+const empMeetingRecordingRoute = require('./employee_app/routes/empMeetingRecordingRoute');
+
 const router = express.Router();
 
 // Health check endpoint for monitoring
@@ -78,5 +83,10 @@ router.use('/agent-idle-time', agentIdleTimeRoute);
 
 // Notification test routes (for development/testing)
 router.use('/notification-test', notificationTestRoute);
+
+// Meeting routes
+router.use('/admin/meetings', adminMeetingRoute);
+router.use('/emp/meetings', empMeetingRoute);
+router.use('/emp/meetings', empMeetingRecordingRoute);
 
 module.exports = router;

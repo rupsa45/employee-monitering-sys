@@ -30,7 +30,7 @@ app.post('/admin/adminLogin', (req, res) => {
         }
       },
       '11379211', // Using the same SECRET_KEY from your .env
-      { expiresIn: '1h' }
+      { expiresIn: '15d' }
     );
     
     res.json({

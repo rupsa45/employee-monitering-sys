@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { prisma } = require('../config/prismaConfig');
-const logger = require('../utils/logger');
+// Logger removed for cleaner output
 
 /**
  * Meeting Auth Service - JWT Token Management for Meeting Access

@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { prisma } = require('../../config/prismaConfig');
-const employeeLogger = require('../../utils/empLogger/employeeLogger');
+// Logger removed for cleaner output
 const emailService = require('../../service/emailService');
 
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
             });
 
             if (!employee) {
-                employeeLogger.log("error", "Employee profile not found");
+                
                 return res.status(404).json({
                     success: false,
                     message: "Employee profile not found"
@@ -74,14 +74,14 @@ module.exports = {
                 }
             };
 
-            employeeLogger.log("info", "Employee profile retrieved successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Employee profile retrieved successfully",
                 data: profileData
             });
         } catch (error) {
-            employeeLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: error.message
@@ -100,7 +100,7 @@ module.exports = {
             });
 
             if (!employee) {
-                employeeLogger.log("error", "Employee not found");
+                
                 return res.status(404).json({
                     success: false,
                     message: "Employee not found"
@@ -110,7 +110,7 @@ module.exports = {
             // Verify password
             const isValidPassword = await bcrypt.compare(empPassword, employee.empPassword);
             if (!isValidPassword) {
-                employeeLogger.log("error", "Invalid password");
+                
                 return res.status(401).json({
                     success: false,
                     message: "Invalid password"
@@ -127,7 +127,7 @@ module.exports = {
                     }
                 },
                 process.env.SECRET_KEY,
-                { expiresIn: "1h" }
+                { expiresIn: "15d" }
             );
 
             // Prepare user data for frontend
@@ -141,7 +141,7 @@ module.exports = {
                 empGender: employee.empGender
             };
 
-            employeeLogger.log("info", "Employee logged in successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Employee logged in successfully",
@@ -149,7 +149,7 @@ module.exports = {
                 user: userData
             });
         } catch (error) {
-            employeeLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: error.message
@@ -181,14 +181,14 @@ module.exports = {
                 }
             });
 
-            employeeLogger.log("info", "Employee profile updated successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Employee profile updated successfully",
                 employee: updatedEmployee
             });
         } catch (error) {
-            employeeLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: error.message
@@ -221,13 +221,13 @@ module.exports = {
                 }
             });
 
-            employeeLogger.log("info", "Password updated successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Password updated successfully"
             });
         } catch (error) {
-            employeeLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: error.message
@@ -274,13 +274,13 @@ module.exports = {
 
             await emailService.sendEmail(empEmail, "Password Reset", emailContent);
 
-            employeeLogger.log("info", "Password reset email sent successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Password reset email sent successfully"
             });
         } catch (error) {
-            employeeLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: error.message
@@ -309,7 +309,7 @@ module.exports = {
                 data: notifications
             });
         } catch (error) {
-            employeeLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: error.message

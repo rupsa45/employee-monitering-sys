@@ -20,7 +20,7 @@ jest.mock('../../../service/emailService');
 // Import the controller
 const empController = require('../../../employee_app/controller/empController');
 const { prisma } = require('../../../config/prismaConfig');
-const employeeLogger = require('../../../utils/empLogger/employeeLogger');
+// Logger removed for cleaner output
 
 describe('Employee Controller', () => {
   let mockReq, mockRes;
@@ -81,7 +81,7 @@ describe('Employee Controller', () => {
           }
         },
         process.env.SECRET_KEY,
-        { expiresIn: "1h" }
+        { expiresIn: "15d" }
       );
       expect(mockRes.status).toHaveBeenCalledWith(200);
       expect(mockRes.json).toHaveBeenCalledWith({

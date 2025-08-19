@@ -3,7 +3,7 @@ const meetingSchedulingService = require('../../service/meetingSchedulingService
 const meetingAuthService = require('../../service/meetingAuthService');
 const { prisma } = require('../../config/prismaConfig');
 const iceConfig = require('../../utils/iceConfig');
-const logger = require('../../utils/logger');
+// Logger removed for cleaner output
 
 /**
  * Employee Meeting Controller

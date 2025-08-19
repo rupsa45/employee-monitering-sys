@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 level info: Aug-18-2025 14:57:15 	PostgreSQL Database connected successfully
 level info: Aug-18-2025 14:57:15 	Server Started on http://localhost:9000
 <<<<<<< HEAD
@@ -98,6 +100,10 @@ level info: Aug-18-2025 21:29:56 	PostgreSQL Database connected successfully
 level info: Aug-18-2025 21:33:11 	PostgreSQL Database connected successfully
 level info: Aug-18-2025 22:09:50 	PostgreSQL Database connected successfully
 level info: Aug-18-2025 22:09:50 	Server Started on http://localhost:9000
+<<<<<<< HEAD
+level info: Aug-19-2025 23:38:37 	PostgreSQL Database connected successfully
+level info: Aug-19-2025 23:38:37 	Server Started on http://localhost:9000
+=======
 level info: Aug-19-2025 20:11:33 	PostgreSQL Database connected successfully
 level info: Aug-19-2025 20:11:33 	Server Started on http://localhost:9000
 level info: Aug-19-2025 20:33:15 	PostgreSQL Database connected successfully
@@ -107,3 +113,5 @@ level info: Aug-19-2025 20:39:02 	Server Started on http://localhost:9000
 level info: Aug-19-2025 20:40:31 	PostgreSQL Database connected successfully
 level info: Aug-19-2025 20:40:31 	Server Started on http://localhost:9000
 >>>>>>> 36b1dff6c2ac6467b649baacaebb6a042197be36
+>>>>>>> ac1701dcbdc94e9df371cedf287b7059e5f37449
+>>>>>>> main

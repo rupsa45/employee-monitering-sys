@@ -21,7 +21,7 @@ jest.mock('../../../utils/adminLogger/adminLogger');
 // Import the controller
 const adminController = require('../../../admin_app/controller/adminController');
 const { prisma } = require('../../../config/prismaConfig');
-const adminLogger = require('../../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 describe('Admin Controller', () => {
   let mockReq, mockRes;
@@ -264,7 +264,7 @@ describe('Admin Controller', () => {
           }
         },
         process.env.SECRET_KEY,
-        { expiresIn: "1h" }
+        { expiresIn: "15d" }
       );
       expect(mockRes.status).toHaveBeenCalledWith(200);
       expect(mockRes.json).toHaveBeenCalledWith({
