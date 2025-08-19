@@ -12,6 +12,8 @@ let app = express();
 // Environment-based CORS configuration
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
+console.log(isDevelopment);
+
 const corsOptions = {
   origin: isDevelopment 
     ? ["http://localhost:5173", "http://localhost:3000", "http://localhost:4173", "http://localhost:9000"]
@@ -28,12 +30,15 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+
 // Additional CORS preflight handling
 app.options('*', cors(corsOptions));
+
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/', commonRouter)
+
 
 // Environment-based host configuration
 const HOST = isDevelopment ? "localhost" : "0.0.0.0";
