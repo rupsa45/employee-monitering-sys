@@ -1,5 +1,5 @@
 const { prisma } = require('../../config/prismaConfig');
-const notificationLogger = require('../../utils/notificationLogger/notificationLogger');
+// Logger removed for cleaner output
 
 module.exports = {
     // Create notification
@@ -67,7 +67,7 @@ module.exports = {
                 )
             );
 
-            notificationLogger.log('info', `Notification created successfully for ${notifications.length} employees`);
+            
             res.status(201).json({
                 success: true,
                 message: `Notification created successfully for ${notifications.length} employees`,
@@ -80,7 +80,7 @@ module.exports = {
                 }))
             });
         } catch (error) {
-            notificationLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error creating notification",
@@ -109,7 +109,7 @@ module.exports = {
                 }
             });
 
-            notificationLogger.log('info', "Active employees retrieved successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Active employees retrieved successfully",
@@ -117,7 +117,7 @@ module.exports = {
                 total: employees.length
             });
         } catch (error) {
-            notificationLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error retrieving active employees",
@@ -159,7 +159,7 @@ module.exports = {
                 }
             });
 
-            notificationLogger.log('info', "All notifications retrieved successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "All notifications retrieved successfully",
@@ -167,7 +167,7 @@ module.exports = {
                 total: notifications.length
             });
         } catch (error) {
-            notificationLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error retrieving notifications",
@@ -200,14 +200,14 @@ module.exports = {
                 }
             });
 
-            notificationLogger.log('info', "Notification updated successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Notification updated successfully",
                 notification: notification
             });
         } catch (error) {
-            notificationLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error updating notification",
@@ -226,13 +226,13 @@ module.exports = {
                 data: { isActive: false }
             });
 
-            notificationLogger.log('info', "Notification inactive successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Notification inactive successfully"
             });
         } catch (error) {
-            notificationLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error while inactivate notification",
@@ -266,14 +266,14 @@ module.exports = {
                 });
             }
 
-            notificationLogger.log('info', "Notification retrieved successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Notification retrieved successfully",
                 notification: notification
             });
         } catch (error) {
-            notificationLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error retrieving notification",

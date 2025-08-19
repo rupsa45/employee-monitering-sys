@@ -1,6 +1,6 @@
 const moment = require('moment');
 const { prisma } = require('../../config/prismaConfig');
-const adminLogger = require('../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 module.exports = {
     // Get all employee timesheets for admin view
@@ -38,7 +38,7 @@ module.exports = {
                 }
             });
             
-            adminLogger.log('info', 'All employee timesheets retrieved successfully');
+            
             res.status(200).json({
                 success: true,
                 message: 'All employee timesheets retrieved successfully',
@@ -46,7 +46,7 @@ module.exports = {
                 total: timeSheets.length
             });
         } catch (error) {
-            adminLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: 'Error retrieving timesheets',
@@ -103,7 +103,7 @@ module.exports = {
                 late: todayTimeSheets.filter(ts => ts.status === 'LATE').length
             };
 
-            adminLogger.log('info', 'Today\'s attendance summary retrieved successfully');
+            
             res.status(200).json({
                 success: true,
                 message: 'Today\'s attendance summary retrieved successfully',
@@ -111,7 +111,7 @@ module.exports = {
                 timeSheets: todayTimeSheets
             });
         } catch (error) {
-            adminLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: 'Error retrieving attendance summary',
@@ -161,7 +161,7 @@ module.exports = {
                 }
             });
             
-            adminLogger.log('info', 'Employee activity snapshots retrieved successfully');
+            
             res.status(200).json({
                 success: true,
                 message: 'Employee activity snapshots retrieved successfully',
@@ -169,7 +169,7 @@ module.exports = {
                 total: activitySnapshots.length
             });
         } catch (error) {
-            adminLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: 'Error retrieving activity snapshots',
@@ -222,14 +222,14 @@ module.exports = {
                 });
             }
             
-            adminLogger.log('info', 'Activity snapshot updated successfully');
+            
             res.status(200).json({
                 success: true,
                 message: 'Activity snapshot updated successfully',
                 data: snapshot
             });
         } catch (error) {
-            adminLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: 'Error updating activity snapshot',
@@ -289,7 +289,7 @@ module.exports = {
                 lateDays: 0
             });
             
-            adminLogger.log('info', 'Employee detailed timesheet retrieved successfully');
+            
             res.status(200).json({
                 success: true,
                 message: 'Employee detailed timesheet retrieved successfully',
@@ -300,7 +300,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            adminLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: 'Error retrieving employee timesheet',

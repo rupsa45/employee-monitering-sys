@@ -1,0 +1,117 @@
+<<<<<<< HEAD
+=======
+level info: Aug-18-2025 14:57:15 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 14:57:15 	Server Started on http://localhost:9000
+<<<<<<< HEAD
+=======
+level info: Aug-18-2025 16:08:33 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:08:33 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:10:12 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:10:12 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:10:14 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:10:14 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:10:16 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:10:16 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:11:19 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:11:19 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:12:04 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:12:04 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:12:38 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:12:38 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:12:40 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:12:40 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:12:42 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:12:42 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:12:57 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:12:57 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:12:59 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:12:59 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:14:39 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:14:39 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:15:24 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:15:24 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:15:32 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:15:32 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:15:46 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:15:47 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:15:49 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:15:49 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:15:55 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:15:55 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:16:27 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:16:27 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:18:11 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:18:11 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:18:59 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:19:00 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:19:35 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:19:35 	Server Started on port 9000
+level info: Aug-18-2025 16:21:02 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:21:02 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:25:05 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:25:05 	Server Started on port 9000
+level info: Aug-18-2025 16:26:04 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:26:04 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:26:23 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:26:23 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:26:25 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:26:25 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:26:31 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:26:31 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:31:59 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:31:59 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:36:15 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:36:15 	Server Started on http://localhost:9000
+level info: Aug-18-2025 16:39:10 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 16:39:10 	Server Started on http://localhost:9000
+level info: Aug-18-2025 18:02:27 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 18:02:27 	Server Started on http://localhost:9000
+level info: Aug-18-2025 18:03:21 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 18:03:21 	Server Started on http://localhost:9000
+level info: Aug-18-2025 18:04:06 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 18:04:06 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:10:57 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:10:57 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:10:58 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:16:03 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:16:03 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:20:54 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:20:54 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:36:33 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:36:33 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:44:25 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:44:26 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:54:32 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:54:32 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:54:44 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:55:33 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:55:33 	Server Started on http://localhost:9000
+level info: Aug-18-2025 20:57:09 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 20:57:09 	Server Started on http://localhost:9000
+level info: Aug-18-2025 21:19:51 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 21:19:51 	Server Started on http://localhost:9000
+level info: Aug-18-2025 21:19:54 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 21:19:54 	Server Started on http://localhost:9000
+level info: Aug-18-2025 21:20:21 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 21:20:21 	Server Started on http://localhost:9000
+level info: Aug-18-2025 21:20:24 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 21:20:24 	Server Started on http://localhost:9000
+level info: Aug-18-2025 21:29:56 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 21:33:11 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 22:09:50 	PostgreSQL Database connected successfully
+level info: Aug-18-2025 22:09:50 	Server Started on http://localhost:9000
+<<<<<<< HEAD
+level info: Aug-19-2025 23:38:37 	PostgreSQL Database connected successfully
+level info: Aug-19-2025 23:38:37 	Server Started on http://localhost:9000
+=======
+level info: Aug-19-2025 20:11:33 	PostgreSQL Database connected successfully
+level info: Aug-19-2025 20:11:33 	Server Started on http://localhost:9000
+level info: Aug-19-2025 20:33:15 	PostgreSQL Database connected successfully
+level info: Aug-19-2025 20:33:15 	Server Started on http://localhost:9000
+level info: Aug-19-2025 20:39:02 	PostgreSQL Database connected successfully
+level info: Aug-19-2025 20:39:02 	Server Started on http://localhost:9000
+level info: Aug-19-2025 20:40:31 	PostgreSQL Database connected successfully
+level info: Aug-19-2025 20:40:31 	Server Started on http://localhost:9000
+>>>>>>> 36b1dff6c2ac6467b649baacaebb6a042197be36
+>>>>>>> ac1701dcbdc94e9df371cedf287b7059e5f37449
+>>>>>>> main
