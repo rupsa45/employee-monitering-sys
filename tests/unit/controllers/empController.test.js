@@ -81,7 +81,7 @@ describe('Employee Controller', () => {
           }
         },
         process.env.SECRET_KEY,
-        { expiresIn: "1h" }
+        { expiresIn: "15d" }
       );
       expect(mockRes.status).toHaveBeenCalledWith(200);
       expect(mockRes.json).toHaveBeenCalledWith({
