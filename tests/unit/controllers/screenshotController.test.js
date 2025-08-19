@@ -27,7 +27,7 @@ jest.mock('../../../utils/adminLogger/adminLogger');
 const screenshotController = require('../../../admin_app/controller/screenshotController');
 const { prisma } = require('../../../config/prismaConfig');
 const cloudinary = require('../../../config/cloudinaryConfig');
-const adminLogger = require('../../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 describe('Screenshot Controller', () => {
   let mockReq, mockRes;

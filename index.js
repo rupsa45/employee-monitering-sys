@@ -1,10 +1,12 @@
 require('dotenv').config()
 let express = require('express');
 const cors = require('cors');
+const morgan = require('morgan')
+
 
 const { connectDatabase } = require('./config/prismaConfig')
 let commonRouter = require('./urls')
-let logger = require('./utils/logger')
+// Logger removed for cleaner output
 const { initializeCronJobs } = require('./scheduler/cronJobs')
 
 let app = express();
@@ -34,7 +36,7 @@ app.options('*', cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/', commonRouter)
-
+app.use(morgan('tiny'))
 // Environment-based host configuration
 const HOST = isDevelopment ? "localhost" : "0.0.0.0";
 const PORT = process.env.PORT || 8000
@@ -52,7 +54,7 @@ async function startServer() {
     
     const server = app.listen(PORT, HOST, () => {
       console.log("Express server listening on Port: ", PORT)
-      logger.info(serverLink)
+      console.log(serverLink)
       console.log(`Environment: ${process.env.NODE_ENV || 'development'}`)
     })
 

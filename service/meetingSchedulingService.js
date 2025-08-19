@@ -1,6 +1,6 @@
 const { prisma } = require('../config/prismaConfig');
 const mailOptions = require('./emailService');
-const logger = require('../utils/logger');
+// Logger removed for cleaner output
 
 /**
  * Meeting Scheduling Service

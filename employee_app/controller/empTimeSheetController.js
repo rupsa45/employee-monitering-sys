@@ -1,6 +1,6 @@
 const moment = require('moment');
 const { prisma } = require('../../config/prismaConfig');
-const timeSheetLogger = require('../../utils/timeSheetLogger/timeSheetLogger');
+// Logger removed for cleaner output
 
 module.exports = {
     // Clock in functionality
@@ -50,14 +50,14 @@ module.exports = {
                 });
             }
 
-            timeSheetLogger.log('info', "Clock in successful!");
+            
             res.status(200).json({
                 success: true,
                 message: "Clock in successful!",
                 clockInTime: currentTime
             });
         } catch (error) {
-            timeSheetLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error!",
@@ -114,7 +114,7 @@ module.exports = {
                 }
             });
 
-            timeSheetLogger.log('info', "Clock out successful!");
+            
             res.status(200).json({
                 success: true,
                 message: "Clock out successful!",
@@ -122,7 +122,7 @@ module.exports = {
                 workHours: Math.round(workHours * 100) / 100
             });
         } catch (error) {
-            timeSheetLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error!",
@@ -169,14 +169,14 @@ module.exports = {
                 data: { breakStart: currentTime }
             });
 
-            timeSheetLogger.log('info', "Break started successfully!");
+            
             res.status(200).json({
                 success: true,
                 message: "Break started successfully!",
                 breakStartTime: currentTime
             });
         } catch (error) {
-            timeSheetLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error!",
@@ -237,7 +237,7 @@ module.exports = {
                 }
             });
 
-            timeSheetLogger.log('info', "Break ended successfully!");
+            
             res.status(200).json({
                 success: true,
                 message: "Break ended successfully!",
@@ -245,7 +245,7 @@ module.exports = {
                 breakDuration: breakDuration
             });
         } catch (error) {
-            timeSheetLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error!",
@@ -305,7 +305,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            timeSheetLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error!",

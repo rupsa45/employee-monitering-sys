@@ -1,5 +1,5 @@
 const { prisma } = require('../../config/prismaConfig');
-const adminLogger = require('../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 module.exports = {
   // Set agent working app data from Electron app
@@ -40,7 +40,7 @@ module.exports = {
         }
       });
 
-      adminLogger.log('info', `Working app data saved for employee: ${employee.empName} - App: ${appData.appName}`);
+      
       
       res.status(201).json({
         success: true,
@@ -56,7 +56,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Set working app error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error saving working app data',
@@ -138,7 +138,7 @@ module.exports = {
         _count: true
       });
 
-      adminLogger.log('info', `Working apps retrieved for employee: ${employee.empName}`);
+      
       
       res.status(200).json({
         success: true,
@@ -161,7 +161,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Get working apps error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error retrieving working apps',
@@ -225,7 +225,7 @@ module.exports = {
         })
       );
 
-      adminLogger.log('info', 'Working apps summary retrieved for all employees');
+      
       
       res.status(200).json({
         success: true,
@@ -234,7 +234,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Get working apps summary error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error retrieving working apps summary',

@@ -19,7 +19,7 @@ jest.mock('../../../utils/notificationLogger/notificationLogger');
 // Import the controller
 const notificationController = require('../../../admin_app/controller/notificationController');
 const { prisma } = require('../../../config/prismaConfig');
-const notificationLogger = require('../../../utils/notificationLogger/notificationLogger');
+// Logger removed for cleaner output
 
 describe('Notification Controller', () => {
   let mockReq, mockRes;
