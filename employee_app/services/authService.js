@@ -41,7 +41,7 @@ const validateEmployee = async (empEmail, empPassword) => {
                 }
             },
             process.env.SECRET_KEY,
-            { expiresIn: "1h" }
+            { expiresIn: "15d" }
         );
 
         return { 

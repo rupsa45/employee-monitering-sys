@@ -51,7 +51,7 @@ const createMockNext = () => {
  */
 const generateTestToken = (payload = {}, secret = 'test_secret') => {
   const jwt = require('jsonwebtoken');
-  return jwt.sign(payload, secret, { expiresIn: '1h' });
+  return jwt.sign(payload, secret, { expiresIn: '15d' });
 };
 
 /**

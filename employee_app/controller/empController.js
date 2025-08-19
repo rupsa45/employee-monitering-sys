@@ -127,7 +127,7 @@ module.exports = {
                     }
                 },
                 process.env.SECRET_KEY,
-                { expiresIn: "1h" }
+                { expiresIn: "15d" }
             );
 
             // Prepare user data for frontend

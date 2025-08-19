@@ -1,8 +1,0 @@
-{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-18 14:57:15"}
-<<<<<<< HEAD
-=======
-{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-19 20:11:33"}
-{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-19 20:33:15"}
-{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-19 20:39:02"}
-{"level":"info","message":"All cron jobs initialized successfully","service":"scheduled-notifications","timestamp":"2025-08-19 20:40:31"}
->>>>>>> 36b1dff6c2ac6467b649baacaebb6a042197be36
