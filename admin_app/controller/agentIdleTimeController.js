@@ -1,5 +1,5 @@
 const { prisma } = require('../../config/prismaConfig');
-const adminLogger = require('../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 module.exports = {
   // Add agent idle time data from Electron app
@@ -64,7 +64,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Add idle time error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error saving idle time data',
@@ -144,7 +144,7 @@ module.exports = {
 
       const totalDurationMinutes = Math.round((summary._sum.duration || 0) / 1000 / 60);
 
-      adminLogger.log('info', `Idle time retrieved for employee: ${employee.empName}`);
+      
       
       res.status(200).json({
         success: true,
@@ -170,7 +170,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Get idle time error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error retrieving idle time',
@@ -236,7 +236,7 @@ module.exports = {
         })
       );
 
-      adminLogger.log('info', 'Idle time summary retrieved for all employees');
+      
       
       res.status(200).json({
         success: true,
@@ -245,7 +245,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Get idle time summary error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error retrieving idle time summary',

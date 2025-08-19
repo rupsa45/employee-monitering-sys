@@ -1,6 +1,6 @@
 const { prisma } = require('../../config/prismaConfig');
 const cloudinary = require('../../config/cloudinaryConfig');
-const adminLogger = require('../../utils/adminLogger/adminLogger');
+// Logger removed for cleaner output
 
 module.exports = {
   // Upload screenshot from Electron app
@@ -72,7 +72,7 @@ module.exports = {
         }
       });
 
-      adminLogger.log('info', `Screenshot uploaded for employee: ${employee.empName}`);
+      
       
       res.status(201).json({
         success: true,
@@ -85,7 +85,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Screenshot upload error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error uploading screenshot',
@@ -145,7 +145,7 @@ module.exports = {
         }
       });
 
-      adminLogger.log('info', `Screenshots retrieved for employee: ${employee.empName}`);
+      
       
       res.status(200).json({
         success: true,
@@ -163,7 +163,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Get screenshots error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error retrieving screenshots',
@@ -260,7 +260,7 @@ module.exports = {
         data: { isActive: false }
       });
 
-      adminLogger.log('info', `Screenshot deleted: ${id}`);
+      
       
       res.status(200).json({
         success: true,
@@ -268,7 +268,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Delete screenshot error: ${error.message}`);
+      
       res.status(500).json({
         success: false,
         message: 'Error deleting screenshot',

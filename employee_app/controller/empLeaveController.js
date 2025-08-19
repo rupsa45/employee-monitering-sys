@@ -1,6 +1,6 @@
 const moment = require('moment');
 const { prisma } = require('../../config/prismaConfig');
-const empLeaveLogger = require('../../utils/empLeaveLogger/empLeaveLogger');
+// Logger removed for cleaner output
 
 module.exports = {
     // Apply for leave
@@ -57,7 +57,7 @@ module.exports = {
                 }
             });
 
-            empLeaveLogger.log('info', "Leave request submitted successfully");
+            
             res.status(201).json({
                 success: true,
                 message: "Leave request submitted successfully",
@@ -72,7 +72,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            empLeaveLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error submitting leave request",
@@ -235,7 +235,7 @@ module.exports = {
             // Calculate statistics
             const statistics = await calculateLeaveStatistics(empId, year);
 
-            empLeaveLogger.log('info', `Leave history retrieved successfully for employee ${empId}`);
+            
             res.status(200).json({
                 success: true,
                 message: "Leave history retrieved successfully",
@@ -268,7 +268,7 @@ module.exports = {
                 }
             });
         } catch (error) {
-            empLeaveLogger.log('error', `Error retrieving leave history: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error retrieving leave history",
@@ -386,7 +386,7 @@ module.exports = {
     //         // Get pending leave requests
     //         const pendingLeaves = yearLeaves.filter(leave => leave.status === 'PENDING');
 
-    //         empLeaveLogger.log('info', `Leave balance retrieved successfully for employee ${empId} for year ${year}`);
+    //         
     //         res.status(200).json({
     //             success: true,
     //             message: "Leave balance retrieved successfully",
@@ -415,7 +415,7 @@ module.exports = {
     //             }
     //         });
     //     } catch (error) {
-    //         empLeaveLogger.log('error', `Error retrieving leave balance: ${error.message}`);
+    //         
     //         res.status(500).json({
     //             success: false,
     //             message: "Error retrieving leave balance",
@@ -458,13 +458,13 @@ module.exports = {
                 data: { isActive: false }
             });
 
-            empLeaveLogger.log('info', "Leave request cancelled successfully");
+            
             res.status(200).json({
                 success: true,
                 message: "Leave request cancelled successfully"
             });
         } catch (error) {
-            empLeaveLogger.log('error', `Error: ${error.message}`);
+            
             res.status(500).json({
                 success: false,
                 message: "Error cancelling leave request",
@@ -588,7 +588,7 @@ async function calculateLeaveStatistics(empId, year = new Date().getFullYear()) 
 
         return stats;
     } catch (error) {
-        empLeaveLogger.log('error', `Error calculating leave statistics: ${error.message}`);
+        
         return {
             totalLeaves: 0,
             totalDays: 0,

@@ -1,8 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
-const logger = require('../utils/logger');
+// Logger removed for cleaner output
 
 const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
+  log: [], // No logging to reduce noise
 });
 
 // Connect to database
@@ -10,10 +10,8 @@ async function connectDatabase() {
   try {
     await prisma.$connect();
     console.log('Database connected successfully');
-    logger.log("info", "PostgreSQL Database connected successfully");
   } catch (error) {
     console.error('Database connection failed:', error);
-    logger.log("error", `Database connection failed: ${error.message}`);
     process.exit(1);
   }
 }

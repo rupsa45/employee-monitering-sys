@@ -1,6 +1,6 @@
 const { prisma } = require('../../config/prismaConfig');
 const { uploadFile } = require('../../service/cloudinaryClient');
-const logger = require('../../utils/logger');
+// Logger removed for cleaner output
 
 /**
  * Employee Meeting Recording Controller

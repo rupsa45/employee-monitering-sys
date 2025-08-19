@@ -1,6 +1,6 @@
 const { prisma } = require('../config/prismaConfig');
 const mailOptions = require('./emailService');
-const notificationLogger = require('../utils/notificationLogger/notificationLogger');
+// Logger removed for cleaner output
 
 /**
  * Task Notification Service
@@ -17,7 +17,7 @@ class TaskNotificationService {
     static async sendTaskAssignmentNotifications(task, assignedEmployees, action = 'created') {
         try {
             if (!task || !assignedEmployees || assignedEmployees.length === 0) {
-                notificationLogger.log('warn', 'No employees to notify for task assignment');
+                
                 return;
             }
 
@@ -30,7 +30,7 @@ class TaskNotificationService {
             // Send email notifications
             await this.sendEmailNotifications(task, assignedEmployees, action);
             
-            notificationLogger.log('info', `Task assignment notifications sent successfully for task "${task.title}" to ${assignedEmployees.length} employees`);
+            
             
             return {
                 success: true,
@@ -40,7 +40,7 @@ class TaskNotificationService {
             };
             
         } catch (error) {
-            notificationLogger.log('error', `Error sending task assignment notifications: ${error.message}`);
+            
             throw error;
         }
     }
@@ -101,10 +101,10 @@ class TaskNotificationService {
                     emailContent // custom HTML
                 );
 
-                notificationLogger.log('info', `Email notification sent to ${employee.empEmail} for task "${task.title}"`);
+                
                 
             } catch (error) {
-                notificationLogger.log('error', `Failed to send email to ${employee.empEmail}: ${error.message}`);
+                
                 // Don't throw error to prevent blocking other emails
             }
         });
@@ -302,10 +302,10 @@ class TaskNotificationService {
                 );
             }
 
-            notificationLogger.log('info', `Task status update notification sent for task "${task.title}"`);
+            
             
         } catch (error) {
-            notificationLogger.log('error', `Error sending task status update notification: ${error.message}`);
+            
         }
     }
 
@@ -363,10 +363,10 @@ class TaskNotificationService {
                 );
             }
 
-            notificationLogger.log('info', `Task reminder notifications sent for ${upcomingTasks.length} tasks`);
+            
             
         } catch (error) {
-            notificationLogger.log('error', `Error sending task reminder notifications: ${error.message}`);
+            
         }
     }
 }

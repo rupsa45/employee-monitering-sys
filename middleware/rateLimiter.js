@@ -1,5 +1,5 @@
 const rateLimit = require('express-rate-limit');
-const logger = require('../utils/logger');
+// Logger removed for cleaner output
 
 // Optional Redis imports (will fail gracefully if not available)
 let RedisStore = null;
@@ -16,22 +16,32 @@ try {
 let redisClient = null;
 
 try {
-  redisClient = redis.createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379'
-  });
-  
-  redisClient.on('error', (err) => {
-    logger.warn('Redis connection failed, using memory store for rate limiting', { error: err.message });
+  if (redis) {
+    redisClient = redis.createClient({
+      url: process.env.REDIS_URL || 'redis://localhost:6379'
+    });
+    
+      redisClient.on('error', (err) => {
+    // Redis connection failed, using memory store for rate limiting
     redisClient = null;
   });
   
   redisClient.on('connect', () => {
-    logger.info('Redis connected for rate limiting');
+    // Redis connected for rate limiting
   });
-} catch (error) {
-  logger.warn('Redis not available, using memory store for rate limiting', { error: error.message });
-  redisClient = null;
-}
+
+    // Only connect if Redis is available and we're not in test environment
+    if (process.env.NODE_ENV !== 'test') {
+      redisClient.connect().catch(err => {
+        logger.warn('Redis connection failed, using memory store for rate limiting', { error: err.message });
+        redisClient = null;
+      });
+    }
+  }
+    } catch (error) {
+      // Redis not available, using memory store for rate limiting
+      redisClient = null;
+    }
 
 /**
  * Create a rate limiter with Redis store (if available) or memory store
@@ -56,13 +66,6 @@ function createRateLimiter(options = {}) {
       return req.user ? `user:${req.user.id}` : req.ip;
     },
     handler: (req, res) => {
-      logger.warn('Rate limit exceeded', {
-        ip: req.ip,
-        userId: req.user?.id,
-        path: req.path,
-        userAgent: req.get('User-Agent')
-      });
-      
       res.status(429).json({
         success: false,
         message: 'Too many requests, please try again later.',
@@ -74,7 +77,7 @@ function createRateLimiter(options = {}) {
   const limiterOptions = { ...defaultOptions, ...options };
 
            // Use Redis store if available, otherwise use memory store
-         if (redisClient && RedisStore) {
+         if (redisClient && RedisStore && redisClient.isReady) {
            try {
              const redisStore = new RedisStore({
                sendCommand: (...args) => redisClient.sendCommand(args)
@@ -84,10 +87,10 @@ function createRateLimiter(options = {}) {
              if (redisStore && typeof redisStore.incr === 'function') {
                limiterOptions.store = redisStore;
              } else {
-               logger.warn('Redis store is not valid, using memory store');
+               // Redis store is not valid, using memory store
              }
            } catch (error) {
-             logger.warn('Failed to create Redis store, using memory store', { error: error.message });
+             // Failed to create Redis store, using memory store
            }
          }
 

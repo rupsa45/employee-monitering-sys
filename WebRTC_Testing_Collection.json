@@ -1,0 +1,747 @@
+{
+  "info": {
+    "name": "Employee Monitoring System - WebRTC Testing",
+    "description": "Comprehensive WebRTC testing collection for the Employee Monitoring System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "employeeToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "meetingId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "roomCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "meetingAccessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "recordingId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "1.1 Admin Registration",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empName\": \"Admin User\",\n  \"empEmail\": \"admin@tellis.com\",\n  \"empPhone\": \"1234567890\",\n  \"empPassword\": \"Admin@123\",\n  \"confirmPassword\": \"Admin@123\",\n  \"empTechnology\": \"Management\",\n  \"empGender\": \"MALE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/adminRegister",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "adminRegister"]
+            }
+          }
+        },
+        {
+          "name": "1.2 Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('adminToken', response.accessToken);",
+                  "    console.log('Admin token saved:', response.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empEmail\": \"admin@tellis.com\",\n  \"empPassword\": \"Admin@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/adminLogin",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "adminLogin"]
+            }
+          }
+        },
+        {
+          "name": "1.3 Create Test Employee",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empName\": \"Test Employee\",\n  \"empEmail\": \"employee@tellis.com\",\n  \"empPhone\": \"9876543210\",\n  \"empPassword\": \"Employee@123\",\n  \"confirmPassword\": \"Employee@123\",\n  \"empTechnology\": \"JavaScript\",\n  \"empGender\": \"MALE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/createEmployee",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "createEmployee"]
+            }
+          }
+        },
+        {
+          "name": "1.4 Employee Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('employeeToken', response.accessToken);",
+                  "    console.log('Employee token saved:', response.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empEmail\": \"employee@tellis.com\",\n  \"empPassword\": \"Employee@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/employee/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["employee", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎥 Meeting Management (Admin)",
+      "item": [
+        {
+          "name": "2.1 Create Meeting",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('meetingId', response.data.id);",
+                  "    pm.environment.set('roomCode', response.data.roomCode);",
+                  "    console.log('Meeting created:', response.data.id);",
+                  "    console.log('Room code:', response.data.roomCode);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"hostId\": \"admin123\",\n  \"title\": \"Test WebRTC Meeting\",\n  \"description\": \"Testing WebRTC functionality\",\n  \"type\": \"NORMAL\",\n  \"scheduledStart\": \"2024-01-15T10:00:00Z\",\n  \"scheduledEnd\": \"2024-01-15T11:00:00Z\",\n  \"password\": \"meeting123\",\n  \"isPersistent\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings"]
+            }
+          }
+        },
+        {
+          "name": "2.2 List Admin Meetings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings?status=SCHEDULED&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "SCHEDULED"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2.3 Get Meeting Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings/{{meetingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings", "{{meetingId}}"]
+            }
+          }
+        },
+        {
+          "name": "2.4 Start Meeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings/{{meetingId}}/start",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings", "{{meetingId}}", "start"]
+            }
+          }
+        },
+        {
+          "name": "2.5 End Meeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings/{{meetingId}}/end",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings", "{{meetingId}}", "end"]
+            }
+          }
+        },
+        {
+          "name": "2.6 Cancel Meeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings/{{meetingId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings", "{{meetingId}}", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👥 Employee Meeting Participation",
+      "item": [
+        {
+          "name": "3.1 List Employee Meetings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings?status=LIVE&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "LIVE"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3.2 Get Upcoming Meetings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/upcoming?minutesAhead=60",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "upcoming"],
+              "query": [
+                {
+                  "key": "minutesAhead",
+                  "value": "60"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3.3 Get Meeting by Room Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{roomCode}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{roomCode}}"]
+            }
+          }
+        },
+        {
+          "name": "3.4 Join Meeting",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('meetingAccessToken', response.data.meetingAccessToken);",
+                  "    console.log('Meeting access token saved:', response.data.meetingAccessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"meeting123\",\n  \"timeSheetId\": \"timesheet123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{roomCode}}/join",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{roomCode}}", "join"]
+            }
+          }
+        },
+        {
+          "name": "3.5 Get Meeting Access Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"meeting123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{roomCode}}/access-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{roomCode}}", "access-token"]
+            }
+          }
+        },
+        {
+          "name": "3.6 Leave Meeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{roomCode}}/leave",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{roomCode}}", "leave"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎬 Meeting Recording",
+      "item": [
+        {
+          "name": "4.1 Upload Recording",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('recordingId', response.data.id);",
+                  "    console.log('Recording uploaded:', response.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "startedAt",
+                  "value": "2024-01-15T10:00:00Z",
+                  "type": "text"
+                },
+                {
+                  "key": "endedAt",
+                  "value": "2024-01-15T10:30:00Z",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{meetingId}}/recordings",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{meetingId}}", "recordings"]
+            }
+          }
+        },
+        {
+          "name": "4.2 Get Meeting Recordings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{meetingId}}/recordings?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{meetingId}}", "recordings"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "4.3 Get Recording Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{meetingId}}/recordings/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{meetingId}}", "recordings", "stats"]
+            }
+          }
+        },
+        {
+          "name": "4.4 Delete Recording",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{meetingId}}/recordings/{{recordingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{meetingId}}", "recordings", "{{recordingId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👑 Host Controls",
+      "item": [
+        {
+          "name": "5.1 Kick Participant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empId\": \"emp123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings/{{meetingId}}/kick",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings", "{{meetingId}}", "kick"]
+            }
+          }
+        },
+        {
+          "name": "5.2 Ban Participant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"empId\": \"emp123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings/{{meetingId}}/ban",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings", "{{meetingId}}", "ban"]
+            }
+          }
+        },
+        {
+          "name": "5.3 Get Meeting Attendance Report",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings/{{meetingId}}/attendance",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings", "{{meetingId}}", "attendance"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🧪 Error Testing",
+      "item": [
+        {
+          "name": "6.1 Join Non-existent Meeting",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"wrong123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/INVALID/join",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "INVALID", "join"]
+            }
+          }
+        },
+        {
+          "name": "6.2 Wrong Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"wrong123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings/{{roomCode}}/join",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings", "{{roomCode}}", "join"]
+            }
+          }
+        },
+        {
+          "name": "6.3 Access Admin Endpoint as Employee",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{employeeToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/admin/meetings",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "meetings"]
+            }
+          }
+        },
+        {
+          "name": "6.4 Access Employee Endpoint as Admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/emp/meetings",
+              "host": ["{{baseUrl}}"],
+              "path": ["emp", "meetings"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
