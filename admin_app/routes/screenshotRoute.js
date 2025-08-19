@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const screenshotController = require('../controller/screenshotController');
+const { authentication } = require('../../middleware/authToken');
 
 const router = express.Router();
 
@@ -37,9 +38,10 @@ const upload = multer({
   }
 });
 
-// Routes
-router.post('/upload', upload.single('files'), screenshotController.uploadScreenshot);
-router.get('/employee/:empId', screenshotController.getEmployeeScreenshots);
-router.delete('/:id', screenshotController.deleteScreenshot);
+// Routes - All screenshot routes require authentication
+router.post('/upload', authentication, upload.single('files'), screenshotController.uploadScreenshot);
+router.get('/employee/:empId', authentication, screenshotController.getEmployeeScreenshots);
+router.get('/', authentication, screenshotController.getAllScreenshots);
+router.delete('/:id', authentication, screenshotController.deleteScreenshot);
 
 module.exports = router;

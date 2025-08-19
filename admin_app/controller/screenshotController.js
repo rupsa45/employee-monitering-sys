@@ -27,6 +27,32 @@ module.exports = {
         });
       }
 
+      // Check if employee is currently clocked in
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      const currentTimeSheet = await prisma.timeSheet.findFirst({
+        where: {
+          empId: agentId,
+          createdAt: {
+            gte: today,
+            lt: tomorrow
+          },
+          isActive: true,
+          clockIn: { not: '' }, // Has clocked in
+          clockOut: '' // Has not clocked out
+        }
+      });
+
+      if (!currentTimeSheet) {
+        return res.status(403).json({
+          success: false,
+          message: 'Screenshots can only be captured when employee is clocked in'
+        });
+      }
+
       // Upload to Cloudinary
       const uploadResult = await cloudinary.uploader.upload(req.file.path, {
         folder: 'employee-screenshots',
@@ -99,10 +125,15 @@ module.exports = {
         },
         skip: parseInt(skip),
         take: parseInt(limit),
-        select: {
-          id: true,
-          imageUrl: true,
-          createdAt: true
+        include: {
+          employee: {
+            select: {
+              id: true,
+              empName: true,
+              email: true,
+              profilePic: true
+            }
+          }
         }
       });
 
@@ -133,6 +164,69 @@ module.exports = {
 
     } catch (error) {
       adminLogger.log('error', `Get screenshots error: ${error.message}`);
+      res.status(500).json({
+        success: false,
+        message: 'Error retrieving screenshots',
+        error: error.message
+      });
+    }
+  },
+
+  // Get all screenshots (admin view)
+  getAllScreenshots: async (req, res) => {
+    try {
+      const { page = 1, limit = 20 } = req.query;
+
+      const skip = (page - 1) * limit;
+
+      // Get screenshots with pagination and employee info
+      const screenshots = await prisma.screenshot.findMany({
+        where: {
+          isActive: true
+        },
+        orderBy: {
+          createdAt: 'desc'
+        },
+        skip: parseInt(skip),
+        take: parseInt(limit),
+        include: {
+          employee: {
+            select: {
+              id: true,
+              empName: true,
+              email: true,
+              profilePic: true
+            }
+          }
+        }
+      });
+
+      // Get total count
+      const totalScreenshots = await prisma.screenshot.count({
+        where: {
+          isActive: true
+        }
+      });
+
+      adminLogger.log('info', `All screenshots retrieved`);
+      
+      res.status(200).json({
+        success: true,
+        message: 'Screenshots retrieved successfully',
+        data: {
+          screenshots,
+          pagination: {
+            currentPage: parseInt(page),
+            totalPages: Math.ceil(totalScreenshots / limit),
+            totalScreenshots,
+            hasNext: skip + screenshots.length < totalScreenshots,
+            hasPrev: page > 1
+          }
+        }
+      });
+
+    } catch (error) {
+      adminLogger.log('error', `Get all screenshots error: ${error.message}`);
       res.status(500).json({
         success: false,
         message: 'Error retrieving screenshots',

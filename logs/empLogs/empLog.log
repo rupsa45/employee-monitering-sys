@@ -1,0 +1,82 @@
+<<<<<<< HEAD
+=======
+level info: Aug-18-2025 16:34:43 	Employee logged in successfully
+level info: Aug-18-2025 16:34:44 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:34:44 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:34:59 	Employee logged in successfully
+level info: Aug-18-2025 16:34:59 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:35:38 	Employee logged in successfully
+level info: Aug-18-2025 16:35:39 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:36:47 	Employee logged in successfully
+level info: Aug-18-2025 16:38:07 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:38:08 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:38:08 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:38:08 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:38:35 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:38:36 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:38:36 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:38:36 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:38:52 	Employee logged in successfully
+level info: Aug-18-2025 16:38:53 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:38:53 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:40:24 	Employee logged in successfully
+level info: Aug-18-2025 16:40:25 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:40:25 	Employee profile retrieved successfully
+level info: Aug-18-2025 16:40:41 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:40:42 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:40:42 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:40:42 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:46:26 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:46:27 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:46:27 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:46:27 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:46:27 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:46:27 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:46:28 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:46:28 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:54:55 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:54:55 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 16:54:55 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:54:56 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 16:55:50 	Employee logged in successfully
+level info: Aug-18-2025 17:23:20 	Employee logged in successfully
+level info: Aug-18-2025 17:24:13 	Employee logged in successfully
+level info: Aug-18-2025 17:24:14 	Employee profile retrieved successfully
+level info: Aug-18-2025 17:24:14 	Employee profile retrieved successfully
+level info: Aug-18-2025 17:24:18 	Tasks for employee "Bob Employee" retrieved successfully
+level info: Aug-18-2025 17:24:18 	Task statistics retrieved for employee "Bob Employee"
+level info: Aug-18-2025 17:51:57 	Employee logged in successfully
+level info: Aug-18-2025 17:54:05 	Employee logged in successfully
+level info: Aug-18-2025 17:54:06 	Employee profile retrieved successfully
+level info: Aug-18-2025 17:54:06 	Employee profile retrieved successfully
+level info: Aug-18-2025 18:12:42 	Employee logged in successfully
+level error: Aug-18-2025 20:39:44 	Invalid password
+level error: Aug-18-2025 20:39:48 	Invalid password
+level error: Aug-18-2025 20:40:04 	Invalid password
+level info: Aug-18-2025 20:40:38 	Employee logged in successfully
+level info: Aug-18-2025 20:40:49 	Employee logged in successfully
+level error: Aug-18-2025 20:40:55 	Invalid password
+level error: Aug-18-2025 20:41:27 	Invalid password
+level info: Aug-18-2025 20:41:59 	Employee logged in successfully
+level error: Aug-18-2025 20:43:23 	Invalid password
+level error: Aug-18-2025 20:43:25 	Invalid password
+level info: Aug-18-2025 20:57:23 	Employee logged in successfully
+level info: Aug-18-2025 20:57:37 	Employee logged in successfully
+level info: Aug-18-2025 20:57:50 	Employee logged in successfully
+level info: Aug-18-2025 21:00:23 	Employee logged in successfully
+level info: Aug-18-2025 21:02:00 	Employee logged in successfully
+level info: Aug-18-2025 21:03:39 	Employee logged in successfully
+level info: Aug-18-2025 21:34:02 	Employee logged in successfully
+level info: Aug-18-2025 21:36:34 	Employee logged in successfully
+level info: Aug-18-2025 21:37:52 	Employee logged in successfully
+level info: Aug-18-2025 22:10:43 	Employee logged in successfully
+level info: Aug-18-2025 22:10:44 	Employee profile retrieved successfully
+level info: Aug-18-2025 22:10:44 	Employee profile retrieved successfully
+level info: Aug-18-2025 22:12:01 	Employee logged in successfully
+level info: Aug-18-2025 22:12:02 	Employee profile retrieved successfully
+level info: Aug-18-2025 22:12:02 	Employee profile retrieved successfully
+level info: Aug-19-2025 20:34:27 	Employee logged in successfully
+level info: Aug-19-2025 20:34:27 	Employee profile retrieved successfully
+level info: Aug-19-2025 20:34:28 	Employee profile retrieved successfully
+level info: Aug-19-2025 20:35:44 	Employee logged in successfully
+>>>>>>> 36b1dff6c2ac6467b649baacaebb6a042197be36

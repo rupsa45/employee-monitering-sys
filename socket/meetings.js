@@ -381,7 +381,7 @@ function setupMeetingsNamespace(io) {
         }
       });
 
-      // Handle peer:leave event
+      // Handle peer:leave event .
       socket.on('peer:leave', () => {
         try {
           logger.info('Peer leave announcement', {
