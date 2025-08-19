@@ -1,8 +1,0 @@
-level error: Aug-16-2025 00:05:22 	Error sending task assignment notifications: Cannot read properties of undefined (reading 'create')
-level error: Aug-16-2025 00:05:22 	Error sending task status update notification: Cannot read properties of undefined (reading 'create')
-level error: Aug-16-2025 00:06:05 	Error sending task assignment notifications: Cannot read properties of undefined (reading 'create')
-level error: Aug-16-2025 00:06:05 	Error sending task status update notification: Cannot read properties of undefined (reading 'create')
-level error: Aug-16-2025 00:07:23 	Error sending task assignment notifications: Cannot read properties of undefined (reading 'create')
-level error: Aug-16-2025 00:07:23 	Error sending task status update notification: Cannot read properties of undefined (reading 'create')
-level error: Aug-16-2025 00:08:43 	Error sending task assignment notifications: Cannot read properties of undefined (reading 'create')
-level error: Aug-16-2025 00:08:43 	Error sending task status update notification: Cannot read properties of undefined (reading 'create')

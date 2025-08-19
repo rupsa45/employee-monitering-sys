@@ -175,7 +175,35 @@ The Employee Tracking System is a comprehensive web application built with **Nod
    └── Activity reporting
 ```
 
-### **7. Notification System Workflow**
+### **7. Video Meeting Workflow**
+```
+1. Meeting Creation (Admin)
+   ├── Admin creates meeting with title, type, schedule
+   ├── System generates unique room code
+   ├── Optional password protection
+   └── Meeting status: SCHEDULED
+
+2. Meeting Participation
+   ├── Employees join via room code
+   ├── Automatic timesheet linking
+   ├── WebRTC peer connection setup
+   ├── Real-time audio/video communication
+   └── Screen sharing capabilities
+
+3. Meeting Management
+   ├── Host controls (kick/ban participants)
+   ├── Meeting recording (client-side)
+   ├── Attendance tracking
+   └── Meeting end with attendance recalculation
+
+4. Meeting Analytics
+   ├── Comprehensive attendance reports
+   ├── Timesheet correlation
+   ├── Participation statistics
+   └── Meeting effectiveness metrics
+```
+
+### **8. Notification System Workflow**
 ```
 1. Notification Creation
    ├── Admin creates notifications
@@ -307,6 +335,16 @@ authentication(req, res, next)
 - **Logging**: Detailed activity logging
 - **Performance**: Optimized database queries
 - **Scalability**: PostgreSQL with Prisma ORM
+
+### **✅ Video Meeting Features**
+- **WebRTC Video Meetings**: Real-time audio/video communication
+- **Screen Sharing**: Browser-based screen sharing capabilities
+- **Meeting Recording**: Client-side recording with Cloudinary storage
+- **Host Controls**: Kick/ban participants, end meetings
+- **Attendance Tracking**: Automatic timesheet linking and attendance reports
+- **Room Management**: Unique room codes, password protection
+- **Socket.IO Signaling**: Real-time WebRTC signaling
+- **Meeting Analytics**: Comprehensive attendance and participation reports
 
 ## 🚀 **Deployment Workflow**
 
