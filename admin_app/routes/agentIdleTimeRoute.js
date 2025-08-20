@@ -1,11 +1,12 @@
 const express = require('express');
 const agentIdleTimeController = require('../controller/agentIdleTimeController');
+const { authentication } = require('../../middleware/authToken');
 
 const router = express.Router();
 
-// Routes
-router.post('/add', agentIdleTimeController.addAgentIdleTime);
-router.get('/employee/:empId', agentIdleTimeController.getEmployeeIdleTime);
-router.get('/summary', agentIdleTimeController.getAllIdleTimeSummary);
+// Routes - All routes require authentication
+router.post('/add', authentication, agentIdleTimeController.addAgentIdleTime);
+router.get('/employee/:empId', authentication, agentIdleTimeController.getEmployeeIdleTime);
+router.get('/summary', authentication, agentIdleTimeController.getAllIdleTimeSummary);
 
 module.exports = router;

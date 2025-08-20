@@ -49,7 +49,7 @@ module.exports = {
         }
       });
 
-      adminLogger.log('info', `Idle time recorded for employee: ${employee.empName} - Duration: ${Math.round(duration / 1000 / 60)} minutes`);
+      console.log(`Idle time recorded for employee: ${employee.empName} - Duration: ${Math.round(duration / 1000 / 60)} minutes`);
       
       res.status(201).json({
         success: true,
