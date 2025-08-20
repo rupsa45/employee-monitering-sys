@@ -55,6 +55,131 @@ module.exports = {
         }
     },
 
+    // Get comprehensive date-wise attendance history for all employees
+    getDateWiseAttendanceHistory: async (req, res) => {
+        try {
+            const { startDate, endDate, empId } = req.query;
+            
+            // Get all active employees
+            const allEmployees = await prisma.employee.findMany({
+                where: { 
+                    empRole: 'employee', 
+                    isActive: true 
+                },
+                select: {
+                    id: true,
+                    empName: true,
+                    empEmail: true,
+                    empTechnology: true
+                }
+            });
+
+            // Determine date range
+            const start = startDate ? moment(startDate).startOf('day') : moment().subtract(30, 'days').startOf('day');
+            const end = endDate ? moment(endDate).endOf('day') : moment().endOf('day');
+            
+            // Get all timesheets in the date range
+            const timeSheets = await prisma.timeSheet.findMany({
+                where: {
+                    createdAt: {
+                        gte: start.toDate(),
+                        lte: end.toDate()
+                    },
+                    isActive: true,
+                    ...(empId && { empId })
+                },
+                include: {
+                    employee: {
+                        select: {
+                            empName: true,
+                            empEmail: true,
+                            empTechnology: true
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            });
+
+            // Create a map of employee attendance by date
+            const attendanceMap = new Map();
+            
+            // Initialize all employees for all dates in range
+            const currentDate = start.clone();
+            while (currentDate.isSameOrBefore(end, 'day')) {
+                const dateKey = currentDate.format('YYYY-MM-DD');
+                attendanceMap.set(dateKey, []);
+                
+                // Add all employees for this date
+                allEmployees.forEach(emp => {
+                    attendanceMap.get(dateKey).push({
+                        empId: emp.id,
+                        empName: emp.empName,
+                        empEmail: emp.empEmail,
+                        empTechnology: emp.empTechnology,
+                        date: dateKey,
+                        clockIn: null,
+                        clockOut: null,
+                        hoursLoggedIn: 0,
+                        totalBreakTime: 0,
+                        status: 'ABSENT',
+                        hasTimesheet: false
+                    });
+                });
+                
+                currentDate.add(1, 'day');
+            }
+
+            // Fill in actual attendance data
+            timeSheets.forEach(timesheet => {
+                const dateKey = moment(timesheet.createdAt).format('YYYY-MM-DD');
+                const employeeAttendance = attendanceMap.get(dateKey)?.find(
+                    att => att.empId === timesheet.empId
+                );
+                
+                if (employeeAttendance) {
+                    employeeAttendance.clockIn = timesheet.clockIn || null;
+                    employeeAttendance.clockOut = timesheet.clockOut || null;
+                    employeeAttendance.hoursLoggedIn = timesheet.hoursLoggedIn || 0;
+                    employeeAttendance.totalBreakTime = timesheet.totalBreakTime || 0;
+                    employeeAttendance.status = timesheet.status || 'ABSENT';
+                    employeeAttendance.hasTimesheet = true;
+                    employeeAttendance.timesheetId = timesheet.id;
+                    employeeAttendance.createdAt = timesheet.createdAt;
+                    employeeAttendance.updatedAt = timesheet.updatedAt;
+                }
+            });
+
+            // Convert map to array and sort by date
+            const attendanceHistory = Array.from(attendanceMap.entries())
+                .map(([date, employees]) => ({
+                    date,
+                    employees: employees.sort((a, b) => a.empName.localeCompare(b.empName))
+                }))
+                .sort((a, b) => moment(b.date).diff(moment(a.date))); // Most recent first
+
+            res.status(200).json({
+                success: true,
+                message: 'Date-wise attendance history retrieved successfully',
+                data: attendanceHistory,
+                total: attendanceHistory.length,
+                dateRange: {
+                    start: start.format('YYYY-MM-DD'),
+                    end: end.format('YYYY-MM-DD')
+                },
+                totalEmployees: allEmployees.length
+            });
+        } catch (error) {
+            console.error('Error in getDateWiseAttendanceHistory:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Error retrieving date-wise attendance history',
+                error: error.message
+            });
+        }
+    },
+
     // Get today's attendance summary for admin dashboard
     getTodayAttendanceSummary: async (req, res) => {
         try {

@@ -33,10 +33,12 @@ app.use(cors(corsOptions));
 // Additional CORS preflight handling
 app.options('*', cors(corsOptions));
 
+// Morgan logging middleware - must be before routes
+app.use(morgan('tiny'));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/', commonRouter)
-app.use(morgan('tiny'))
 // Environment-based host configuration
 const HOST = isDevelopment ? "localhost" : "0.0.0.0";
 const PORT = process.env.PORT || 8000
