@@ -208,7 +208,7 @@ module.exports = {
         }
       });
 
-      adminLogger.log('info', `All screenshots retrieved`);
+      console.log(`All screenshots retrieved`);
       
       res.status(200).json({
         success: true,
@@ -226,7 +226,7 @@ module.exports = {
       });
 
     } catch (error) {
-      adminLogger.log('error', `Get all screenshots error: ${error.message}`);
+      console.error(`Get all screenshots error: ${error.message}`);
       res.status(500).json({
         success: false,
         message: 'Error retrieving screenshots',
