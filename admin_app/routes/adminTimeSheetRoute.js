@@ -7,6 +7,7 @@ const router = express.Router();
 
 // Admin timesheet management routes
 router.get('/all-timesheets', authentication, authService.isAdmin, adminTimeSheetController.getAllEmployeeTimeSheets);
+router.get('/date-wise-history', authentication, authService.isAdmin, adminTimeSheetController.getDateWiseAttendanceHistory);
 router.get('/today-summary', authentication, authService.isAdmin, adminTimeSheetController.getTodayAttendanceSummary);
 router.get('/employee-timesheet/:empId', authentication, authService.isAdmin, adminTimeSheetController.getEmployeeDetailedTimeSheet);
 
