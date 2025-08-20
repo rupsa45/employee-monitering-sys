@@ -264,41 +264,59 @@ app.get('/admin/dashboard/performance', (req, res) => {
     message: 'Performance analytics retrieved successfully',
     data: {
       attendance: {
-        totalDays: 200,
-        presentDays: 180,
-        absentDays: 15,
-        lateDays: 3,
-        attendanceRate: '90.00'
+        totalDays: 8, // Total employees in system
+        presentDays: 2, // Employees who have clocked in
+        absentDays: 6, // Employees who haven't clocked in
+        lateDays: 0,
+        attendanceRate: '25.00' // 2/8 * 100 = 25%
       },
-      tasks: {
-        totalAssigned: 50,
-        completed: 40,
-        inProgress: 8,
-        pending: 2,
-        completionRate: '80.00'
-      },
-      productivity: {
-        averageWorkHours: '8.5',
-        totalWorkHours: 1700
-      },
+              tasks: {
+          totalAssigned: 3,
+          completed: 1,
+          inProgress: 0,
+          pending: 2,
+          completionRate: '33.33'
+        },
+              productivity: {
+          averageWorkHours: '0.48',
+          totalWorkHours: 0.96
+        },
       employeePerformance: [
         {
-          empName: 'John Doe',
-          empEmail: 'john@example.com',
-          empTechnology: 'JavaScript',
+          empName: 'Alice Developer',
+          empEmail: 'alice.dev@example.com',
+          empTechnology: 'React.js',
           attendance: {
-            present: 20,
-            absent: 1,
+            present: 1,
+            absent: 0,
             late: 0,
-            total: 21
+            total: 1
           },
           tasks: {
-            completed: 15,
-            inProgress: 2,
+            completed: 0,
+            inProgress: 0,
             pending: 1,
-            total: 18
+            total: 1
           },
-          workHours: 168
+          workHours: 0.08
+        },
+        {
+          empName: 'Dana Analyst',
+          empEmail: 'dana.ana@example.com',
+          empTechnology: 'Python',
+          attendance: {
+            present: 1,
+            absent: 0,
+            late: 0,
+            total: 1
+          },
+          tasks: {
+            completed: 0,
+            inProgress: 0,
+            pending: 0,
+            total: 0
+          },
+          workHours: 0.88
         }
       ]
     }

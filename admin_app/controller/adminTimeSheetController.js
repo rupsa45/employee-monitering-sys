@@ -55,11 +55,150 @@ module.exports = {
         }
     },
 
+    // Get comprehensive date-wise attendance history for all employees
+    getDateWiseAttendanceHistory: async (req, res) => {
+        try {
+            const { startDate, endDate, empId } = req.query;
+            
+            // Get all active employees
+            const allEmployees = await prisma.employee.findMany({
+                where: { 
+                    empRole: 'employee', 
+                    isActive: true 
+                },
+                select: {
+                    id: true,
+                    empName: true,
+                    empEmail: true,
+                    empTechnology: true
+                }
+            });
+
+            // Determine date range
+            const start = startDate ? moment(startDate).startOf('day') : moment().subtract(30, 'days').startOf('day');
+            const end = endDate ? moment(endDate).endOf('day') : moment().endOf('day');
+            
+            // Get all timesheets in the date range
+            const timeSheets = await prisma.timeSheet.findMany({
+                where: {
+                    createdAt: {
+                        gte: start.toDate(),
+                        lte: end.toDate()
+                    },
+                    isActive: true,
+                    ...(empId && { empId })
+                },
+                include: {
+                    employee: {
+                        select: {
+                            empName: true,
+                            empEmail: true,
+                            empTechnology: true
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: 'desc'
+                }
+            });
+
+            // Create a map of employee attendance by date
+            const attendanceMap = new Map();
+            
+            // Initialize all employees for all dates in range
+            const currentDate = start.clone();
+            while (currentDate.isSameOrBefore(end, 'day')) {
+                const dateKey = currentDate.format('YYYY-MM-DD');
+                attendanceMap.set(dateKey, []);
+                
+                // Add all employees for this date
+                allEmployees.forEach(emp => {
+                    attendanceMap.get(dateKey).push({
+                        empId: emp.id,
+                        empName: emp.empName,
+                        empEmail: emp.empEmail,
+                        empTechnology: emp.empTechnology,
+                        date: dateKey,
+                        clockIn: null,
+                        clockOut: null,
+                        hoursLoggedIn: 0,
+                        totalBreakTime: 0,
+                        status: 'ABSENT',
+                        hasTimesheet: false
+                    });
+                });
+                
+                currentDate.add(1, 'day');
+            }
+
+            // Fill in actual attendance data
+            timeSheets.forEach(timesheet => {
+                const dateKey = moment(timesheet.createdAt).format('YYYY-MM-DD');
+                const employeeAttendance = attendanceMap.get(dateKey)?.find(
+                    att => att.empId === timesheet.empId
+                );
+                
+                if (employeeAttendance) {
+                    employeeAttendance.clockIn = timesheet.clockIn || null;
+                    employeeAttendance.clockOut = timesheet.clockOut || null;
+                    employeeAttendance.hoursLoggedIn = timesheet.hoursLoggedIn || 0;
+                    employeeAttendance.totalBreakTime = timesheet.totalBreakTime || 0;
+                    employeeAttendance.status = timesheet.status || 'ABSENT';
+                    employeeAttendance.hasTimesheet = true;
+                    employeeAttendance.timesheetId = timesheet.id;
+                    employeeAttendance.createdAt = timesheet.createdAt;
+                    employeeAttendance.updatedAt = timesheet.updatedAt;
+                }
+            });
+
+            // Convert map to array and sort by date
+            const attendanceHistory = Array.from(attendanceMap.entries())
+                .map(([date, employees]) => ({
+                    date,
+                    employees: employees.sort((a, b) => a.empName.localeCompare(b.empName))
+                }))
+                .sort((a, b) => moment(b.date).diff(moment(a.date))); // Most recent first
+
+            res.status(200).json({
+                success: true,
+                message: 'Date-wise attendance history retrieved successfully',
+                data: attendanceHistory,
+                total: attendanceHistory.length,
+                dateRange: {
+                    start: start.format('YYYY-MM-DD'),
+                    end: end.format('YYYY-MM-DD')
+                },
+                totalEmployees: allEmployees.length
+            });
+        } catch (error) {
+            console.error('Error in getDateWiseAttendanceHistory:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Error retrieving date-wise attendance history',
+                error: error.message
+            });
+        }
+    },
+
     // Get today's attendance summary for admin dashboard
     getTodayAttendanceSummary: async (req, res) => {
         try {
             const today = moment().startOf('day');
             const tomorrow = moment().endOf('day');
+            
+            // Get all active employees
+            const allEmployees = await prisma.employee.findMany({
+                where: { 
+                    empRole: 'employee', 
+                    isActive: true 
+                },
+                select: {
+                    id: true,
+                    empName: true,
+                    empEmail: true,
+                    empTechnology: true
+                }
+            });
             
             const todayTimeSheets = await prisma.timeSheet.findMany({
                 where: {
@@ -80,27 +219,66 @@ module.exports = {
                 }
             });
 
-            // Calculate summary statistics
-            const totalEmployees = await prisma.employee.count({
-                where: { 
-                    empRole: 'employee', 
-                    isActive: true 
-                }
-            });
+            // Create a map of employees who have timesheets today
+            const employeesWithTimesheets = new Set(todayTimeSheets.map(ts => ts.empId));
             
+            // Calculate summary statistics
+            const totalEmployees = allEmployees.length;
             const clockedInToday = todayTimeSheets.filter(ts => ts.clockIn && !ts.clockOut).length;
             const completedToday = todayTimeSheets.filter(ts => ts.clockIn && ts.clockOut).length;
             const onBreak = todayTimeSheets.filter(ts => ts.breakStart && !ts.breakEnd).length;
+            const present = employeesWithTimesheets.size; // Employees who have clocked in
+            const absent = totalEmployees - present; // Employees who haven't clocked in
+            
+            // Calculate average working hours
+            let totalWorkHours = 0;
+            let employeesWithWorkHours = 0;
+            
+            todayTimeSheets.forEach(timesheet => {
+                if (timesheet.clockIn) {
+                    let workHours = 0;
+                    if (timesheet.clockOut) {
+                        // If clocked out, calculate the difference
+                        const clockInTime = new Date(timesheet.clockIn);
+                        const clockOutTime = new Date(timesheet.clockOut);
+                        const diffMs = clockOutTime.getTime() - clockInTime.getTime();
+                        workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                        
+                        // Subtract break time if any
+                        const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                        workHours = Math.max(0, workHours - breakTimeHours);
+                    } else {
+                        // If not clocked out, calculate from clock in to now
+                        const clockInTime = new Date(timesheet.clockIn);
+                        const now = new Date();
+                        const diffMs = now.getTime() - clockInTime.getTime();
+                        workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                        
+                        // Subtract break time if any
+                        const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                        workHours = Math.max(0, workHours - breakTimeHours);
+                    }
+                    
+                    // Round to 2 decimal places
+                    workHours = Math.round(workHours * 100) / 100;
+                    totalWorkHours += workHours;
+                    employeesWithWorkHours++;
+                }
+            });
+            
+            const averageWorkHours = employeesWithWorkHours > 0 ? (totalWorkHours / employeesWithWorkHours).toFixed(2) : "0.00";
             
             const summary = {
                 totalEmployees,
                 clockedInToday,
                 completedToday,
                 onBreak,
-                present: todayTimeSheets.filter(ts => ts.status === 'PRESENT').length,
-                absent: todayTimeSheets.filter(ts => ts.status === 'ABSENT').length,
+                presentToday: present,
+                absentToday: absent,
                 halfDay: todayTimeSheets.filter(ts => ts.status === 'HALFDAY').length,
-                late: todayTimeSheets.filter(ts => ts.status === 'LATE').length
+                late: todayTimeSheets.filter(ts => ts.status === 'LATE').length,
+                totalWorkHours: Math.round(totalWorkHours * 100) / 100,
+                averageWorkHours: parseFloat(averageWorkHours)
             };
 
             

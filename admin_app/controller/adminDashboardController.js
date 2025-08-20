@@ -636,16 +636,28 @@ module.exports = {
         },
       });
 
+      // Get total employees for accurate attendance calculation
+      const totalEmployees = await prisma.employee.count({
+        where: {
+          empRole: "employee",
+          isActive: true,
+        },
+      });
+
+      // Get unique employees who have clocked in during the period
+      const employeesWithTimesheets = new Set(timesheets.map(t => t.empId));
+      const presentEmployees = employeesWithTimesheets.size;
+
       // Calculate performance metrics
       const performanceMetrics = {
         attendance: {
-          totalDays: timesheets.length,
-          presentDays: timesheets.filter(t => t.status === "PRESENT").length,
-          absentDays: timesheets.filter(t => t.status === "ABSENT").length,
+          totalDays: totalEmployees, // Total employees in the system
+          presentDays: presentEmployees, // Employees who have clocked in
+          absentDays: totalEmployees - presentEmployees, // Employees who haven't clocked in
           lateDays: timesheets.filter(t => t.status === "LATE").length,
-          attendanceRate: timesheets.length > 0 
-            ? ((timesheets.filter(t => t.status === "PRESENT").length / timesheets.length) * 100).toFixed(2)
-            : 0,
+          attendanceRate: totalEmployees > 0 
+            ? ((presentEmployees / totalEmployees) * 100).toFixed(2)
+            : "0.00",
         },
         tasks: {
           totalAssigned: tasks.length,
@@ -656,34 +668,142 @@ module.exports = {
             ? ((tasks.filter(t => t.status === "COMPLETED").length / tasks.length) * 100).toFixed(2)
             : 0,
         },
-        productivity: {
-          averageWorkHours: timesheets.length > 0
-            ? (timesheets.reduce((sum, t) => sum + (t.hoursLoggedIn || 0), 0) / timesheets.length).toFixed(2)
-            : 0,
-          totalWorkHours: timesheets.reduce((sum, t) => sum + (t.hoursLoggedIn || 0), 0),
-        },
+                 productivity: {
+           averageWorkHours: (() => {
+             let totalWorkHours = 0;
+             timesheets.forEach(timesheet => {
+               if (timesheet.clockIn) {
+                 if (timesheet.clockOut) {
+                   // If clocked out, calculate the difference
+                   const clockInTime = new Date(timesheet.clockIn);
+                   const clockOutTime = new Date(timesheet.clockOut);
+                   const diffMs = clockOutTime.getTime() - clockInTime.getTime();
+                   let workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                   
+                   // Subtract break time if any
+                   const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                   workHours = Math.max(0, workHours - breakTimeHours);
+                   totalWorkHours += workHours;
+                 } else {
+                   // If not clocked out, calculate from clock in to now
+                   const clockInTime = new Date(timesheet.clockIn);
+                   const now = new Date();
+                   const diffMs = now.getTime() - clockInTime.getTime();
+                   let workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                   
+                   // Subtract break time if any
+                   const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                   workHours = Math.max(0, workHours - breakTimeHours);
+                   totalWorkHours += workHours;
+                 }
+               }
+             });
+             // Round to 2 decimal places
+             totalWorkHours = Math.round(totalWorkHours * 100) / 100;
+             return timesheets.length > 0 ? (totalWorkHours / timesheets.length).toFixed(2) : "0.00";
+           })(),
+           totalWorkHours: (() => {
+             let totalWorkHours = 0;
+             timesheets.forEach(timesheet => {
+               if (timesheet.clockIn) {
+                 if (timesheet.clockOut) {
+                   // If clocked out, calculate the difference
+                   const clockInTime = new Date(timesheet.clockIn);
+                   const clockOutTime = new Date(timesheet.clockOut);
+                   const diffMs = clockOutTime.getTime() - clockInTime.getTime();
+                   let workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                   
+                   // Subtract break time if any
+                   const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                   workHours = Math.max(0, workHours - breakTimeHours);
+                   totalWorkHours += workHours;
+                 } else {
+                   // If not clocked out, calculate from clock in to now
+                   const clockInTime = new Date(timesheet.clockIn);
+                   const now = new Date();
+                   const diffMs = now.getTime() - clockInTime.getTime();
+                   let workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                   
+                   // Subtract break time if any
+                   const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                   workHours = Math.max(0, workHours - breakTimeHours);
+                   totalWorkHours += workHours;
+                 }
+               }
+             });
+             // Round to 2 decimal places
+             return Math.round(totalWorkHours * 100) / 100;
+           })(),
+         },
       };
 
       // Employee-wise performance (if no specific employee)
       if (!employeeId) {
+        // Get all employees to ensure we include those without timesheets
+        const allEmployees = await prisma.employee.findMany({
+          where: {
+            empRole: "employee",
+            isActive: true,
+          },
+          select: {
+            id: true,
+            empName: true,
+            empEmail: true,
+            empTechnology: true,
+          },
+        });
+
         const employeePerformance = {};
         
+        // Initialize all employees with zero attendance
+        allEmployees.forEach(emp => {
+          employeePerformance[emp.id] = {
+            empName: emp.empName,
+            empEmail: emp.empEmail,
+            empTechnology: emp.empTechnology,
+            attendance: { present: 0, absent: 0, late: 0, total: 0 },
+            tasks: { completed: 0, inProgress: 0, pending: 0, total: 0 },
+            workHours: 0,
+          };
+        });
+        
+        // Update with actual timesheet data
         timesheets.forEach(timesheet => {
           const empId = timesheet.empId;
-          if (!employeePerformance[empId]) {
-            employeePerformance[empId] = {
-              empName: timesheet.employee.empName,
-              empEmail: timesheet.employee.empEmail,
-              empTechnology: timesheet.employee.empTechnology,
-              attendance: { present: 0, absent: 0, late: 0, total: 0 },
-              tasks: { completed: 0, inProgress: 0, pending: 0, total: 0 },
-              workHours: 0,
-            };
+          if (employeePerformance[empId]) {
+            employeePerformance[empId].attendance[timesheet.status.toLowerCase()]++;
+            employeePerformance[empId].attendance.total++;
+            
+                         // Calculate work hours properly
+             let workHours = 0;
+             if (timesheet.clockIn) {
+               if (timesheet.clockOut) {
+                 // If clocked out, calculate the difference
+                 const clockInTime = new Date(timesheet.clockIn);
+                 const clockOutTime = new Date(timesheet.clockOut);
+                 const diffMs = clockOutTime.getTime() - clockInTime.getTime();
+                 workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                 
+                 // Subtract break time if any
+                 const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                 workHours = Math.max(0, workHours - breakTimeHours);
+               } else {
+                 // If not clocked out, calculate from clock in to now
+                 const clockInTime = new Date(timesheet.clockIn);
+                 const now = new Date();
+                 const diffMs = now.getTime() - clockInTime.getTime();
+                 workHours = diffMs / (1000 * 60 * 60); // Convert to hours
+                 
+                 // Subtract break time if any
+                 const breakTimeHours = (timesheet.totalBreakTime || 0) / 60;
+                 workHours = Math.max(0, workHours - breakTimeHours);
+               }
+             }
+             
+             // Round to 2 decimal places
+             workHours = Math.round(workHours * 100) / 100;
+             employeePerformance[empId].workHours += workHours;
           }
-          
-          employeePerformance[empId].attendance[timesheet.status.toLowerCase()]++;
-          employeePerformance[empId].attendance.total++;
-          employeePerformance[empId].workHours += timesheet.hoursLoggedIn || 0;
         });
 
         tasks.forEach(task => {
