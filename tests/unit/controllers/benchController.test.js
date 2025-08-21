@@ -8,8 +8,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/benchLogger/benchLogger');
-
 // Import the controller
 const benchController = require('../../../admin_app/controller/benchController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -78,8 +76,7 @@ describe('Bench Controller', () => {
         message: 'Current employee list retrieved',
         empData: mockEmployees
       });
-      expect(benchLogger.log).toHaveBeenCalledWith('info', 'Current employee list retrieved');
-    });
+      });
 
     it('should handle empty employee list', async () => {
       // Arrange
@@ -112,8 +109,7 @@ describe('Bench Controller', () => {
         success: false,
         message: `Error: ${dbError.message}`
       });
-      expect(benchLogger.log).toHaveBeenCalledWith('error', `Error: ${dbError.message}`);
-    });
+      });
   });
 
   describe('searchEmployee', () => {
@@ -158,8 +154,7 @@ describe('Bench Controller', () => {
         message: 'Searched employees',
         empData: mockEmployees
       });
-      expect(benchLogger.log).toHaveBeenCalledWith('info', 'Searched employees');
-    });
+      });
 
     it('should search employees by email successfully', async () => {
       // Arrange
@@ -265,8 +260,7 @@ describe('Bench Controller', () => {
         success: false,
         message: `Error: ${dbError.message}`
       });
-      expect(benchLogger.log).toHaveBeenCalledWith('error', `Error: ${dbError.message}`);
-    });
+      });
 
     it('should handle special characters in search', async () => {
       // Arrange

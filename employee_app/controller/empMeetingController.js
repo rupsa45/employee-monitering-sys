@@ -12,6 +12,120 @@ const iceConfig = require('../../utils/iceConfig');
 
 class EmpMeetingController {
   /**
+   * Create a new meeting
+   * POST /emp/meetings
+   */
+  async createMeeting(req, res) {
+    try {
+      const {
+        title,
+        description,
+        type,
+        scheduledStart,
+        scheduledEnd,
+        password,
+        isPersistent = false,
+        participants = []
+      } = req.body;
+
+      // Validate required fields
+      if (!title || !type || !scheduledStart || !scheduledEnd) {
+        return res.status(400).json({
+          success: false,
+          message: 'Missing required fields: title, type, scheduledStart, scheduledEnd'
+        });
+      }
+
+      // Validate meeting type
+      const validTypes = ['BASIC', 'NORMAL', 'LONG'];
+      if (!validTypes.includes(type)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid meeting type. Must be one of: BASIC, NORMAL, LONG'
+        });
+      }
+
+      // Validate dates
+      const startDate = new Date(scheduledStart);
+      const endDate = new Date(scheduledEnd);
+      const now = new Date();
+
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid date format for scheduledStart or scheduledEnd'
+        });
+      }
+
+      if (startDate <= now) {
+        return res.status(400).json({
+          success: false,
+          message: 'Scheduled start time must be in the future'
+        });
+      }
+
+      if (endDate <= startDate) {
+        return res.status(400).json({
+          success: false,
+          message: 'Scheduled end time must be after scheduled start time'
+        });
+      }
+
+      // Create meeting data
+      const meetingData = {
+        title,
+        description: description || '',
+        type,
+        scheduledStart: startDate,
+        scheduledEnd: endDate,
+        password: password || null,
+        isPersistent: Boolean(isPersistent),
+        hostId: req.user.id,
+        participants: participants.filter(id => id !== req.user.id) // Remove host from participants
+      };
+
+      // Create the meeting
+      const meeting = await meetingService.createMeeting(meetingData);
+
+      // Send invites to participants if any
+      if (participants.length > 0) {
+        try {
+          await meetingSchedulingService.sendMeetingInvites({
+            meetingId: meeting.id,
+            empIds: participants,
+            message: `You have been invited to join: ${title}`
+          });
+        } catch (inviteError) {
+          // Log invite error but don't fail the meeting creation
+          console.warn('Failed to send meeting invites:', inviteError.message);
+        }
+      }
+
+      res.status(201).json({
+        success: true,
+        message: 'Meeting created successfully',
+        data: {
+          id: meeting.id,
+          title: meeting.title,
+          roomCode: meeting.roomCode,
+          type: meeting.type,
+          scheduledStart: meeting.scheduledStart,
+          scheduledEnd: meeting.scheduledEnd,
+          status: meeting.status,
+          hostId: meeting.hostId,
+          participantsCount: participants.length
+        }
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to create meeting',
+        error: error.message
+      });
+    }
+  }
+
+  /**
    * List employee's meetings
    * GET /emp/meetings
    */
@@ -43,24 +157,12 @@ class EmpMeetingController {
         limit: limitNum
       });
 
-      logger.info('Employee listed meetings', {
-        empId: req.user.id,
-        filters: { type, status },
-        page: pageNum,
-        limit: limitNum
-      });
-
       res.json({
         success: true,
         message: 'Meetings retrieved successfully',
         data: result
       });
     } catch (error) {
-      logger.error('Error listing employee meetings', {
-        empId: req.user?.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve meetings',
@@ -108,13 +210,6 @@ class EmpMeetingController {
         role = participant.role;
       }
 
-      logger.info('Employee retrieved meeting details', {
-        empId: req.user.id,
-        roomCode,
-        isParticipant,
-        role
-      });
-
       res.json({
         success: true,
         message: 'Meeting details retrieved successfully',
@@ -127,12 +222,6 @@ class EmpMeetingController {
         }
       });
     } catch (error) {
-      logger.error('Error getting meeting by room code', {
-        empId: req.user?.id,
-        roomCode: req.params.roomCode,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve meeting details',
@@ -194,13 +283,6 @@ class EmpMeetingController {
         role
       });
 
-      logger.info('Employee joined meeting', {
-        empId: req.user.id,
-        roomCode,
-        meetingId: meeting.id,
-        role
-      });
-
       res.json({
         success: true,
         message: 'Successfully joined meeting',
@@ -213,12 +295,6 @@ class EmpMeetingController {
         }
       });
     } catch (error) {
-      logger.error('Error joining meeting', {
-        empId: req.user?.id,
-        roomCode: req.params.roomCode,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -277,13 +353,6 @@ class EmpMeetingController {
         empId: req.user.id
       });
 
-      logger.info('Employee left meeting', {
-        empId: req.user.id,
-        roomCode,
-        meetingId: meeting.id,
-        attendanceSec: leaveResult.participant.attendanceSec
-      });
-
       res.json({
         success: true,
         message: 'Successfully left meeting',
@@ -293,12 +362,6 @@ class EmpMeetingController {
         }
       });
     } catch (error) {
-      logger.error('Error leaving meeting', {
-        empId: req.user?.id,
-        roomCode: req.params.roomCode,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -375,13 +438,6 @@ class EmpMeetingController {
         role
       });
 
-      logger.info('Employee requested meeting access token', {
-        empId: req.user.id,
-        roomCode,
-        meetingId: meeting.id,
-        role
-      });
-
       res.json({
         success: true,
         message: 'Meeting access token generated successfully',
@@ -392,12 +448,6 @@ class EmpMeetingController {
         }
       });
     } catch (error) {
-      logger.error('Error generating meeting access token', {
-        empId: req.user?.id,
-        roomCode: req.params.roomCode,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -442,12 +492,6 @@ class EmpMeetingController {
         minutesAhead: minutes
       });
 
-      logger.info('Employee retrieved upcoming meetings', {
-        empId: req.user.id,
-        minutesAhead: minutes,
-        meetingCount: meetings.length
-      });
-
       res.json({
         success: true,
         message: 'Upcoming meetings retrieved successfully',
@@ -458,11 +502,6 @@ class EmpMeetingController {
         }
       });
     } catch (error) {
-      logger.error('Error getting upcoming meetings', {
-        empId: req.user?.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve upcoming meetings',

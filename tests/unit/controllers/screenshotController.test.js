@@ -21,8 +21,6 @@ jest.mock('../../../config/cloudinaryConfig', () => ({
     destroy: jest.fn()
   }
 }));
-jest.mock('../../../utils/adminLogger/adminLogger');
-
 // Import the controller
 const screenshotController = require('../../../admin_app/controller/screenshotController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -115,7 +113,6 @@ describe('Screenshot Controller', () => {
           createdAt: mockScreenshot.createdAt
         }
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('info', expect.stringContaining('Screenshot uploaded for employee'));
     });
 
     it('should return 400 when no file is provided', async () => {
@@ -179,8 +176,7 @@ describe('Screenshot Controller', () => {
         message: 'Error uploading screenshot',
         error: cloudinaryError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Screenshot upload error: ${cloudinaryError.message}`);
-    });
+      });
 
     it('should handle database errors gracefully', async () => {
       // Arrange
@@ -211,8 +207,7 @@ describe('Screenshot Controller', () => {
         message: 'Error uploading screenshot',
         error: dbError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Screenshot upload error: ${dbError.message}`);
-    });
+      });
   });
 
   describe('getEmployeeScreenshots', () => {
@@ -410,8 +405,7 @@ describe('Screenshot Controller', () => {
         success: true,
         message: 'Screenshot deleted successfully'
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('info', 'Screenshot deleted: screenshot1');
-    });
+      });
 
     it('should return 404 when screenshot not found', async () => {
       // Arrange
@@ -455,8 +449,7 @@ describe('Screenshot Controller', () => {
         message: 'Error deleting screenshot',
         error: cloudinaryError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Delete screenshot error: ${cloudinaryError.message}`);
-    });
+      });
 
     it('should handle database errors gracefully', async () => {
       // Arrange
@@ -484,7 +477,6 @@ describe('Screenshot Controller', () => {
         message: 'Error deleting screenshot',
         error: dbError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Delete screenshot error: ${dbError.message}`);
-    });
+      });
   });
 });

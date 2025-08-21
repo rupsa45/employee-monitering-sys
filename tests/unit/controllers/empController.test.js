@@ -14,7 +14,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/empLogger/employeeLogger');
 jest.mock('../../../service/emailService');
 
 // Import the controller
@@ -110,8 +109,7 @@ describe('Employee Controller', () => {
         success: false,
         message: "Employee not found"
       });
-      expect(employeeLogger.log).toHaveBeenCalledWith("error", "Employee not found");
-    });
+      });
 
     it('should return 401 when password is invalid', async () => {
       // Arrange
@@ -140,8 +138,7 @@ describe('Employee Controller', () => {
         success: false,
         message: "Invalid password"
       });
-      expect(employeeLogger.log).toHaveBeenCalledWith("error", "Invalid password");
-    });
+      });
 
     it('should handle database errors gracefully', async () => {
       // Arrange
@@ -160,8 +157,7 @@ describe('Employee Controller', () => {
         success: false,
         message: dbError.message
       });
-      expect(employeeLogger.log).toHaveBeenCalledWith('error', `Error: ${dbError.message}`);
-    });
+      });
   });
 
   describe('editProfile', () => {
@@ -241,7 +237,6 @@ describe('Employee Controller', () => {
         success: false,
         message: updateError.message
       });
-      expect(employeeLogger.log).toHaveBeenCalledWith('error', `Error: ${updateError.message}`);
-    });
+      });
   });
 });

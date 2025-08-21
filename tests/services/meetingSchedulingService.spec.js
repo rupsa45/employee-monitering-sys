@@ -18,7 +18,7 @@ jest.mock('../../config/prismaConfig', () => ({
 }));
 
 jest.mock('../../service/emailService');
-jest.mock('../../utils/logger');
+
 
 const { prisma } = require('../../config/prismaConfig');
 const mailOptions = require('../../service/emailService');

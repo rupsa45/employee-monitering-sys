@@ -30,7 +30,7 @@ jest.mock('../../config/prismaConfig', () => ({
 
 jest.mock('../../utils/shortcode');
 jest.mock('../../utils/hash');
-jest.mock('../../utils/logger');
+
 
 const { prisma } = require('../../config/prismaConfig');
 

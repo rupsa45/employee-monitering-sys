@@ -5,6 +5,7 @@ const { authentication } = require('../../middleware/authToken');
 const {
   meetingTokenLimiter,
   meetingJoinLimiter,
+  meetingCreationLimiter,
   generalApiLimiter
 } = require('../../middleware/rateLimiter');
 
@@ -29,6 +30,21 @@ const ensureEmployee = (req, res, next) => {
 
 // Apply employee check to all routes
 router.use(ensureEmployee);
+
+/**
+ * POST /emp/meetings
+ * Create a new meeting (employees can create meetings)
+ * Body parameters:
+ * - title: Meeting title (required)
+ * - description: Meeting description (optional)
+ * - type: Meeting type (BASIC, NORMAL, LONG) (required)
+ * - scheduledStart: Scheduled start time (ISO string) (required)
+ * - scheduledEnd: Scheduled end time (ISO string) (required)
+ * - password: Meeting password (optional)
+ * - isPersistent: Whether meeting is persistent (optional, default: false)
+ * - participants: Array of employee IDs to invite (optional)
+ */
+router.post('/', meetingCreationLimiter, empMeetingController.createMeeting);
 
 /**
  * GET /emp/meetings

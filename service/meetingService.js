@@ -82,20 +82,8 @@ class MeetingService {
         }
       });
 
-      logger.info('Meeting created successfully', {
-        meetingId: meeting.id,
-        roomCode: meeting.roomCode,
-        hostId: meeting.hostId,
-        type: meeting.type
-      });
-
       return meeting;
     } catch (error) {
-      logger.error('Error creating meeting', {
-        hostId,
-        title,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -164,19 +152,8 @@ class MeetingService {
         }
       });
 
-      logger.info('Meeting updated successfully', {
-        meetingId,
-        updatedBy: byEmpId,
-        updatedFields: Object.keys(updateData)
-      });
-
       return updatedMeeting;
     } catch (error) {
-      logger.error('Error updating meeting', {
-        meetingId,
-        byEmpId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -224,18 +201,8 @@ class MeetingService {
         }
       });
 
-      logger.info('Meeting canceled successfully', {
-        meetingId,
-        canceledBy: byEmpId
-      });
-
       return canceledMeeting;
     } catch (error) {
-      logger.error('Error canceling meeting', {
-        meetingId,
-        byEmpId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -290,18 +257,8 @@ class MeetingService {
         }
       });
 
-      logger.info('Meeting started successfully', {
-        meetingId,
-        startedBy: byEmpId
-      });
-
       return startedMeeting;
     } catch (error) {
-      logger.error('Error starting meeting', {
-        meetingId,
-        byEmpId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -377,19 +334,8 @@ class MeetingService {
         }
       });
 
-      logger.info('Meeting ended successfully', {
-        meetingId,
-        endedBy: byEmpId,
-        activeParticipantsCount: activeParticipants.length
-      });
-
       return endedMeeting;
     } catch (error) {
-      logger.error('Error ending meeting', {
-        meetingId,
-        byEmpId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -429,10 +375,6 @@ class MeetingService {
 
       return meeting;
     } catch (error) {
-      logger.error('Error getting meeting by code', {
-        roomCode,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -506,10 +448,6 @@ class MeetingService {
         }
       };
     } catch (error) {
-      logger.error('Error listing meetings for admin', {
-        filters: { hostId, type, status, startDate, endDate },
-        error: error.message
-      });
       throw error;
     }
   }
@@ -586,11 +524,6 @@ class MeetingService {
         }
       };
     } catch (error) {
-      logger.error('Error listing meetings for employee', {
-        empId,
-        filters: { type, status },
-        error: error.message
-      });
       throw error;
     }
   }
@@ -642,11 +575,6 @@ class MeetingService {
 
       return { canJoin: true };
     } catch (error) {
-      logger.error('Error checking join permission', {
-        meetingId: meeting?.id,
-        empId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -734,19 +662,8 @@ class MeetingService {
         }
       });
 
-      logger.info('Employee joined meeting', {
-        meetingId,
-        empId,
-        timeSheetId: linkedTimeSheetId
-      });
-
       return { success: true, participant };
     } catch (error) {
-      logger.error('Error marking employee join', {
-        meetingId,
-        empId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -802,19 +719,8 @@ class MeetingService {
         }
       });
 
-      logger.info('Employee left meeting', {
-        meetingId,
-        empId,
-        attendanceSec: updatedParticipant.attendanceSec
-      });
-
       return { success: true, participant: updatedParticipant };
     } catch (error) {
-      logger.error('Error marking employee leave', {
-        meetingId,
-        empId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -912,19 +818,8 @@ class MeetingService {
         }))
       };
 
-      logger.info('Meeting attendance report generated', {
-        meetingId,
-        totalParticipants,
-        activeParticipants,
-        totalAttendanceSeconds
-      });
-
       return attendanceReport;
     } catch (error) {
-      logger.error('Error getting meeting attendance', {
-        meetingId,
-        error: error.message
-      });
       throw error;
     }
   }

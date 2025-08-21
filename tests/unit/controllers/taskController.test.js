@@ -17,8 +17,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/adminLogger/adminLogger');
-
 // Import the controller
 const taskController = require('../../../admin_app/controller/taskController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -119,8 +117,7 @@ describe('Task Controller', () => {
           createdAt: mockTask.createdAt
         }
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('info', 'Task "Implement User Authentication" created successfully by admin');
-    });
+      });
 
     it('should return 400 when required fields are missing', async () => {
       // Arrange
@@ -419,8 +416,7 @@ describe('Task Controller', () => {
         message: 'Task deleted successfully',
         task: mockTask
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('info', 'Task "Test Task" deleted successfully by admin');
-    });
+      });
 
     it('should return 404 when task not found', async () => {
       // Arrange

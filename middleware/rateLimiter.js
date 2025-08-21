@@ -9,8 +9,7 @@ try {
   RedisStore = require('rate-limit-redis').RedisStore;
   redis = require('redis');
 } catch (error) {
-  logger.warn('Redis dependencies not available, using memory store only', { error: error.message });
-}
+  }
 
 // Redis client for rate limiting (optional, falls back to memory store)
 let redisClient = null;
@@ -33,7 +32,6 @@ try {
     // Only connect if Redis is available and we're not in test environment
     if (process.env.NODE_ENV !== 'test') {
       redisClient.connect().catch(err => {
-        logger.warn('Redis connection failed, using memory store for rate limiting', { error: err.message });
         redisClient = null;
       });
     }
@@ -105,10 +103,12 @@ function createRateLimiter(options = {}) {
 const meetingTokenLimiter = createRateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 15, // 15 token requests per 15 minutes
-  message: {
-    success: false,
-    message: 'Too many token requests. Please wait before requesting another token.',
-    retryAfter: 900 // 15 minutes
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: 'Too many token requests',
+      retryAfter: 900 // 15 minutes
+    });
   },
   keyGenerator: (req) => {
     // Use user ID for authenticated requests
@@ -120,10 +120,12 @@ const meetingTokenLimiter = createRateLimiter({
 const meetingJoinLimiter = createRateLimiter({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 10, // 10 joins per hour
-  message: {
-    success: false,
-    message: 'Too many meeting join attempts. Please wait before joining another meeting.',
-    retryAfter: 3600 // 1 hour
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: 'Too many meeting join attempts',
+      retryAfter: 3600 // 1 hour
+    });
   },
   keyGenerator: (req) => {
     return req.user ? `join:${req.user.id}` : `join:${req.ip}`;
@@ -134,10 +136,12 @@ const meetingJoinLimiter = createRateLimiter({
 const meetingCreationLimiter = createRateLimiter({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5, // 5 meetings per hour
-  message: {
-    success: false,
-    message: 'Too many meeting creation attempts. Please wait before creating another meeting.',
-    retryAfter: 3600 // 1 hour
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: 'Too many meeting creation attempts',
+      retryAfter: 3600 // 1 hour
+    });
   },
   keyGenerator: (req) => {
     return req.user ? `create:${req.user.id}` : `create:${req.ip}`;
@@ -148,10 +152,12 @@ const meetingCreationLimiter = createRateLimiter({
 const meetingInviteLimiter = createRateLimiter({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 20, // 20 invite batches per hour
-  message: {
-    success: false,
-    message: 'Too many meeting invite attempts. Please wait before sending more invites.',
-    retryAfter: 3600 // 1 hour
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: 'Too many meeting invite attempts',
+      retryAfter: 3600 // 1 hour
+    });
   },
   keyGenerator: (req) => {
     return req.user ? `invite:${req.user.id}` : `invite:${req.ip}`;
@@ -176,10 +182,12 @@ const socketConnectionLimiter = createRateLimiter({
 const generalApiLimiter = createRateLimiter({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 1000, // 1000 requests per 15 minutes
-  message: {
-    success: false,
-    message: 'Too many API requests. Please wait before making more requests.',
-    retryAfter: 900 // 15 minutes
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      message: 'Too many API requests',
+      retryAfter: 900 // 15 minutes
+    });
   }
 });
 
@@ -214,7 +222,6 @@ class SocketRateLimiter {
     const validAttempts = attempts.filter(timestamp => now - timestamp < windowMs);
     
     if (validAttempts.length >= maxAttempts) {
-      logger.warn('Socket connection rate limit exceeded', { ip });
       return false;
     }
 
@@ -245,7 +252,6 @@ class SocketRateLimiter {
     const validAttempts = attempts.filter(timestamp => now - timestamp < windowMs);
     
     if (validAttempts.length >= maxAttempts) {
-      logger.warn('Socket event rate limit exceeded', { socketId, event });
       return false;
     }
 

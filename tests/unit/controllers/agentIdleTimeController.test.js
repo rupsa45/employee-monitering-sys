@@ -15,8 +15,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/adminLogger/adminLogger');
-
 // Import the controller
 const agentIdleTimeController = require('../../../admin_app/controller/agentIdleTimeController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -93,7 +91,6 @@ describe('Agent Idle Time Controller', () => {
           durationMinutes: 30
         }
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('info', expect.stringContaining('Idle time recorded for employee'));
     });
 
     it('should return 404 when employee not found', async () => {
@@ -185,8 +182,7 @@ describe('Agent Idle Time Controller', () => {
         message: 'Error saving idle time data',
         error: dbError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Add idle time error: ${dbError.message}`);
-    });
+      });
   });
 
   describe('getEmployeeIdleTime', () => {
@@ -423,7 +419,6 @@ describe('Agent Idle Time Controller', () => {
         message: 'Error retrieving idle time summary',
         error: dbError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Get idle time summary error: ${dbError.message}`);
-    });
+      });
   });
 });

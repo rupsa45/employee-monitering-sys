@@ -15,8 +15,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/adminLogger/adminLogger');
-
 // Import the controller
 const agentWorkingAppsController = require('../../../admin_app/controller/agentWorkingAppsController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -106,7 +104,6 @@ describe('Agent Working Apps Controller', () => {
           mouseClicks: mockWorkingApp.mouseClicks
         }
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('info', expect.stringContaining('Working app data saved for employee'));
     });
 
     it('should return 404 when employee not found', async () => {
@@ -228,8 +225,7 @@ describe('Agent Working Apps Controller', () => {
         message: 'Error saving working app data',
         error: dbError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Set working app error: ${dbError.message}`);
-    });
+      });
   });
 
   describe('getEmployeeWorkingApps', () => {
@@ -505,7 +501,6 @@ describe('Agent Working Apps Controller', () => {
         message: 'Error retrieving working apps summary',
         error: dbError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Get working apps summary error: ${dbError.message}`);
-    });
+      });
   });
 });

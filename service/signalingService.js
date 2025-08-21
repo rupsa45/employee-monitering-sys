@@ -29,7 +29,6 @@ class SignalingService {
       const userData = await meetingAuthService.verifyMeetingAccessToken(token);
       return userData;
     } catch (error) {
-      logger.error('Socket authentication failed', { error: error.message });
       throw error;
     }
   }
@@ -84,25 +83,12 @@ class SignalingService {
         empName: participant?.employee?.empName || 'Unknown'
       });
 
-      logger.info('User joined meeting room', {
-        socketId,
-        empId: userData.empId,
-        meetingId,
-        role: userData.role,
-        roomId
-      });
-
       return {
         roomId,
         userData: this.socketToUser.get(socketId),
         participants: this.getRoomParticipants(roomId)
       };
     } catch (error) {
-      logger.error('Failed to join room', {
-        socketId,
-        meetingId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -141,29 +127,12 @@ class SignalingService {
             empId: userData.empId
           });
         } catch (error) {
-          logger.error('Failed to mark leave in database', {
-            socketId,
-            empId: userData.empId,
-            meetingId: userData.meetingId,
-            error: error.message
-          });
-        }
+          }
       }
-
-      logger.info('User left meeting room', {
-        socketId,
-        empId: userData.empId,
-        meetingId: userData.meetingId,
-        roomId
-      });
 
       return { roomId, userData };
     } catch (error) {
-      logger.error('Failed to leave room', {
-        socketId,
-        error: error.message
-      });
-    }
+      }
   }
 
   /**
@@ -260,20 +229,8 @@ class SignalingService {
         empId: targetEmpId
       });
 
-      logger.info('Participant kicked from meeting', {
-        kickerSocketId: socketId,
-        kickerEmpId: userData.empId,
-        targetEmpId,
-        meetingId: userData.meetingId
-      });
-
       return { targetSocketId, targetEmpId };
     } catch (error) {
-      logger.error('Failed to kick participant', {
-        socketId,
-        targetEmpId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -303,20 +260,8 @@ class SignalingService {
       // Kick from room
       const kickResult = await this.kickParticipant(socketId, targetEmpId);
 
-      logger.info('Participant banned from meeting', {
-        bannerSocketId: socketId,
-        bannerEmpId: userData.empId,
-        targetEmpId,
-        meetingId: userData.meetingId
-      });
-
       return { ...kickResult, banned: true };
     } catch (error) {
-      logger.error('Failed to ban participant', {
-        socketId,
-        targetEmpId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -339,18 +284,8 @@ class SignalingService {
         byEmpId: userData.empId
       });
 
-      logger.info('Meeting ended by host', {
-        socketId,
-        empId: userData.empId,
-        meetingId: userData.meetingId
-      });
-
       return { meetingId: userData.meetingId };
     } catch (error) {
-      logger.error('Failed to end meeting', {
-        socketId,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -381,11 +316,7 @@ class SignalingService {
     try {
       await this.leaveRoom(socketId);
     } catch (error) {
-      logger.error('Error handling disconnect', {
-        socketId,
-        error: error.message
-      });
-    }
+      }
   }
 }
 

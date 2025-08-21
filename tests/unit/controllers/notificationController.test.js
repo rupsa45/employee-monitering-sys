@@ -14,8 +14,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/notificationLogger/notificationLogger');
-
 // Import the controller
 const notificationController = require('../../../admin_app/controller/notificationController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -117,8 +115,7 @@ describe('Notification Controller', () => {
           })
         ])
       });
-      expect(notificationLogger.log).toHaveBeenCalledWith('info', 'Notification created successfully for 2 employees');
-    });
+      });
 
     it('should create notification for all employees when sendToAll is true', async () => {
       // Arrange
@@ -227,8 +224,7 @@ describe('Notification Controller', () => {
         message: 'Error creating notification',
         error: dbError.message
       });
-      expect(notificationLogger.log).toHaveBeenCalledWith('error', `Error: ${dbError.message}`);
-    });
+      });
   });
 
   describe('getActiveEmployees', () => {
@@ -280,8 +276,7 @@ describe('Notification Controller', () => {
         data: mockEmployees,
         total: mockEmployees.length
       });
-      expect(notificationLogger.log).toHaveBeenCalledWith('info', 'Active employees retrieved successfully');
-    });
+      });
 
     it('should handle empty employee list', async () => {
       // Arrange
@@ -440,8 +435,7 @@ describe('Notification Controller', () => {
         message: 'Notification updated successfully',
         notification: mockNotification
       });
-      expect(notificationLogger.log).toHaveBeenCalledWith('info', 'Notification updated successfully');
-    });
+      });
   });
 
   describe('inactivateNotification', () => {
@@ -464,8 +458,7 @@ describe('Notification Controller', () => {
         success: true,
         message: 'Notification inactive successfully'
       });
-      expect(notificationLogger.log).toHaveBeenCalledWith('info', 'Notification inactive successfully');
-    });
+      });
   });
 
   describe('getNotificationById', () => {

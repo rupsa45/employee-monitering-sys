@@ -153,15 +153,6 @@ class EmpMeetingRecordingController {
         }
       });
 
-      logger.info('Meeting recording uploaded successfully', {
-        empId,
-        meetingId,
-        recordingId: recording.id,
-        durationSec,
-        fileSize: req.file.size,
-        cloudinaryUrl: uploadResult.secure_url
-      });
-
       res.status(201).json({
         success: true,
         message: 'Recording uploaded successfully',
@@ -179,12 +170,6 @@ class EmpMeetingRecordingController {
       });
 
     } catch (error) {
-      logger.error('Error uploading meeting recording', {
-        empId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to upload recording',
@@ -256,14 +241,6 @@ class EmpMeetingRecordingController {
       const hasNext = parseInt(page) < totalPages;
       const hasPrev = parseInt(page) > 1;
 
-      logger.info('Meeting recordings retrieved', {
-        empId,
-        meetingId,
-        count: recordings.length,
-        page: parseInt(page),
-        totalCount
-      });
-
       res.json({
         success: true,
         data: {
@@ -291,12 +268,6 @@ class EmpMeetingRecordingController {
       });
 
     } catch (error) {
-      logger.error('Error retrieving meeting recordings', {
-        empId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve recordings',
@@ -365,23 +336,11 @@ class EmpMeetingRecordingController {
         const { deleteFile } = require('../../service/cloudinaryClient');
         await deleteFile(recording.publicId);
       } catch (cloudinaryError) {
-        logger.warn('Failed to delete from Cloudinary, proceeding with DB deletion', {
-          recordingId,
-          publicId: recording.publicId,
-          error: cloudinaryError.message
-        });
-      }
+        }
 
       // Delete from database
       await prisma.meetingRecording.delete({
         where: { id: recordingId }
-      });
-
-      logger.info('Meeting recording deleted', {
-        empId,
-        meetingId,
-        recordingId,
-        deletedBy: isCreator ? 'creator' : 'host'
       });
 
       res.json({
@@ -390,13 +349,6 @@ class EmpMeetingRecordingController {
       });
 
     } catch (error) {
-      logger.error('Error deleting meeting recording', {
-        empId: req.user?.id,
-        meetingId: req.params.id,
-        recordingId: req.params.recordingId,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to delete recording',
@@ -474,13 +426,6 @@ class EmpMeetingRecordingController {
         };
       });
 
-      logger.info('Meeting recording stats retrieved', {
-        empId,
-        meetingId,
-        totalRecordings: stats._count.id,
-        totalBytes: stats._sum.bytes
-      });
-
       res.json({
         success: true,
         data: {
@@ -491,12 +436,6 @@ class EmpMeetingRecordingController {
       });
 
     } catch (error) {
-      logger.error('Error retrieving recording stats', {
-        empId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve recording statistics',

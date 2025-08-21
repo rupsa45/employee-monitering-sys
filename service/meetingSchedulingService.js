@@ -99,13 +99,6 @@ class MeetingSchedulingService {
       const successfulEmails = emailResults.filter(result => result.status === 'fulfilled').length;
       const failedEmails = emailResults.filter(result => result.status === 'rejected').length;
 
-      logger.info('Meeting invites sent', {
-        meetingId,
-        totalInvites: employees.length,
-        successfulEmails,
-        failedEmails
-      });
-
       return {
         success: true,
         meetingId,
@@ -119,11 +112,6 @@ class MeetingSchedulingService {
         }))
       };
     } catch (error) {
-      logger.error('Error sending meeting invites', {
-        meetingId,
-        empIds,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -152,11 +140,6 @@ class MeetingSchedulingService {
       
       return true;
     } catch (error) {
-      logger.error('Error sending invite email', {
-        to,
-        meetingId: meeting.id,
-        error: error.message
-      });
       return false;
     }
   }
@@ -289,10 +272,6 @@ class MeetingSchedulingService {
         }
       };
     } catch (error) {
-      logger.error('Error getting scheduled meetings', {
-        filters: { from, to, status, hostId },
-        error: error.message
-      });
       throw error;
     }
   }
@@ -339,11 +318,6 @@ class MeetingSchedulingService {
 
       return meetings;
     } catch (error) {
-      logger.error('Error getting upcoming meetings', {
-        empId,
-        minutesAhead,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -416,12 +390,6 @@ class MeetingSchedulingService {
         successfulReminders += results.filter(r => r.status === 'fulfilled' && r.value).length;
       }
 
-      logger.info('Meeting reminders sent', {
-        totalMeetings: upcomingMeetings.length,
-        totalReminders,
-        successfulReminders
-      });
-
       return {
         success: true,
         totalMeetings: upcomingMeetings.length,
@@ -429,10 +397,6 @@ class MeetingSchedulingService {
         successfulReminders
       };
     } catch (error) {
-      logger.error('Error sending meeting reminders', {
-        minutesAhead,
-        error: error.message
-      });
       throw error;
     }
   }

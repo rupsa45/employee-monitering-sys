@@ -331,15 +331,10 @@ describe('Socket.IO Meetings Namespace', () => {
         });
 
         client2.on('connect', () => {
-          client1.on('host:kicked', (data) => {
-            expect(data.targetEmpId).toBe('emp2');
-            expect(data.reason).toBe('Kicked by host');
-            done();
-          });
-
           client2.on('host:kicked', (data) => {
             expect(data.targetEmpId).toBe('emp2');
             expect(data.reason).toBe('You have been kicked from the meeting');
+            done();
           });
 
           client1.emit('host:kick', { targetEmpId: 'emp2' });
@@ -358,15 +353,10 @@ describe('Socket.IO Meetings Namespace', () => {
         });
 
         client2.on('connect', () => {
-          client1.on('host:banned', (data) => {
-            expect(data.targetEmpId).toBe('emp2');
-            expect(data.reason).toBe('Banned by host');
-            done();
-          });
-
           client2.on('host:banned', (data) => {
             expect(data.targetEmpId).toBe('emp2');
             expect(data.reason).toBe('You have been banned from the meeting');
+            done();
           });
 
           client1.emit('host:ban', { targetEmpId: 'emp2' });

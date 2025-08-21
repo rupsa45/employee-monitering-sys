@@ -2,7 +2,8 @@ require('dotenv').config()
 let express = require('express');
 const cors = require('cors');
 const morgan = require('morgan')
-
+const { createServer } = require('http');
+const { Server } = require('socket.io');
 
 const { connectDatabase } = require('./config/prismaConfig')
 let commonRouter = require('./urls')
@@ -41,7 +42,7 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use('/', commonRouter)
 // Environment-based host configuration
 const HOST = isDevelopment ? "localhost" : "0.0.0.0";
-const PORT = process.env.PORT || 8000
+const PORT = process.env.PORT || 9000
 const serverLink = isDevelopment 
   ? `Server Started on http://${HOST}:${PORT}`
   : `Server Started on port ${PORT}`
@@ -54,10 +55,31 @@ async function startServer() {
     // Initialize cron jobs for scheduled notifications
     initializeCronJobs();
     
-    const server = app.listen(PORT, HOST, () => {
+    // Create HTTP server
+    const server = createServer(app);
+    
+    // Initialize Socket.IO with CORS
+    const io = new Server(server, {
+      cors: {
+        origin: isDevelopment 
+          ? ["http://localhost:5173", "http://localhost:3000", "http://localhost:4173", "http://localhost:9000"]
+          : ["https://monitering-system-client.vercel.app"],
+        methods: ["GET", "POST"],
+        credentials: true
+      },
+      transports: ['websocket', 'polling']
+    });
+    
+    // Setup Socket.IO namespaces
+    const setupMeetingsNamespace = require('./socket/meetings');
+    setupMeetingsNamespace(io);
+    
+    // Start server
+    server.listen(PORT, HOST, () => {
       console.log("Express server listening on Port: ", PORT)
       console.log(serverLink)
       console.log(`Environment: ${process.env.NODE_ENV || 'development'}`)
+      console.log(`Socket.IO server initialized on port ${PORT}`)
     })
 
     module.exports = server

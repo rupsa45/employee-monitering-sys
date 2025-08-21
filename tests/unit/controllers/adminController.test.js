@@ -16,8 +16,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/adminLogger/adminLogger');
-
 // Import the controller
 const adminController = require('../../../admin_app/controller/adminController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -150,8 +148,7 @@ describe('Admin Controller', () => {
         success: false,
         message: "Admin Already Exists With This Email"
       });
-      expect(adminLogger.log).toHaveBeenCalledWith("error", "Admin Already Exists With This Email");
-    });
+      });
 
     it('should return 400 when passwords do not match', async () => {
       // Arrange

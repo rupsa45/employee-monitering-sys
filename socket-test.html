@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket.IO WebRTC Test</title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .connected { background-color: #d4edda; color: #155724; }
+        .disconnected { background-color: #f8d7da; color: #721c24; }
+        .connecting { background-color: #fff3cd; color: #856404; }
+        .events {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .event {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #007bff;
+            background-color: white;
+        }
+        .error { border-left-color: #dc3545; }
+        .success { border-left-color: #28a745; }
+        .warning { border-left-color: #ffc107; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background-color: #0056b3; }
+        button:disabled { background-color: #6c757d; cursor: not-allowed; }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            width: 300px;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔌 Socket.IO WebRTC Connection Test</h1>
+        
+        <div class="controls">
+            <h3>Connection Settings</h3>
+            <input type="text" id="serverUrl" placeholder="Server URL" value="http://localhost:9000" />
+            <input type="text" id="meetingToken" placeholder="Meeting Access Token (optional)" value="test-token" />
+            <button onclick="connect()">Connect</button>
+            <button onclick="disconnect()" disabled id="disconnectBtn">Disconnect</button>
+            <button onclick="clearEvents()">Clear Events</button>
+        </div>
+
+        <div id="status" class="status disconnected">Disconnected</div>
+        
+        <div class="controls">
+            <h3>Test Actions</h3>
+            <button onclick="testPeerJoin()" disabled id="testBtn">Test Peer Join</button>
+            <button onclick="testWebRTC()" disabled id="webrtcBtn">Test WebRTC</button>
+            <button onclick="testHostKick()" disabled id="kickBtn">Test Host Kick</button>
+        </div>
+
+        <h3>Event Log</h3>
+        <div id="events" class="events"></div>
+    </div>
+
+    <script>
+        let socket = null;
+        let isConnected = false;
+
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.textContent = message;
+            statusDiv.className = `status ${type}`;
+        }
+
+        function addEvent(message, type = 'info') {
+            const eventsDiv = document.getElementById('events');
+            const eventDiv = document.createElement('div');
+            eventDiv.className = `event ${type}`;
+            eventDiv.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong>: ${message}`;
+            eventsDiv.appendChild(eventDiv);
+            eventsDiv.scrollTop = eventsDiv.scrollHeight;
+        }
+
+        function updateButtons() {
+            document.getElementById('disconnectBtn').disabled = !isConnected;
+            document.getElementById('testBtn').disabled = !isConnected;
+            document.getElementById('webrtcBtn').disabled = !isConnected;
+            document.getElementById('kickBtn').disabled = !isConnected;
+        }
+
+        function connect() {
+            const serverUrl = document.getElementById('serverUrl').value;
+            const meetingToken = document.getElementById('meetingToken').value;
+
+            if (!serverUrl) {
+                alert('Please enter server URL');
+                return;
+            }
+
+            updateStatus('Connecting...', 'connecting');
+            addEvent('Attempting to connect to Socket.IO server...', 'info');
+
+            try {
+                socket = io(`${serverUrl}/meetings`, {
+                    auth: {
+                        meetingAccessToken: meetingToken || 'test-token'
+                    },
+                    transports: ['websocket', 'polling'],
+                    timeout: 10000
+                });
+
+                socket.on('connect', () => {
+                    isConnected = true;
+                    updateStatus('Connected to Socket.IO server!', 'connected');
+                    addEvent('✅ Connected to Socket.IO server', 'success');
+                    addEvent(`Socket ID: ${socket.id}`, 'info');
+                    updateButtons();
+                });
+
+                socket.on('disconnect', (reason) => {
+                    isConnected = false;
+                    updateStatus('Disconnected from Socket.IO server', 'disconnected');
+                    addEvent(`❌ Disconnected: ${reason}`, 'error');
+                    updateButtons();
+                });
+
+                socket.on('connect_error', (error) => {
+                    isConnected = false;
+                    updateStatus(`Connection failed: ${error.message}`, 'disconnected');
+                    addEvent(`❌ Connection error: ${error.message}`, 'error');
+                    updateButtons();
+                });
+
+                socket.on('error', (error) => {
+                    addEvent(`⚠️ Socket error: ${JSON.stringify(error)}`, 'warning');
+                });
+
+                // WebRTC Signaling Events
+                socket.on('peer:joined', (data) => {
+                    addEvent(`👥 Peer joined: ${data.empName} (${data.empId})`, 'success');
+                });
+
+                socket.on('peer:left', (data) => {
+                    addEvent(`👋 Peer left: ${data.empId}`, 'warning');
+                });
+
+                socket.on('signal:offer', (data) => {
+                    addEvent(`📡 Received WebRTC offer from: ${data.fromEmpId}`, 'info');
+                });
+
+                socket.on('signal:answer', (data) => {
+                    addEvent(`📡 Received WebRTC answer from: ${data.fromEmpId}`, 'info');
+                });
+
+                socket.on('signal:ice', (data) => {
+                    addEvent(`🧊 Received ICE candidate from: ${data.fromEmpId}`, 'info');
+                });
+
+                socket.on('host:kicked', (data) => {
+                    addEvent(`🚫 Kicked from meeting: ${data.reason}`, 'error');
+                });
+
+                socket.on('host:banned', (data) => {
+                    addEvent(`🚫 Banned from meeting: ${data.reason}`, 'error');
+                });
+
+                socket.on('host:ended', (data) => {
+                    addEvent(`🔚 Meeting ended: ${data.reason}`, 'warning');
+                });
+
+                socket.on('room:participants', (participants) => {
+                    addEvent(`👥 Room participants: ${participants.length}`, 'info');
+                    participants.forEach(p => {
+                        addEvent(`  - ${p.empName} (${p.empId})`, 'info');
+                    });
+                });
+
+            } catch (error) {
+                updateStatus(`Connection failed: ${error.message}`, 'disconnected');
+                addEvent(`❌ Connection setup error: ${error.message}`, 'error');
+            }
+        }
+
+        function disconnect() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+            }
+        }
+
+        function clearEvents() {
+            document.getElementById('events').innerHTML = '';
+        }
+
+        function testPeerJoin() {
+            if (!socket || !isConnected) return;
+            
+            addEvent('🧪 Testing peer:join event...', 'info');
+            socket.emit('peer:join', { empId: 'test-emp-123' });
+        }
+
+        function testWebRTC() {
+            if (!socket || !isConnected) return;
+            
+            addEvent('🧪 Testing WebRTC signaling...', 'info');
+            
+            // Test offer
+            const testOffer = {
+                type: 'offer',
+                sdp: 'v=0\r\no=- 1234567890 2 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\nm=audio 9 UDP/TLS/RTP/SAVPF 111\r\nc=IN IP4 0.0.0.0\r\na=mid:0\r\na=sendonly\r\na=rtpmap:111 opus/48000/2\r\n'
+            };
+            
+            socket.emit('signal:offer', {
+                targetEmpId: 'test-target-123',
+                offer: testOffer
+            });
+            
+            addEvent('📤 Sent test WebRTC offer', 'info');
+        }
+
+        function testHostKick() {
+            if (!socket || !isConnected) return;
+            
+            addEvent('🧪 Testing host kick (will fail if not host)...', 'info');
+            socket.emit('host:kick', { targetEmpId: 'test-target-123' });
+        }
+
+        // Auto-connect on page load (optional)
+        // window.onload = () => {
+        //     setTimeout(connect, 1000);
+        // };
+    </script>
+</body>
+</html>

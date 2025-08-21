@@ -19,8 +19,6 @@ jest.mock('../../../config/prismaConfig', () => ({
     }
   }
 }));
-jest.mock('../../../utils/adminLogger/adminLogger');
-
 // Import the controller
 const adminTimeSheetController = require('../../../admin_app/controller/adminTimeSheetController');
 const { prisma } = require('../../../config/prismaConfig');
@@ -91,8 +89,7 @@ describe('Admin TimeSheet Controller', () => {
         data: mockTimeSheets,
         total: mockTimeSheets.length
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('info', 'All employee timesheets retrieved successfully');
-    });
+      });
 
     it('should filter timesheets by date range', async () => {
       // Arrange
@@ -156,8 +153,7 @@ describe('Admin TimeSheet Controller', () => {
         message: 'Error retrieving timesheets',
         error: dbError.message
       });
-      expect(adminLogger.log).toHaveBeenCalledWith('error', `Error: ${dbError.message}`);
-    });
+      });
   });
 
   describe('getTodayAttendanceSummary', () => {

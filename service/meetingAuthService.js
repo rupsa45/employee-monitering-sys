@@ -79,21 +79,8 @@ class MeetingAuthService {
         expiresIn: '15m'
       });
 
-      logger.info('Meeting access token issued', {
-        meetingId,
-        empId,
-        role,
-        expiresIn: '15m'
-      });
-
       return token;
     } catch (error) {
-      logger.error('Error issuing meeting access token', {
-        meetingId,
-        empId,
-        role,
-        error: error.message
-      });
       throw error;
     }
   }
@@ -164,31 +151,16 @@ class MeetingAuthService {
         }
       }
 
-      logger.info('Meeting access token verified', {
-        meetingId: decoded.meetingId,
-        empId: decoded.sub,
-        role: decoded.role
-      });
-
       return decoded;
     } catch (error) {
       if (error.name === 'JsonWebTokenError') {
-        logger.warn('Invalid meeting access token', {
-          error: error.message
-        });
         throw new Error('Invalid token');
       }
 
       if (error.name === 'TokenExpiredError') {
-        logger.warn('Expired meeting access token', {
-          error: error.message
-        });
         throw new Error('Token expired');
       }
 
-      logger.error('Error verifying meeting access token', {
-        error: error.message
-      });
       throw error;
     }
   }
@@ -238,10 +210,6 @@ class MeetingAuthService {
 
       next();
     } catch (error) {
-      logger.error('Socket authentication failed', {
-        error: error.message,
-        socketId: socket.id
-      });
       next(new Error('Authentication failed'));
     }
   }

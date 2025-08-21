@@ -66,23 +66,12 @@ class MeetingController {
         isPersistent
       });
 
-      logger.info('Admin created meeting', {
-        adminId: req.user.id,
-        meetingId: meeting.id,
-        hostId: meeting.hostId
-      });
-
       res.status(201).json({
         success: true,
         message: 'Meeting created successfully',
         data: meeting
       });
     } catch (error) {
-      logger.error('Error creating meeting', {
-        adminId: req.user?.id,
-        error: error.message
-      });
-
       if (error.message.includes('Host not found')) {
         return res.status(404).json({
           success: false,
@@ -150,23 +139,12 @@ class MeetingController {
         isPersistent
       });
 
-      logger.info('Admin updated meeting', {
-        adminId: req.user.id,
-        meetingId: id
-      });
-
       res.json({
         success: true,
         message: 'Meeting updated successfully',
         data: meeting
       });
     } catch (error) {
-      logger.error('Error updating meeting', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -209,23 +187,12 @@ class MeetingController {
         byEmpId: req.user.id
       });
 
-      logger.info('Admin canceled meeting', {
-        adminId: req.user.id,
-        meetingId: id
-      });
-
       res.json({
         success: true,
         message: 'Meeting canceled successfully',
         data: meeting
       });
     } catch (error) {
-      logger.error('Error canceling meeting', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -268,23 +235,12 @@ class MeetingController {
         byEmpId: req.user.id
       });
 
-      logger.info('Admin started meeting', {
-        adminId: req.user.id,
-        meetingId: id
-      });
-
       res.json({
         success: true,
         message: 'Meeting started successfully',
         data: meeting
       });
     } catch (error) {
-      logger.error('Error starting meeting', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -327,23 +283,12 @@ class MeetingController {
         byEmpId: req.user.id
       });
 
-      logger.info('Admin ended meeting', {
-        adminId: req.user.id,
-        meetingId: id
-      });
-
       res.json({
         success: true,
         message: 'Meeting ended successfully',
         data: meeting
       });
     } catch (error) {
-      logger.error('Error ending meeting', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -414,24 +359,12 @@ class MeetingController {
         limit: limitNum
       });
 
-      logger.info('Admin listed meetings', {
-        adminId: req.user.id,
-        filters: { hostId, type, status, startDate, endDate },
-        page: pageNum,
-        limit: limitNum
-      });
-
       res.json({
         success: true,
         message: 'Meetings retrieved successfully',
         data: result
       });
     } catch (error) {
-      logger.error('Error listing meetings', {
-        adminId: req.user?.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve meetings',
@@ -505,23 +438,12 @@ class MeetingController {
         });
       }
 
-      logger.info('Admin retrieved meeting', {
-        adminId: req.user.id,
-        meetingId: id
-      });
-
       res.json({
         success: true,
         message: 'Meeting retrieved successfully',
         data: meeting
       });
     } catch (error) {
-      logger.error('Error getting meeting by ID', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve meeting',
@@ -589,24 +511,11 @@ class MeetingController {
         empId
       });
 
-      logger.info('Admin kicked participant', {
-        adminId: req.user.id,
-        meetingId: id,
-        kickedEmpId: empId
-      });
-
       res.json({
         success: true,
         message: 'Participant kicked successfully'
       });
     } catch (error) {
-      logger.error('Error kicking participant', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        empId: req.body.empId,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to kick participant',
@@ -681,24 +590,11 @@ class MeetingController {
         data: { isBanned: true }
       });
 
-      logger.info('Admin banned participant', {
-        adminId: req.user.id,
-        meetingId: id,
-        bannedEmpId: empId
-      });
-
       res.json({
         success: true,
         message: 'Participant banned successfully'
       });
     } catch (error) {
-      logger.error('Error banning participant', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        empId: req.body.empId,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to ban participant',
@@ -724,24 +620,12 @@ class MeetingController {
 
       const attendanceReport = await meetingService.getMeetingAttendance(id);
 
-      logger.info('Admin retrieved meeting attendance', {
-        adminId: req.user.id,
-        meetingId: id,
-        totalParticipants: attendanceReport.summary.totalParticipants
-      });
-
       res.json({
         success: true,
         message: 'Meeting attendance retrieved successfully',
         data: attendanceReport
       });
     } catch (error) {
-      logger.error('Error getting meeting attendance', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -779,25 +663,12 @@ class MeetingController {
         message
       });
 
-      logger.info('Admin sent meeting invites', {
-        adminId: req.user.id,
-        meetingId: id,
-        totalInvites: inviteResult.totalInvites,
-        successfulEmails: inviteResult.successfulEmails
-      });
-
       res.json({
         success: true,
         message: 'Meeting invites sent successfully',
         data: inviteResult
       });
     } catch (error) {
-      logger.error('Error sending meeting invites', {
-        adminId: req.user?.id,
-        meetingId: req.params.id,
-        error: error.message
-      });
-
       if (error.message.includes('Meeting not found')) {
         return res.status(404).json({
           success: false,
@@ -874,24 +745,12 @@ class MeetingController {
         limit: limitNum
       });
 
-      logger.info('Admin retrieved scheduled meetings', {
-        adminId: req.user.id,
-        filters: { from, to, status, hostId },
-        page: pageNum,
-        limit: limitNum
-      });
-
       res.json({
         success: true,
         message: 'Scheduled meetings retrieved successfully',
         data: result
       });
     } catch (error) {
-      logger.error('Error getting scheduled meetings', {
-        adminId: req.user?.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to retrieve scheduled meetings',
@@ -919,24 +778,12 @@ class MeetingController {
         minutesAhead
       });
 
-      logger.info('Admin sent meeting reminders', {
-        adminId: req.user.id,
-        minutesAhead,
-        totalMeetings: reminderResult.totalMeetings,
-        totalReminders: reminderResult.totalReminders
-      });
-
       res.json({
         success: true,
         message: 'Meeting reminders sent successfully',
         data: reminderResult
       });
     } catch (error) {
-      logger.error('Error sending meeting reminders', {
-        adminId: req.user?.id,
-        error: error.message
-      });
-
       res.status(500).json({
         success: false,
         message: 'Failed to send meeting reminders',

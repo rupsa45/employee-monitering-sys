@@ -16,7 +16,7 @@ jest.mock('../../config/prismaConfig', () => ({
   }
 }));
 
-jest.mock('../../utils/logger');
+
 
 const { prisma } = require('../../config/prismaConfig');
 
